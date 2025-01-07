@@ -1,0 +1,150 @@
+.Content-home{
+    display: flex;
+    flex-flow: row wrap;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100vh;
+
+}
+
+.main-content{
+    margin-left: 40px; 
+    width: calc(100% - 40px); 
+    height: 100vh;
+
+}
+
+.header-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    justify-items: flex-start;
+    align-items: center;
+    height: 40px;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.header-content h1{
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+
+    margin-left: 40px;   
+}
+.input-badget {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    width: 500px;
+    gap: 10px; 
+}
+
+.input-badget input {
+    flex-grow: 1; 
+    max-width: 500px;
+    height: 35px;
+    background: #2A3B5F;
+    color: #606B7A;
+    font-weight: bold;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 20px;
+    margin: 0 0px; 
+}
+
+
+.user-info {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    gap: 10px; 
+}
+  
+.user-info p {
+    font-weight: bold;
+    color: white;
+    margin-right: 10px;
+    margin-bottom: 10px;
+     
+}
+
+.user-info img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%; 
+    border: 2px solid #FFF;
+
+    margin-right: 60px;
+}
+
+
+.header-content .MuiBadge-root {
+    margin-right: 20px;
+}
+
+.header-content .MuiBadge-badge {
+    background: white !important; 
+    color: #242F49 !important; 
+    font-size: 12px; 
+    padding: 5px 8px; 
+}
+
+
+.main-content span{
+    font-size: 20px;
+    font-weight: bold;
+    color: #606B7A;
+    margin-left: 40px;
+
+}
+
+
+.Content-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    grid-template-rows: auto auto; 
+    gap: 20px; 
+    padding: 20px;
+}
+  
+  
+.Content-cards > :nth-child(1) { 
+    grid-column: 1 / 2; 
+    grid-row: 1 / 2; 
+}
+
+.Content-cards > :nth-child(2) { 
+    grid-column: 2 / 3; 
+    grid-row: 1 / 2; 
+}
+
+.Content-cards > :nth-child(3) { 
+    grid-column: 1 / 3; 
+    grid-row: 2 / 3;
+
+}
+
+.Content-cards > :nth-child(4) { 
+    grid-column: 3 / 4; 
+    grid-row: 1 / 3;
+    height: 96%; 
+}
+
+
+.main-content footer{
+    text-align: center;
+ 
+}
+
+.main-content footer span{
+    color: white;
+    font-size: 13px;
+}
+
+
+
