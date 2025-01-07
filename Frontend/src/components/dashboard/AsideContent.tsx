@@ -15,7 +15,7 @@ export const AsideContent = () => {
                     </Link>
                 </li>
                 <li>
-                    <Link to="/home">
+                    <Link to="/rooms">
                         <img src="/src/assets/chart.png" alt="home" />
                     </Link>
                 </li>

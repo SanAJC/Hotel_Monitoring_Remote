@@ -3,7 +3,7 @@ import { Login } from "../pages/Login"
 import Home from "../pages/Home"
 import { useAuth } from "../context/AuthContext"
 import ProtectedRoute from "./ProtectedRoute"
-
+import Rooms from "../pages/Rooms"
 export const AppRoutes = () => {
 
   const {accessToken} = useAuth();
@@ -19,6 +19,15 @@ export const AppRoutes = () => {
             </ProtectedRoute>
           }
         />
+
+        <Route path="/rooms"element={
+            <ProtectedRoute>
+              <Rooms />
+            </ProtectedRoute>
+          }
+        />
+
+
 
         <Route path="*" element={<Navigate to={accessToken ? "/home" : "/login"} />} />
     </Routes>
