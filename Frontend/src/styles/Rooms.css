@@ -16,3 +16,109 @@
     height: 100vh;
 
 }
+
+.info-content{
+    display: flex;
+    justify-content: space-between;
+
+}
+
+
+.menu-btn{
+    width: 100px;
+    display: flex;
+    align-items: center;
+    background: #B51A28;
+    border-radius: 50px;
+    padding: none;
+    margin-right: 60px;
+
+}
+
+.menu-btn span{
+    font-size: 16px;
+    color: white;
+    margin: 0px;
+    margin-right: 10px;
+    margin-left: 15px;
+}
+
+.menu-btn label{
+    cursor: pointer;
+}
+
+#menu{
+    display: none;
+}
+
+.container-menu{
+    position: absolute;
+    background: rgb(0, 0,0,0.5 );
+    width: 100%;
+    height: 100vh;
+    top: 0;left:0;
+    transition: all 500ms ease;
+    opacity: 0;
+    visibility: hidden;
+}
+
+#menu:checked ~ .container-menu{
+    opacity: 1;
+    visibility: visible;
+}
+.cont-menu{
+    width: 100%;
+    max-width: 250px;
+    background: #B51A28;
+    height: 100vh;
+    position: relative;
+    transition: all 500ms ease;
+    transform: translateX(-100%);
+
+}
+#menu:checked ~ .container-menu .cont-menu{
+    transform: translateX(0%);
+}
+
+
+.cont-menu nav{
+    transform: translateY(15%);
+}
+
+.cont-menu nav a{
+    display: block;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 20px;
+    color: #fff;
+    border-left: 5px solid transparent;
+    transition: all 400ms ease;
+}
+.cont-menu nav a:hover{
+    border-left: 5px solid #fff;
+    background: #16162F;
+
+}
+
+.cont-menu label{
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+
+    width: 20px;
+    height: 10px;
+
+}
+
+
+.Content-cards-rooms{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    grid-template-rows: auto auto; 
+    gap: 20px; 
+    padding: 20px;
+    
+}
