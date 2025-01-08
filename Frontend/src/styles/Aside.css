@@ -23,10 +23,12 @@
     margin-bottom: 40px;
 }
 
-#img-user{
+.icons-user{
     margin-top: auto;
+}
+
+#img-user{
     margin-bottom: 10px;
-    
 }
 
 .aside-content nav ul li{

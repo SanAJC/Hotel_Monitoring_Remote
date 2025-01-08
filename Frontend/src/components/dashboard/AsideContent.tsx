@@ -20,15 +20,21 @@ export const AsideContent = () => {
                     </Link>
                 </li>
                 <li>
-                    <Link to="/home">
+                    <Link to="/export">
                         <img src="/src/assets/document.png" alt="home" />
                     </Link>
                 </li>
             </ul>
         </nav>
-        <img src="/src/assets/user.png" alt="user" id='img-user'/>
-        <img src="/src/assets/Logout.png" alt="Logout" id='img-logut'/>
+        <div className='icons-user'>
+            <Link to="/profile">
+                <img src="/src/assets/user.png" alt="user" id='img-user'/>
+            </Link>
 
+            <img src="/src/assets/Logout.png" alt="Logout" id='img-logut'/>
+
+        </div>
+        
     </aside>
   )
 }

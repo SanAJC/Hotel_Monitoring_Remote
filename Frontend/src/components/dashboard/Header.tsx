@@ -2,6 +2,7 @@ import { useAuth } from "../../context/AuthContext";
 import { Badge } from "@mui/material"
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import '/src/styles/Header.css'
+import { Link } from "react-router-dom";
 export default function Header() {
 
     const {user} = useAuth();
@@ -20,7 +21,9 @@ export default function Header() {
             
             <div className="user-info">
                 <p>{user?.rol}</p>
-                <img src="src/assets/user.png" alt="user" id="img-user" />
+                <Link to="/profile">
+                    <img src="src/assets/user.png" alt="user" id="img-user" />
+                </Link>
             </div>
 
         </div>

@@ -1,4 +1,4 @@
-.card{
+.card-room{
     width: 100%;
     height: 200px;
     border-radius: 10px;
@@ -9,7 +9,7 @@
 
 }
 
-.card h2{
+.card-room h2{
     display: block;
     color: white;
     font-weight: bold;
@@ -20,7 +20,7 @@
     
 }
 
-.card-content {
+.card-content-room {
     display: flex; 
     flex-direction: row; 
     justify-content: space-between; 
@@ -37,7 +37,7 @@
 }
 
 
-.card-content img {
+.card-content-room img {
     width: 120px; 
     height: 120px;
     margin-right: 10px; 
@@ -50,6 +50,10 @@
     align-items: center;
     gap: 5px;
     
+}
+.info-item p{
+    color: wheat;
+    font-weight: bold;
 }
 
 .info-item span{

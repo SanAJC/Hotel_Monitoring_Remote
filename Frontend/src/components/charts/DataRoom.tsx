@@ -1,5 +1,6 @@
 import { CardRoom } from "../dashboard/CardRoom"
 import '/src/styles/CardRoom.css'
+import { Link } from "react-router-dom";
 
 export default function DataRoom() {
   return (
@@ -14,7 +15,10 @@ export default function DataRoom() {
                 <p>Activo</p> 
             </div>
         </div>
-        <img src='src/assets/habitacion1.png' alt="room" />
+        <Link to="/room">
+          <img src='src/assets/habitacion1.png' alt="room" />
+        </Link>
+       
     </CardRoom>
   )
 }

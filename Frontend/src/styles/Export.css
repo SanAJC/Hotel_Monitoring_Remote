@@ -1,0 +1,120 @@
+.Content-rooms{
+    display: flex;
+    flex-flow: row wrap;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100vh;
+
+}
+
+.main-content{
+    margin-left: 40px; 
+    width: calc(100% - 40px); 
+    height: 100vh;
+
+}
+
+.info-informe{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    
+}
+
+.data-export{
+    width: 50%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    text-align: justify;
+    justify-content: center;
+    align-items: center;
+     
+}
+
+.data-export p{
+    color:#606B7A;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.data-export button{
+    margin-top: 20px;
+}
+
+.img{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45%;
+    height: auto;
+
+}
+
+#img-export{
+    width: 458px;
+    height: 458px;
+}
+
+
+
+/* From Uiverse.io by Peary74 */ 
+button {
+    width: 200px;
+    font-size: 20px;
+    background: #B51A28;
+    fill: white;
+    padding: 0.7em 1em;
+    padding-left: 0.9em;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    border-radius: 15px;
+    font-weight: 1000;
+}
+  
+button span {
+    display: block;
+    margin-left: 0.3em;
+    transition: all 0.3s ease-in-out;
+}
+
+#Descargar{
+    color: white;
+}
+  
+button svg {
+    display: block;
+    transform-origin: center center;
+    transition: transform 0.3s ease-in-out;
+}
+
+button:hover {
+    background: #952029;
+}
+
+button:hover .svg-wrapper {
+    transform: scale(1.25);
+    transition: 0.5s linear;
+}
+
+button:hover svg {
+    transform: translateX(1.2em) scale(1.1);
+    fill: #fff;
+}
+
+button:hover span {
+    opacity: 0;
+    transition: 0.5s linear;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+  
