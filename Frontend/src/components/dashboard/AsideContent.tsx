@@ -27,12 +27,13 @@ export const AsideContent = () => {
             </ul>
         </nav>
         <div className='icons-user'>
-            <Link to="/profile">
+            <Link to="/">
                 <img src="/src/assets/user.png" alt="user" id='img-user'/>
             </Link>
 
-            <img src="/src/assets/Logout.png" alt="Logout" id='img-logut'/>
-
+            <Link to="">
+                <img src="/src/assets/Logout.png" alt="Logout" id='img-logut'/>
+            </Link>
         </div>
         
     </aside>

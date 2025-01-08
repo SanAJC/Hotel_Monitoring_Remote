@@ -21,7 +21,7 @@ export default function Header() {
             
             <div className="user-info">
                 <p>{user?.rol}</p>
-                <Link to="/profile">
+                <Link to="/">
                     <img src="src/assets/user.png" alt="user" id="img-user" />
                 </Link>
             </div>

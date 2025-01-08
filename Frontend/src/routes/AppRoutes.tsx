@@ -6,7 +6,7 @@ import ProtectedRoute from "./ProtectedRoute"
 import Rooms from "../pages/Rooms"
 import Export from "../pages/Export"
 import Room from "../pages/Room"
-import Profile from "../pages/Profile"
+
 export const AppRoutes = () => {
 
   const {accessToken} = useAuth();
@@ -43,12 +43,7 @@ export const AppRoutes = () => {
             </ProtectedRoute>
           }
         />
-        <Route path="/profile"element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
+        
 
 
 
