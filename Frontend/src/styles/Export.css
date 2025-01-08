@@ -64,7 +64,7 @@
 
 
 /* From Uiverse.io by Peary74 */ 
-button {
+.data-export button {
     width: 200px;
     font-size: 20px;
     background: #B51A28;
@@ -79,7 +79,7 @@ button {
     font-weight: 1000;
 }
   
-button span {
+.data-export button span {
     display: block;
     margin-left: 0.3em;
     transition: all 0.3s ease-in-out;
@@ -89,32 +89,32 @@ button span {
     color: white;
 }
   
-button svg {
+.data-export button svg {
     display: block;
     transform-origin: center center;
     transition: transform 0.3s ease-in-out;
 }
 
-button:hover {
+.data-export button:hover {
     background: #952029;
 }
 
-button:hover .svg-wrapper {
+.data-export button:hover .svg-wrapper {
     transform: scale(1.25);
     transition: 0.5s linear;
 }
 
-button:hover svg {
+.data-export button:hover svg {
     transform: translateX(1.2em) scale(1.1);
     fill: #fff;
 }
 
-button:hover span {
+.data-export button:hover span {
     opacity: 0;
     transition: 0.5s linear;
 }
 
-button:active {
+.data-export button:active {
     transform: scale(0.95);
 }
   

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useLogin } from '../hooks/useLogin'
+import { useLogin } from '../hooks/useLogin';
 import '/src/styles/Login.css';
 export const Login = () => {
     const {handleLogin,loading,error} = useLogin();
