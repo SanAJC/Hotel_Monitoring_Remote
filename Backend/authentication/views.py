@@ -43,7 +43,7 @@ class AuthViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'], url_path='logout',permission_classes=[IsAuthenticated])
     def logout_view(self, request):
         try:
-            # Obtener el refresh token del cuerpo de la solicitud
+            # refresh token del cuerpo de la solicitud
             refresh_token = request.data.get("refresh_token")
 
             if not refresh_token:
