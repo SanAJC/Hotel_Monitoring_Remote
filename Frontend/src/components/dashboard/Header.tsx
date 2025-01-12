@@ -9,7 +9,7 @@ import Alert from '@mui/material/Alert';
 export default function Header() {
 
     const {user} = useAuth();
-    const [menuOpen, setMenuOpen] = useState(false); // Estado para controlar el menú
+    const [menuOpen, setMenuOpen] = useState(false); 
 
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);

@@ -88,8 +88,18 @@ DATABASES = {
         'PASSWORD': 'san_ats',
         'HOST': 'localhost',
         'PORT': '5432',
+    },
+    'backup': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'hotel_db_back',
+        'USER': 'postgres',
+        'PASSWORD': 'san_ats',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+
+DATABASE_ROUTERS = ['Hotel.routers.EnrutadorDeRespaldo']
 
 #Tokern JWT
 
