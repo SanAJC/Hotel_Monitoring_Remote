@@ -3,9 +3,17 @@ import { Badge } from "@mui/material"
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import '/src/styles/Header.css'
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import Alert from '@mui/material/Alert';
+
 export default function Header() {
 
     const {user} = useAuth();
+    const [menuOpen, setMenuOpen] = useState(false); // Estado para controlar el menú
+
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+    };
     return (
         <div className='header-content'>
 
@@ -15,8 +23,28 @@ export default function Header() {
                 <input type="text" placeholder='  Buscar Habitacion . . . .' />
                 
                 <Badge badgeContent={4} color="primary">
-                <NotificationsIcon style={{ fontSize: "30px", color: "#B51A28" }}/>
+                 <NotificationsIcon style={{ fontSize: "30px", color: "#B51A28" }} onClick={toggleMenu}/>
                 </Badge>
+
+
+                {menuOpen && (
+                    <div className="notifications-menu">
+                        <ul>
+                        <Alert variant="filled" severity="success">
+                        This is a filled success Alert.
+                        </Alert>
+                        <Alert variant="filled" severity="info">
+                        This is a filled info Alert.
+                        </Alert>
+                        <Alert variant="filled" severity="warning">
+                        This is a filled warning Alert.
+                        </Alert>
+                        <Alert variant="filled" severity="error">
+                        This is a filled error Alert.
+                        </Alert>
+                        </ul>
+                    </div>
+                )}
             </div>
             
             <div className="user-info">

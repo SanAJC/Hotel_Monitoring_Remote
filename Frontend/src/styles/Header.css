@@ -22,7 +22,8 @@
     align-items: center;
     text-align: center;
     width: 500px;
-    gap: 10px; 
+    gap: 10px;
+    position: relative;
 }
 
 .input-badget input {
@@ -73,4 +74,27 @@
     color: #242F49 !important; 
     font-size: 12px; 
     padding: 5px 8px; 
+}
+
+/* Menú desplegable */
+.notifications-menu {
+    position: absolute;
+    top: 40px; 
+    right: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    width: 200px;
+    z-index: 1000;
+}
+
+.notifications-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 10px;
+}
+
+.notifications-menu .MuiAlert-root {
+    margin-bottom: 10px; /* Espaciado entre alertas */
 }
