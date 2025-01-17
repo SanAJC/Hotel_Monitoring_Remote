@@ -8,7 +8,7 @@ class PisoAdmin(admin.ModelAdmin):
 
 @admin.register(Habitacion)
 class HabitacionAdmin(admin.ModelAdmin):
-    list_display = ('numero', 'piso', 'fecha_actualizacion')
+    list_display = ('numero', 'piso','presencia_humana','temperatura','humedad', 'fecha_actualizacion')
 
 
 @admin.register(Dispositivo)

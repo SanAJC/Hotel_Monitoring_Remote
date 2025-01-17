@@ -9,7 +9,6 @@ const axiosInstance = axios.create({
   },
 });
 
-// Interceptor para adjuntar el token de acceso
 axiosInstance.interceptors.request.use(
   (config) => {
     const accessToken = localStorage.getItem("accessToken");
@@ -24,7 +23,6 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// Interceptor para manejar errores y refresh token
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -46,13 +44,13 @@ axiosInstance.interceptors.response.use(
 
         const newAccessToken = response.data.access_token;
         
-        // Actualizar token en localStorage
+        
         localStorage.setItem("accessToken", newAccessToken);
         
-        // Actualizar header de la petición original
+        
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         
-        // Reintentar la petición original
+        
         return axiosInstance(originalRequest);
       } catch (error) {
         // Si falla el refresh, limpiar localStorage

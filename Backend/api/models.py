@@ -11,6 +11,9 @@ class Piso(models.Model):
 class Habitacion(models.Model):
     piso = models.ForeignKey(Piso, on_delete=models.CASCADE, related_name="habitaciones")
     numero = models.PositiveIntegerField()
+    presencia_humana = models.BooleanField(default=False)
+    temperatura = models.FloatField(default=0.0)
+    humedad = models.FloatField(default=0.0)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
