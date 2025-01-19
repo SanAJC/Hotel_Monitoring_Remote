@@ -1,11 +1,11 @@
-import { Card } from "../dashboard/CardChart"
+import { CardChart } from "../dashboard/CardChart"
 
 export default function PresupuestoConsume() {
   return (
-            <Card title="Presupuesto del Consumo">
-                <div>
-                            
-                </div>
-            </Card>
+          <CardChart title="Presupuesto del Consumo">
+            <div className="card-hotel">
+              <img src="/src/assets/money.png" alt="" id="presupuesto"/>     
+            </div>
+          </CardChart>
   )
 }

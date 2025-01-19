@@ -1,11 +1,11 @@
-import { Card } from "../dashboard/CardChart"
+import { CardChart } from "../dashboard/CardChart"
 
 export const ConsumeWeeklyChart = () => {
   return (
-    <Card title="Consumo Semanal de la Habitacion">
+    <CardChart title="Consumo Semanal de la Habitacion">
         <div>
                     
         </div>
-    </Card>
+    </CardChart>
   )
 }

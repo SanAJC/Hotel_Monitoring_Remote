@@ -1,13 +1,13 @@
-import { Card } from "../dashboard/CardChart"
+import { CardChart } from "../dashboard/CardChart"
 
 export default function TotalConsumeHistory() {
 
 
     return (
-        <Card title="Consumo Total - Historico">
+        <CardChart title="Consumo Total - Historico">
             <div>
 
             </div>
-        </Card> 
+        </CardChart> 
     )
 }

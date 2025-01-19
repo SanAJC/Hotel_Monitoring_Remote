@@ -1,11 +1,11 @@
-import { Card } from "../dashboard/CardChart"
+import { CardChart } from "../dashboard/CardChart"
 
 export const AireChart = () => {
   return (
-    <Card title="Aire">
+    <CardChart title="Aire">
         <div>
                     
         </div>
-    </Card>
+    </CardChart>
   )
 }

@@ -6,7 +6,7 @@ export type CardPropd ={
     children:ReactNode,
 }
 
-export const Card = ({title,children}:CardPropd) => {
+export const CardChart = ({title,children}:CardPropd) => {
   return (
     <div className="card">
       <h2>{title}</h2>

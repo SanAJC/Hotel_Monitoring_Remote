@@ -1,11 +1,11 @@
-import { Card } from "../dashboard/CardChart"
+import { CardChart} from "../dashboard/CardChart"
 
 export const ConsumeMothklyChart = () => {
   return (
-    <Card title="Consumo Mensual de la Habitacion">
+    <CardChart title="Consumo Mensual de la Habitacion">
         <div>
                     
         </div>
-    </Card>
+    </CardChart>
   )
 }

@@ -1,11 +1,11 @@
-import { Card } from "../dashboard/CardChart"
+import { CardChart } from "../dashboard/CardChart"
 
 export default function TableRooms() {
     return (
-        <Card title="Habitaciones">
+        <CardChart title="Habitaciones">
             <div>
 
             </div>
-        </Card> 
+        </CardChart> 
     )
 }
