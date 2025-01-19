@@ -1,23 +1,33 @@
 from django.db import models
 
-class Piso(models.Model):
-    nivel = models.PositiveIntegerField()
+
+class Hotel(models.Model):
+    consumo_total = models.FloatField(default=0.0)
+    presupuesto = models.FloatField(default=0.0)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Piso {self.nivel}"
+        return f"Consumo Total{self.consumo_total} - Presupuesto {self.presupuesto}"
+
+    def actualizar_cosumo_total(self):
+
+        habitaciones = self.habitaciones.all()
+        self.consumo_total = sum(habitacion.consumo_total for habitacion in habitaciones)
+        self.save()
+
 
 
 class Habitacion(models.Model):
-    piso = models.ForeignKey(Piso, on_delete=models.CASCADE, related_name="habitaciones")
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name="habitaciones", default=1)
     numero = models.PositiveIntegerField()
+    nivel = models.PositiveIntegerField(default=1)
     presencia_humana = models.BooleanField(default=False)
     temperatura = models.FloatField(default=0.0)
     humedad = models.FloatField(default=0.0)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Habitación {self.numero} - Piso {self.piso.nivel}"
+        return f"Habitación {self.numero} - Nivel {self.nivel}"
 
 
 class Dispositivo(models.Model):
@@ -56,7 +66,6 @@ class Alerta(models.Model):
 
     habitacion = models.ForeignKey(Habitacion, on_delete=models.CASCADE, related_name="alertas")
     tipo = models.CharField(max_length=50, choices=TIPOS_ALERTA)
-    informacion = models.TextField()  # Detalles de la alerta
     fecha_creacion = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

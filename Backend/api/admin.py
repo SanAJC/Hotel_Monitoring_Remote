@@ -1,14 +1,14 @@
 from django.contrib import admin
-from .models import Piso, Habitacion, Dispositivo , RegistroConsumo
+from .models import Hotel, Habitacion, Dispositivo , RegistroConsumo
 
-@admin.register(Piso)
+@admin.register(Hotel)
 class PisoAdmin(admin.ModelAdmin):
-    list_display = ('nivel', 'fecha_actualizacion')
+    list_display = ('consumo_total','presupuesto', 'fecha_actualizacion')
 
 
 @admin.register(Habitacion)
 class HabitacionAdmin(admin.ModelAdmin):
-    list_display = ('numero', 'piso','presencia_humana','temperatura','humedad', 'fecha_actualizacion')
+    list_display = ('numero', 'nivel','presencia_humana','temperatura','humedad', 'fecha_actualizacion')
 
 
 @admin.register(Dispositivo)
