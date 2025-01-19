@@ -28,8 +28,10 @@
 }
 
 :root {
-  --chart-2: 220, 90%, 56%; /* Ajusta los valores HSL según tu diseño */
-  --color-safari: hsl(157, 23%, 48%);
+  --chart-2: 220, 90%, 56%; 
+  --color-safari: 	hsl(154, 47%, 52%);
+  --color-presupuesto :		hsl(43, 96%, 65%);
+  --color-consumo : 	hsl(154, 47%, 52%);
 }
 
 .fill-foreground {
