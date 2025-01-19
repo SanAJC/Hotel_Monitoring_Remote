@@ -2,7 +2,7 @@ import '/src/styles/Home.css'
 import { AsideContent } from "../components/dashboard/AsideContent"
 import Header from "../components/dashboard/Header"
 import TotalConsume from '../components/charts/TotalConsume';
-import PisosConsume from '../components/charts/PisosConsume';
+import PresupuestoConsume from '../components/charts/PresupuestoConsume';
 import TotalConsumeHistory from '../components/charts/TotalConsumeHistory';
 import TableRooms from '../components/charts/TableRooms';
 
@@ -21,7 +21,7 @@ export default function Home() {
           <div className='Content-cards'>
 
             <TotalConsume/>
-            <PisosConsume/>
+            <PresupuestoConsume/>
             <TotalConsumeHistory/>
             <TableRooms/>
           </div>

@@ -1,8 +1,8 @@
 import { Card } from "../dashboard/CardChart"
 
-export default function PisosConsume() {
+export default function PresupuestoConsume() {
   return (
-            <Card title="Consumo por Pisos">
+            <Card title="Presupuesto del Consumo">
                 <div>
                             
                 </div>
