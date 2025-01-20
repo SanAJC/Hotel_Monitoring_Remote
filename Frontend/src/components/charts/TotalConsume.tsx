@@ -1,27 +1,28 @@
 import { CardChart } from "../dashboard/CardChart";
+import { useState } from "react";
 import {
   Label,
   PolarGrid,
   PolarRadiusAxis,
   RadialBar,
   RadialBarChart,
+  PolarAngleAxis,
 } from "recharts";
-import { ChartConfig } from "@/components/ui/chart";
+
 
 export default function TotalConsume() {
+  const maxConsumption = 1000; // Consumo máximo esperado (en kWh)
+  const [currentConsumption] = useState(600); // Consumo actual (dinámico)
+
   const chartData = [
-    { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+    {
+      name: "Consumo Actual",
+      value: currentConsumption, // Consumo directo en kWh
+      fill: "hsl(154, 47%, 52%)", // Color de la barra
+    },
   ];
 
-  const chartConfig = {
-    visitors: {
-      label: "0.0 Kwh",
-    },
-    safari: {
-      label: "Safari",
-      color: "hsl(var(--chart-2))",
-    },
-  } satisfies ChartConfig;
+  console.log(chartData);
 
   return (
     <CardChart title="Consumo Total">
@@ -34,14 +35,12 @@ export default function TotalConsume() {
 
         <RadialBarChart
           data={chartData}
-          startAngle={-90}
-          endAngle={-360}
+          startAngle={0}
+          endAngle={450}
           innerRadius={70}
           outerRadius={100}
           width={200}
           height={200}
-          cx="50%"
-          cy="50%"
         >
           <PolarGrid
             gridType="circle"
@@ -51,12 +50,18 @@ export default function TotalConsume() {
             polarRadius={[66, 44]}
           />
           <RadialBar
-            dataKey="visitors"
-            background
+            dataKey="value"
+            background={{ fill: "#27272A" }}
             cornerRadius={10}
-            fill={chartConfig.safari.color}
+            fill={chartData[0].fill}
           />
-          <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
+          <PolarAngleAxis type="number" domain={[0, maxConsumption]} angleAxisId={0} tick={false} />
+          <PolarRadiusAxis
+            tick={false}
+            tickLine={false}
+            axisLine={false}
+             
+          >
             <Label
               content={({ viewBox }) => {
                 if (viewBox && "cx" in viewBox && "cy" in viewBox) {
@@ -72,14 +77,14 @@ export default function TotalConsume() {
                         y={viewBox.cy}
                         className="fill-foreground text-4xl font-bold"
                       >
-                        {chartData[0].visitors.toLocaleString()}
+                        {currentConsumption.toLocaleString()}
                       </tspan>
                       <tspan
                         x={viewBox.cx}
                         y={(viewBox.cy || 0) + 24}
                         className="fill-muted-foreground"
                       >
-                        {chartConfig.visitors.label}
+                        kWh
                       </tspan>
                     </text>
                   );

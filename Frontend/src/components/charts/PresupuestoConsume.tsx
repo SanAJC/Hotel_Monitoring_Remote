@@ -1,27 +1,25 @@
 import { CardChart } from "../dashboard/CardChart";
+import { useState } from "react";
 import {
   Label,
   PolarGrid,
   PolarRadiusAxis,
   RadialBar,
   RadialBarChart,
+  PolarAngleAxis,
 } from "recharts";
-import { ChartConfig } from "@/components/ui/chart";
 
 export default function PresupuestoConsume() {
-  const chartData = [
-    { browser: "safari", visitors: 500, fill: "var(--color-presupuesto)" },
-  ];
+  const maxBudget = 1000; 
+  const [Budget] = useState(100); 
 
-  const chartConfig = {
-    visitors: {
-      label: "$ 0.00 COP",
+  const chartData = [
+    {
+      name: "Presupuesto",
+      value: Budget, 
+      fill: "hsl(43, 96%, 65%)", 
     },
-    safari: {
-      label: "Safari",
-      color: "hsl(var(--chart-2))",
-    },
-  } satisfies ChartConfig;
+  ];
 
   return (
     <CardChart title="Presupuesto del Consumo">
@@ -29,14 +27,12 @@ export default function PresupuestoConsume() {
         <img src="/src/assets/money.png" alt="" id="presupuesto" />
         <RadialBarChart
           data={chartData}
-          startAngle={-90}
-          endAngle={-360}
+          startAngle={0}
+          endAngle={450}
           innerRadius={70}
           outerRadius={100}
           width={200}
           height={200}
-          cx="50%"
-          cy="50%"
         >
           <PolarGrid
             gridType="circle"
@@ -46,10 +42,16 @@ export default function PresupuestoConsume() {
             polarRadius={[66, 44]}
           />
           <RadialBar
-            dataKey="visitors"
-            background
+            dataKey="value"
+            background={{ fill: "#27272A" }}
             cornerRadius={10}
-            fill={chartConfig.safari.color}
+            fill={chartData[0].fill}
+          />
+          <PolarAngleAxis
+            type="number"
+            domain={[0, maxBudget]}
+            angleAxisId={0}
+            tick={false}
           />
           <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
             <Label
@@ -67,14 +69,14 @@ export default function PresupuestoConsume() {
                         y={viewBox.cy}
                         className="fill-foreground text-4xl font-bold"
                       >
-                        {chartData[0].visitors.toLocaleString()}
+                        {Budget.toLocaleString()}
                       </tspan>
                       <tspan
                         x={viewBox.cx}
                         y={(viewBox.cy || 0) + 24}
                         className="fill-muted-foreground"
                       >
-                        {chartConfig.visitors.label}
+                        COP
                       </tspan>
                     </text>
                   );

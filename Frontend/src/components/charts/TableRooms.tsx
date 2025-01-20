@@ -12,16 +12,24 @@ export default function TableRooms() {
   }
 
   const rows = [
-    createData(204, 0.0, false),
-    createData(305, 15.5, true),
-    createData(101, 9.3, true),
-    createData(402, 20.8, false),
-    createData(503, 7.2, true),
-    createData(204, 0.0, false),
-    createData(305, 15.5, true),
-    createData(101, 9.3, true),
-    createData(402, 20.8, false),
-    createData(503, 7.2, true),
+    createData(101, 0.0, false),
+    createData(102, 15.5, true),
+    createData(103, 9.3, true),
+    createData(104, 20.8, false),
+    createData(105, 7.2, true),
+    createData(106, 0.0, false),
+    createData(201, 0.0, false),
+    createData(202, 15.5, true),
+    createData(203, 9.3, true),
+    createData(204, 20.8, false),
+    createData(205, 7.2, true),
+    createData(206, 0.0, false),
+    createData(301, 0.0, false),
+    createData(302, 15.5, true),
+    createData(303, 9.3, true),
+    createData(304, 20.8, false),
+    createData(305, 7.2, true),
+    createData(306, 0.0, false),
   ];
   return (
     <TableContainer
@@ -53,7 +61,7 @@ export default function TableRooms() {
               sx={{
                 color: "white",
                 fontWeight: "bold",
-                borderBottom: "none",
+                borderColor:"black",
               }}
             >
               Habitación
@@ -63,7 +71,7 @@ export default function TableRooms() {
               sx={{
                 color: "white",
                 fontWeight: "bold",
-                borderBottom: "none",
+                borderColor:"black",
               }}
             >
               Consumo (kWh)
@@ -73,7 +81,7 @@ export default function TableRooms() {
               sx={{
                 color: "white",
                 fontWeight: "bold",
-                borderBottom: "none",
+                borderColor:"black",
               }}
             >
               Presencia
