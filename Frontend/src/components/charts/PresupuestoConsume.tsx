@@ -27,7 +27,7 @@ export default function PresupuestoConsume() {
         <img src="/src/assets/money.png" alt="" id="presupuesto" />
         <RadialBarChart
           data={chartData}
-          startAngle={0}
+          startAngle={90}
           endAngle={450}
           innerRadius={70}
           outerRadius={100}

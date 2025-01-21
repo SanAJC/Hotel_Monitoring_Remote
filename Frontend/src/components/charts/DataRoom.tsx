@@ -8,11 +8,11 @@ export default function DataRoom() {
         <div className="info-room">
             <div className="info-item">
                 <span>Consumo</span>
-                <p>50 kWh</p> 
+                <p id="p-consumo">50 kWh</p> 
             </div>
             <div className="info-item">
                 <span>Presencia</span>
-                <p>Activo</p> 
+                <p id="p-presencia">Activo</p> 
             </div>
         </div>
         <Link to="/room">
