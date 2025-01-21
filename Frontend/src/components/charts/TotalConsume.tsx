@@ -11,14 +11,14 @@ import {
 
 
 export default function TotalConsume() {
-  const maxConsumption = 1000; // Consumo máximo esperado (en kWh)
-  const [currentConsumption] = useState(600); // Consumo actual (dinámico)
+  const maxConsumption = 1000; 
+  const [currentConsumption] = useState(600); 
 
   const chartData = [
     {
       name: "Consumo Actual",
-      value: currentConsumption, // Consumo directo en kWh
-      fill: "hsl(154, 47%, 52%)", // Color de la barra
+      value: currentConsumption, 
+      fill: "hsl(154, 47%, 52%)", 
     },
   ];
 
