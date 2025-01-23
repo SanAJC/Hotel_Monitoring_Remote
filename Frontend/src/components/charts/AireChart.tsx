@@ -17,7 +17,7 @@ export const AireChart = () => {
     {
       name: "Consumo Actual",
       value: currentConsumption, 
-      fill: "#6CC9D4", 
+      fill: "#4A919D", 
     },
   ];
   return (

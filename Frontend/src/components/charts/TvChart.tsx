@@ -17,7 +17,7 @@ export const TvChart = () => {
     {
       name: "Consumo Actual",
       value: currentConsumption,
-      fill: "#BC99F3",
+      fill: "#8A6FC2",
     },
   ];
   return (

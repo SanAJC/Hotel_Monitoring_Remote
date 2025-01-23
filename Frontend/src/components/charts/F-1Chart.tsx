@@ -16,7 +16,7 @@ export const F1Chart = () => {
     {
       name: "Consumo Actual",
       value: currentConsumption,
-      fill: "#FCCB50",
+      fill: "#D1A03D",
     },
   ];
   return (

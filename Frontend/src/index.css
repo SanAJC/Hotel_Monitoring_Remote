@@ -32,6 +32,10 @@
   --color-safari: 	hsl(154, 47%, 52%);
   --color-presupuesto :		hsl(43, 96%, 65%);
   --color-consumo : 	hsl(154, 47%, 52%);
+  .recharts-cartesian-axis-tick text {
+    fill: #f1f1f1 !important; 
+    font-size: 12px;         
+  }
 }
 
 .fill-foreground {
