@@ -43,7 +43,7 @@ export const ConsumeMothklyChart = () => {
   } satisfies ChartConfig;
   return (
     <CardChart title="Consumo Mensual de la Habitacion">
-      <ChartContainer config={chartConfig} className="w-full h-64">
+      <ChartContainer config={chartConfig} className="w-full h-64" style={{ height: "200px" }}>
         <AreaChart
           accessibilityLayer
           data={chartData}
