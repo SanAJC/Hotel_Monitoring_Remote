@@ -26,6 +26,9 @@ export default function Room() {
             <CardRoomAction />
             <ConsumeMothklyChart />
           </div>
+          <footer>
+            <span>Todos los derechos de autor reservados</span>
+          </footer>
         </div>
       </div>
     </>

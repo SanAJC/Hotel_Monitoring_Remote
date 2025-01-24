@@ -117,4 +117,13 @@
 .data-export button:active {
     transform: scale(0.95);
 }
+
+footer{
+    text-align: center;
+}
+footer span{
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+}
   
