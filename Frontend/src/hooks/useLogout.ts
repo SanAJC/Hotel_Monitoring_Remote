@@ -20,7 +20,7 @@ export const useLogout = () => {
             }
     
             const response = await axios.post(
-                "http://127.0.0.1:8000/api/auth/logout/",
+                "http://127.0.0.1:8000/authentication/auth/logout/",
                 { refresh_token: refreshToken },
                 {
                     headers: {

@@ -17,7 +17,7 @@ export const useLogin = () => {
         setError(null);
 
         try{
-            const response = await axios.post('http://127.0.0.1:8000/api/auth/login/',{username,password});
+            const response = await axios.post('http://127.0.0.1:8000/authentication/auth/login/',{username,password});
 
             const {user,access_token,refresh_token}=response.data;
 

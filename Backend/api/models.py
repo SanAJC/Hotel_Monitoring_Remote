@@ -1,7 +1,13 @@
 from django.db import models
+from django.conf import settings
 
 
 class Hotel(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,  
+        on_delete=models.CASCADE,
+        related_name="hoteles"
+    )
     consumo_total = models.FloatField(default=0.0)
     presupuesto = models.FloatField(default=0.0)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
@@ -14,7 +20,7 @@ class Hotel(models.Model):
         habitaciones = self.habitaciones.all()
         self.consumo_total = sum(habitacion.consumo_total for habitacion in habitaciones)
         self.save()
-
+    
 
 
 class Habitacion(models.Model):

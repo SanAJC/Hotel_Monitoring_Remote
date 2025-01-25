@@ -3,7 +3,7 @@ from .models import Hotel, Habitacion, Dispositivo , RegistroConsumo
 
 @admin.register(Hotel)
 class PisoAdmin(admin.ModelAdmin):
-    list_display = ('consumo_total','presupuesto', 'fecha_actualizacion')
+    list_display = ('user','consumo_total','presupuesto', 'fecha_actualizacion')
 
 
 @admin.register(Habitacion)
