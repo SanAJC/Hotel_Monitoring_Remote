@@ -5,6 +5,7 @@
     justify-items: flex-start;
     align-items: center;
     height: 40px;
+    width: 100%;
 
     margin-top: 20px;
     margin-bottom: 20px;
@@ -96,5 +97,45 @@
 }
 
 .notifications-menu .MuiAlert-root {
-    margin-bottom: 10px; /* Espaciado entre alertas */
+    margin-bottom: 10px; 
+}
+
+@media (max-width: 767px){
+    .header-content{
+        justify-content: center;
+    }
+    .header-content h1{
+        font-size: 20px;
+        margin-left: 20px;
+    }
+
+    .input-badget input{
+        max-width: 200px;
+        margin-left: 20px;
+    }
+    .user-info{
+        display: none;
+    }
+    .input-badget{
+        max-width: 400px;
+        
+    }
+}
+
+@media (max-width: 459px){
+
+    .input-badget{
+        gap: 0px;
+    }
+
+    .input-badget input{
+        max-width: 150px;
+        margin-left: 10px;
+        padding-bottom: 12px;
+    }
+
+    .input-badget input::placeholder{
+        font-size: 13px;
+    }
+    
 }

@@ -1,68 +1,76 @@
-.card{
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
+.card {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
 
-    text-align: center;
-    background: #242F49;
+  text-align: center;
+  background: #242f49;
 
-    color: white;
-    font-weight: bold;
-    font-size: 13px;
+  color: white;
+  font-weight: bold;
+  font-size: 13px;
 
-    margin-bottom: 20px;
-    padding: 10px;
-
+  margin-bottom: 20px;
+  padding: 10px;
 }
-.card h2{
-    margin-bottom: 5px;
+.card h2 {
+  margin-bottom: 5px;
 }
 
 .card-content {
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: center;
-    align-items: center;
-    padding: none;
-    margin: none;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+  padding: none;
+  margin: none;
 }
 
-.card-hotel{
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-evenly; 
-    gap: 10px;
-    align-items: center;
-    text-align: center;
-    padding: none;
-    margin: none;
+.card-hotel {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  gap: 10px;
+  align-items: center;
+  text-align: center;
+  padding: none;
+  margin: none;
 }
-#consumoGif{
+#consumoGif {
+  width: 130px;
+  height: 130px;
+}
+
+#presupuesto {
+  width: 130px;
+  height: 130px;
+
+  margin-top: 20px;
+}
+#aire {
+  width: 170px;
+  height: 170px;
+}
+
+.card-hotel-room {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  gap: 10px;
+  align-items: center;
+  text-align: center;
+  padding: none;
+  margin: none;
+}
+
+@media (max-width: 551px) {
+  .card {
+    max-width: 70%;
+    font-size: 12px;
+  }
+
+  #aire {
     width: 130px;
     height: 130px;
+  }
 }
-
-#presupuesto{
-    width: 130px;
-    height: 130px;
-    
-    margin-top: 20px;
-}
-#aire{
-    width: 170px;
-    height: 170px;
-}
-
-.card-hotel-room{
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-evenly; 
-    gap: 10px;
-    align-items: center;
-    text-align: center;
-    padding: none;
-    margin: none;
-    
-}
-
-

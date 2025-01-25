@@ -81,4 +81,27 @@
 }
 
 
+@media (max-width: 767px){
+    
+    #p-consumo , #p-presencia{
+        font-size: 11px;
+    }
+
+    .info-item span , .info-item p{
+        font-size: 13px;
+    }
+
+    .card-content-room img{
+        width: 100px;
+        height: 120px
+    }
+}
+
+@media (max-width: 573px){
+    .card-content-room img{
+        width: 150px;
+        height: 150px
+    }
+
+}
 

@@ -53,7 +53,13 @@ export default function TableRooms() {
         },
       }}
     >
-      <Table sx={{ minWidth: 350 }} aria-label="simple table">
+      <Table sx={{
+          minWidth: 350,
+          "@media (max-width: 700px)": {
+            minWidth: 100, 
+          },
+          
+        }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell

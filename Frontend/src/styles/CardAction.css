@@ -11,9 +11,7 @@
     padding: 10px;
     
     display: flex;
-    flex-flow: column wrap;
-    
-    
+    flex-flow: column nowrap; 
     
 }
 
@@ -119,7 +117,7 @@
 
 
 .content-data{
-    width: auto;
+    width: 100%;
     height: auto;
     margin: 0;
     padding: 0;
@@ -192,4 +190,9 @@
 #pre{
     font-size: 14px;
     color: rgb(25, 213, 170);
+}
+
+@media (max-width : 900px){
+
+    
 }

@@ -126,4 +126,24 @@ footer span{
     font-size: 13px;
     font-weight: bold;
 }
+
+@media (max-width: 767px){
+    .info-informe{
+        display: flex;
+        flex-flow: column wrap;
+        width: 100%;
+        margin: 0;
+        
+    }
+    .data-export{
+        width: 100%;
+        height: auto;
+        padding: 30px;
+        
+    }
+
+    .img{
+        display: none;
+    }
+}
   
