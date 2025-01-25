@@ -1,7 +1,7 @@
 
 .Content-login{
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: row nowrap;
     justify-items: center;
     justify-content: space-between; 
     align-items: center;
@@ -89,4 +89,16 @@
 
 #input-login:hover {
     background-color: #951522; /* Un rojo más oscuro para hover */
+}
+
+@media(max-width:900px){
+    .Content-login-img{
+        display: none;
+    }
+
+    .Content-login-info{
+        width: 100%;
+        margin-top: 80px;
+        
+    }
 }
