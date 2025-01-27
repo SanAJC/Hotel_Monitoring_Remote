@@ -4,8 +4,10 @@ import Header from "../components/dashboard/Header";
 import { Menu } from "@mui/icons-material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DataRoom from "../components/charts/DataRoom";
+import useRooms from "@/hooks/useRooms";
 
 export default function Rooms() {
+  const { rooms } = useRooms();
   return (
     <>
       <div className="Content-rooms">
@@ -42,15 +44,9 @@ export default function Rooms() {
           </div>
 
           <div className="Content-cards-rooms">
-            <DataRoom />
-            <DataRoom />
-            <DataRoom />
-            <DataRoom />
-            <DataRoom />
-            <DataRoom />
-            <DataRoom />
-            <DataRoom />
-            <DataRoom />
+            {rooms.map((room) => (
+              <DataRoom key={room.id} habitacion={room} />
+            ))}
           </div>
           <footer>
             <span>Todos los derechos de autor reservados</span>

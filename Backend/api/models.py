@@ -26,6 +26,7 @@ class Hotel(models.Model):
 class Habitacion(models.Model):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name="habitaciones", default=1)
     numero = models.PositiveIntegerField()
+    consumo = models.FloatField(default=0.0)
     nivel = models.PositiveIntegerField(default=1)
     images=models.ImageField(upload_to='photos/',default='photos/habitacion1.png')
     presencia_humana = models.BooleanField(default=False)
