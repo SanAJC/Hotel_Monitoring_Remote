@@ -25,12 +25,13 @@ SECRET_KEY = 'django-insecure-td8#$69xas$#_xx(d60vqi-$u6$4u0i8f&-6%2^-*wae+m0gt)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,9 +40,22 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'authentication',
-    'api',
+    'websocket',
     'corsheaders',
 ]
+
+# Configura el ASGI server
+ASGI_APPLICATION = 'Hotel.asgi.application'
+
+# Configura Redis como el backend de canales
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

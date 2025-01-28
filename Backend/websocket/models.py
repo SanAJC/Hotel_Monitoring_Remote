@@ -78,3 +78,4 @@ class Alerta(models.Model):
 
     def __str__(self):
         return f"Alerta {self.tipo} - {self.habitacion}"
+
