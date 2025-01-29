@@ -44,10 +44,11 @@ export default function Rooms() {
           </div>
 
           <div className="Content-cards-rooms">
-            {rooms.map((room) => (
-              <DataRoom key={room.id} habitacion={room} />
+            {rooms.map((habitacion) => (
+              <DataRoom key={habitacion.id} habitacion={habitacion} />
             ))}
           </div>
+          
           <footer>
             <span>Todos los derechos de autor reservados</span>
           </footer>

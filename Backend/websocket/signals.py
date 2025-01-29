@@ -7,19 +7,22 @@ import json
 
 @receiver(post_save, sender=Habitacion)
 def send_habitacion_update(sender, instance, created, **kwargs):
+    
     channel_layer = get_channel_layer()
     data = {
         'id': instance.id,
         'numero': instance.numero,
         'consumo': instance.consumo,
         'presencia_humana': instance.presencia_humana,
+        'nivel': instance.nivel,
+        'images':instance.images,
         'temperatura': instance.temperatura,
         'humedad': instance.humedad,
     }
-
+    
     # Enviar datos al grupo
     async_to_sync(channel_layer.group_send)(
-        'realtime_data',
+        'room_habitaciones',
         {
             'type': 'send_update',
             'data': data,
