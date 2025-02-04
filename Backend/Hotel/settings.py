@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'channels',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -56,6 +57,85 @@ CHANNEL_LAYERS = {
             "hosts": [("127.0.0.1", 6379)],
         },
     },
+}
+
+#Configuracion Django Jazzmin
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Hotel Kamila",
+    "site_header": "Panel de Gestión del Hotel",
+    "site_brand": "Hotel Admin",
+    "welcome_sign": "Bienvenido al panel de administración del hotel",
+    "copyright": "Hotel Kamila",
+    "site_logo": "images/hotel.png",
+    "topmenu_links": [
+        {"name": "Inicio", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "Documentación", "url": "https://docs.djangoproject.com/en/stable/", "new_window": True},
+    ],
+    
+}
+
+JAZZMIN_SETTINGS["show_ui_builder"] = True
+
+JAZZMIN_SETTINGS["icons"] = {
+    
+    "auth": "fas fa-users-cog",
+    "auth.user": "fas fa-user",
+    "auth.Group": "fas fa-users",
+    "authentication.User": "fas fa-user-tie",  
+    "websocket.Hotel": "fas fa-hotel",
+    "websocket.Nivel": "fas fa-layer-group",
+    "websocketl.Habitacion": "fas fa-bed",
+    "websocket.Dispositivo": "fas fa-plug",
+    "websocket.RegistroConsumo": "fas fa-chart-line",
+    "websocket.Alerta": "fas fa-exclamation-triangle",
+}
+
+JAZZMIN_SETTINGS["filter_options"] = {
+    "Habitacion": {
+        "name": "Filtro de Habitaciones",
+        "fields": ["numero", "nivel", "presencia_humana"],
+    },
+    "Dispositivo": {
+        "name": "Filtro de Dispositivos",
+        "fields": ["tipo", "habitacion"],
+    },
+    "Alerta": {
+        "name": "Filtro de Alertas",
+        "fields": ["tipo", "habitacion"],
+    },
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": True,
+    "brand_small_text": False,
+    "brand_colour": False,
+    "accent": "accent-primary",
+    "navbar": "navbar-dark",
+    "no_navbar_border": False,
+    "navbar_fixed": False,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": False,
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": False,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+    "theme": "cyborg",
+    "dark_mode_theme": None,
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success"
+    }
 }
 
 MIDDLEWARE = [
@@ -171,9 +251,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Bogota'
 
 USE_I18N = True
 
@@ -185,7 +265,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # Aquí se recopilarán los archivos estáticos
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'Hotel/static')  # Asegúrate de incluir el directorio de gestión
+]
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
