@@ -23,7 +23,7 @@ export default function DataRoom({habitacion}:DataRoomProps) {
                 <p id="p-presencia">{habitacion.presencia_humana ? "Activo" : "Inactivo"}</p> 
             </div>
         </div>
-        <Link to="/room">
+        <Link to={`/room/${habitacion.id}`}>
           <img src={imageUrl} alt={`Habitación ${habitacion.numero}`} />
         </Link>
        

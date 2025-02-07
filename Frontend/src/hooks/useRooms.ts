@@ -14,9 +14,9 @@ const useRooms = () => {
     }
 
     const connectWebSocket = () => {
-      const roomName = "habitaciones";
+
       const newSocket = new WebSocket(
-        `ws://localhost:8000/ws/channel/${roomName}/?token=${accessToken}`
+        `ws://localhost:8000/ws/habitaciones/?token=${accessToken}`
       );
 
       newSocket.onopen = () => console.log("WebSocket conectado");

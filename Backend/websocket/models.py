@@ -13,7 +13,7 @@ class Hotel(models.Model):
     fecha_actualizacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Consumo Total{self.consumo_total} - Presupuesto {self.presupuesto}"
+        return f"Hotel de {self.user} - Consumo Total {self.consumo_total}"
 
     def actualizar_cosumo_total(self):
 
@@ -27,14 +27,14 @@ class Nivel(models.Model):
     fecha_actualizacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Nivel {self.nivel} - Consumo {self.consumo}"
-
+        return f"Nivel {self.nivel}"
+    
 
 class Habitacion(models.Model):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name="habitaciones", default=1)
     numero = models.PositiveIntegerField()
     consumo = models.FloatField(default=0.0)
-    nivel = models.ForeignKey(Nivel,on_delete=models.CASCADE , default=1 , related_name="niveles")
+    nivel = models.ForeignKey(Nivel,on_delete=models.CASCADE, related_name="niveles")
     images=models.ImageField(upload_to='photos/',default='photos/habitacion1.png')
     presencia_humana = models.BooleanField(default=False)
     temperatura = models.FloatField(default=0.0)

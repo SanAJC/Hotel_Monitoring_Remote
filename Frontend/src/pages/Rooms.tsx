@@ -5,9 +5,24 @@ import { Menu } from "@mui/icons-material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DataRoom from "../components/charts/DataRoom";
 import useRooms from "@/hooks/useRooms";
+import useNivels from "@/hooks/useNivels";
+import { useState } from "react";
 
 export default function Rooms() {
   const { rooms } = useRooms();
+  const { nivel } = useNivels();
+
+  const [nivelSeleccionado, setNivelSeleccionado] = useState<number | null>(
+    null
+  );
+
+  // Filtrar habitaciones según el nivel seleccionado
+  const habitacionesFiltradas =
+    nivelSeleccionado !== null
+      ? rooms.filter(
+          (habitacion) => habitacion.nivel.nivel === nivelSeleccionado
+        )
+      : rooms;
   return (
     <>
       <div className="Content-rooms">
@@ -29,10 +44,26 @@ export default function Rooms() {
             <div className="container-menu">
               <div className="cont-menu">
                 <nav>
-                  <a href="">Piso 1</a>
-                  <a href="">Piso 2</a>
-                  <a href="">Piso 3</a>
-                  <a href="">Piso 4</a>
+                  {nivel.map((nivel) => (
+                    <a
+                      key={nivel.id}
+                      onClick={() => {
+                        setNivelSeleccionado(nivel.nivel);
+                        console.log("Nivel seleccionado:", nivel.nivel);
+                      }}
+                      style={{
+                        cursor: "pointer",
+                        fontWeight:
+                          nivelSeleccionado === nivel.nivel ? "bold" : "normal",
+                        color:
+                          nivelSeleccionado === nivel.nivel
+                            ? "yellow"
+                            : "white",
+                      }}
+                    >
+                      Nivel {nivel.nivel} - Consumo: {nivel.consumo}
+                    </a>
+                  ))}
                 </nav>
                 <label htmlFor="menu">
                   <HighlightOffIcon
@@ -44,11 +75,23 @@ export default function Rooms() {
           </div>
 
           <div className="Content-cards-rooms">
-            {rooms.map((habitacion) => (
-              <DataRoom key={habitacion.id} habitacion={habitacion} />
-            ))}
+            {habitacionesFiltradas.length > 0 ? (
+              habitacionesFiltradas.map((habitacion) => (
+                <DataRoom key={habitacion.id} habitacion={habitacion} />
+              ))
+            ) : (
+              <p
+                style={{
+                  color: "white",
+                  textAlign: "center",
+                  marginTop: "20px",
+                }}
+              >
+                No hay habitaciones en este nivel.
+              </p>
+            )}
           </div>
-          
+
           <footer>
             <span>Todos los derechos de autor reservados</span>
           </footer>
