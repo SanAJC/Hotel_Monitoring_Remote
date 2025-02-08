@@ -13,7 +13,7 @@ export const useLogout = () => {
       
         try {
             console.log("Attempting logout...");
-            const refreshToken = localStorage.getItem("refreshToken");
+            const refreshToken = sessionStorage.getItem("refreshToken");
             if (!refreshToken) {
                 console.error("No refresh token available");
                 return;
@@ -24,7 +24,7 @@ export const useLogout = () => {
                 { refresh_token: refreshToken },
                 {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                        Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
                     },
                 }
             );

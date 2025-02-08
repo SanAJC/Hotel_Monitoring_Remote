@@ -22,16 +22,16 @@ const AuthContext = createContext <AuthContextType | undefined>(undefined);
 export default function AuthProvider({children}:{children:ReactNode}) {
 
     const [user, setUser] = useState<User | null>(() => {
-        const storedUser = localStorage.getItem('user');
+        const storedUser = sessionStorage.getItem('user');
         return storedUser ? JSON.parse(storedUser) : null;
     });
 
     const [accessToken, setAccessTokenState] = useState<string | null>(() =>
-        localStorage.getItem('accessToken')
+        sessionStorage.getItem('accessToken')
     );
 
     const [refreshToken, setRefreshToken] = useState<string | null>(() =>
-        localStorage.getItem('refreshToken')
+        sessionStorage.getItem('refreshToken')
     );
 
 
@@ -42,9 +42,9 @@ export default function AuthProvider({children}:{children:ReactNode}) {
         setRefreshToken(refreshToken);
 
         // Guardar en localStorage
-        localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
+        sessionStorage.setItem('user', JSON.stringify(user));
+        sessionStorage.setItem('accessToken', accessToken);
+        sessionStorage.setItem('refreshToken', refreshToken);
 
     }
 
@@ -53,14 +53,14 @@ export default function AuthProvider({children}:{children:ReactNode}) {
         setAccessTokenState(null);
         setRefreshToken(null);
 
-        localStorage.removeItem('user');
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
+        sessionStorage.removeItem('user');
+        sessionStorage.removeItem('accessToken');
+        sessionStorage.removeItem('refreshToken');
     }
 
     const setAccessToken = (token: string) => {
         setAccessTokenState(token);
-        localStorage.setItem('accessToken', token);
+        sessionStorage.setItem('accessToken', token);
     }
 
     

@@ -53,11 +53,15 @@ class Dispositivo(models.Model):
         ('FOCO_HABITACION', 'Foco Habitación'),
         ('FOCO_BANO', 'Foco Baño'),
     ]
+    ESTADO_APAGADO_REMOTO = [
+        ('APAGAR', 'Apagar'),
+        ('ENCENDER', 'Encender'),
+    ]
 
     habitacion = models.ForeignKey(Habitacion, on_delete=models.CASCADE, related_name="dispositivos")
     tipo = models.CharField(max_length=50, choices=TIPOS_DISPOSITIVO)
     consumo_actual = models.FloatField(default=0.0)
-    apagado_remoto = models.BooleanField(default=False)
+    estado_remoto = models.CharField(max_length=10, choices=ESTADO_APAGADO_REMOTO, default='ENCENDER')
     fecha_actualizacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
