@@ -1,8 +1,38 @@
 import { AsideContent } from "../components/dashboard/AsideContent";
 import "/src/styles/Export.css";
 import Header from "../components/dashboard/Header";
+import { useAuth } from "../context/AuthContext";
 
 export default function Export() {
+  const { accessToken } = useAuth();
+ 
+  const handleDownload = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/reports/reporte/file/", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`, 
+        },
+      });
+  
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "reporte_hotel_kamila.xlsx"; 
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      } else {
+        console.error("Error al descargar el informe:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+    }
+  };
+
   return (
     <>
       <div className="Content-export">
@@ -32,7 +62,7 @@ export default function Export() {
                   solo clic!
                 </p>
 
-                <button>
+                <button onClick={handleDownload}>
                   <div className="svg-wrapper-1">
                     <div className="svg-wrapper">
                       <svg

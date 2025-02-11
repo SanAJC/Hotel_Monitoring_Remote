@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'authentication',
     'websocket',
+    'reports',
     'whitenoise.runserver_nostatic',
     'corsheaders',
 ]
