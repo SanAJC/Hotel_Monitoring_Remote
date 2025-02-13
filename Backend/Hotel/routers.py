@@ -23,4 +23,5 @@ class EnrutadorDeRespaldo:
         return None
 
     def permitir_migracion(self, db, etiqueta_app, nombre_modelo=None, **pistas):
-        return db == 'default'
+        # Permitir migraciones en ambas bases de datos
+        return db in ['default', 'backup']
