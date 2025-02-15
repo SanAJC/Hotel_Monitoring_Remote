@@ -10,6 +10,8 @@ class Hotel(models.Model):
     )
     consumo_total = models.FloatField(default=0.0)
     presupuesto = models.FloatField(default=0.0)
+    consumo_desperdicio_total = models.FloatField(default=0.0) 
+    eficiencia_energetica = models.FloatField(default=0.0)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -18,9 +20,22 @@ class Hotel(models.Model):
     def actualizar_cosumo_total(self):
 
         habitaciones = self.habitaciones.all()
-        self.consumo_total = sum(habitacion.consumo_total for habitacion in habitaciones)
+        self.consumo_total = sum(habitacion.consumo for habitacion in habitaciones)
         self.save()
-    
+
+    def actualizar_desperdicio_total(self):
+        self.consumo_desperdicio_total = sum(habitacion.consumo_desperdicio for habitacion in self.habitaciones.all())
+        self.save()
+
+    def actualizar_eficiencia(self):
+        if self.consumo_total == 0:
+            self.eficiencia_energetica = 0.0
+        else:
+            self.eficiencia_energetica = (
+                (self.consumo_total - self.consumo_desperdicio_total) / self.consumo_total
+            ) * 100
+        self.save()
+
 class Nivel(models.Model):
     nivel = models.IntegerField(default=1)
     consumo = models.FloatField(default=0.0)
@@ -39,6 +54,7 @@ class Habitacion(models.Model):
     presencia_humana = models.BooleanField(default=False)
     temperatura = models.FloatField(default=0.0)
     humedad = models.FloatField(default=0.0)
+    consumo_desperdicio = models.FloatField(default=0.0)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):

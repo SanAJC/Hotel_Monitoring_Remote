@@ -10,7 +10,7 @@ class ReporteViewSet(ViewSet):
     def generar_reporte_excel(self ,request): 
         wb = Workbook()
         ws_hotel = wb.create_sheet(title="Hotel")
-        ws_hotel.append(['Usuario', 'Consumo Total', 'Presupuesto', 'Fecha Actualización'])
+        ws_hotel.append(['Usuario', 'consumo Total', 'presupuesto','consumo_desperdicio_total','eficiencia_energetica','fecha Actualización'])
         hotel_data = Hotel.objects.all()
     
         ws_nivel = wb.create_sheet(title="Consumo - Pisos")
@@ -18,7 +18,7 @@ class ReporteViewSet(ViewSet):
         nivel_data = Nivel.objects.all()
 
         ws_habitacion = wb.create_sheet(title="Consumo - Habitaciones")
-        ws_habitacion .append(['numero ', 'consumo', 'nivel ','images','presencia_humana','temperatura','humedad','fecha_actualizacion']) 
+        ws_habitacion .append(['numero ', 'consumo', 'nivel ','images','presencia_humana','temperatura','humedad','consumo_desperdicio','fecha_actualizacion']) 
         habitacion_data = Habitacion.objects.all()
 
         ws_dispositivos = wb.create_sheet(title="Consumo - Dispositivos")
