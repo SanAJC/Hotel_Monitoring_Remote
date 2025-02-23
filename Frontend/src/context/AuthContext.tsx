@@ -1,12 +1,6 @@
 import React ,{createContext,useState,useContext,ReactNode} from 'react'
+import { User } from '@/types/models';
 
-
-type User ={
-    id: number,
-    username: string,
-    email: string,
-    rol: string
-}
 
 type AuthContextType ={
     user: User | null,

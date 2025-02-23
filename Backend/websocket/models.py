@@ -78,6 +78,8 @@ class Dispositivo(models.Model):
     tipo = models.CharField(max_length=50, choices=TIPOS_DISPOSITIVO)
     consumo_actual = models.FloatField(default=0.0)
     estado_remoto = models.CharField(max_length=10, choices=ESTADO_APAGADO_REMOTO, default='ENCENDER')
+    on_image=models.ImageField(upload_to='photos/',default='photos/on_aire.gif')
+    off_image=models.ImageField(upload_to='photos/',default='photos/off_aire.gif')
     fecha_actualizacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):

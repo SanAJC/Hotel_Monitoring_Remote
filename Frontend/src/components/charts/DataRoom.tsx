@@ -19,6 +19,10 @@ export default function DataRoom({habitacion}:DataRoomProps) {
                 <p id="p-consumo">{habitacion.consumo} kWh</p> 
             </div>
             <div className="info-item">
+                <span>Consumo Desperdiciado</span>
+                <p id="p-consumo">{habitacion.consumo_desperdicio} kWh</p> 
+            </div>
+            <div className="info-item">
                 <span>Presencia</span>
                 <p id="p-presencia">{habitacion.presencia_humana ? "Activo" : "Inactivo"}</p> 
             </div>

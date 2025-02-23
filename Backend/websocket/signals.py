@@ -4,7 +4,7 @@ from .models import Habitacion, Hotel, Nivel, Dispositivo, RegistroConsumo, Aler
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 import json
-from .serializers import NivelSerializer 
+from .serializers import *
 
 @receiver(post_save, sender=Habitacion)
 def send_habitacion_update(sender, instance, created, **kwargs):
@@ -21,6 +21,7 @@ def send_habitacion_update(sender, instance, created, **kwargs):
         'images': images_url,
         'temperatura': instance.temperatura,
         'humedad': instance.humedad,
+        'consumo_desperdicio':instance.consumo_desperdicio,
     }
     
     # Enviar datos al grupo
@@ -72,11 +73,15 @@ def send_nivel_update(sender, instance, created, **kwargs):
 @receiver(post_save, sender=Dispositivo)
 def send_dispositivo_update(sender, instance, created, **kwargs):
     channel_layer = get_channel_layer()
+    habitacion_data = HabitacionSerializer(instance.habitacion).data
     data = {
         'id': instance.id,
         'tipo': instance.tipo,
         'consumo_actual': instance.consumo_actual,
-        'apagado_remoto': instance.apagado_remoto,
+        'estado_remoto': instance.estado_remoto,
+        'on_image': instance.on_image.url if instance.on_image else None,
+        'off_image': instance.off_image.url if instance.off_image else None,
+        'habitacion_id': habitacion_data,
         'fecha_actualizacion': instance.fecha_actualizacion.isoformat(),
     }
     
