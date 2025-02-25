@@ -184,7 +184,7 @@ class DispositivosConsumer(AsyncWebsocketConsumer):
     
     async def send_dispositivo_data(self):
         dispositivo = await get_dispositivos()
-        dispositivo_json = await sync_to_async(self.serialize_nivel)(dispositivo)
+        dispositivo_json = await sync_to_async(self.serialize_dispositivo)(dispositivo)
         await self.send(text_data=json.dumps(dispositivo_json))
 
     def serialize_dispositivo(self, dispositivo):
@@ -226,7 +226,7 @@ class RegistrosConsumer(AsyncWebsocketConsumer):
     
     async def send_registros_data(self):
         registro = await get_registros_consumo()
-        registro_json = await sync_to_async(self.serialize_nivel)(registro)
+        registro_json = await sync_to_async(self.serialize_registros)(registro)
         await self.send(text_data=json.dumps(registro_json))
 
     def serialize_registros(self, registro):
@@ -268,7 +268,7 @@ class AlertaConsumer(AsyncWebsocketConsumer):
     
     async def send_alerta_data(self):
         alerta = await get_alertas()
-        alerta_json = await sync_to_async(self.serialize_nivel)(alerta)
+        alerta_json = await sync_to_async(self.serialize_alerta)(alerta)
         await self.send(text_data=json.dumps(alerta_json))
 
     def serialize_alerta(self, alerta):

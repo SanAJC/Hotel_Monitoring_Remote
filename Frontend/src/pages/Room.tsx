@@ -9,11 +9,14 @@ import { F2Chart } from "../components/charts/F-2Chart";
 import { ConsumeMothklyChart } from "../components/charts/ConsumeMonthly";
 import { CardRoomAction } from "../components/dashboard/CardAction";
 import { useParams } from 'react-router-dom';
-import useRooms from '../hooks/useRooms';  
+import useRooms from '../hooks/useRooms';
+import useRoom from "@/hooks/useRoom";  
 
 export default function Room() {
   const { identifier } = useParams<{ identifier: string }>();
   const { rooms } = useRooms();
+  const {dispositivos} = useRoom();
+
   
   // Buscamos la habitación ya sea por id o por número
   const room = rooms.find(room => 
@@ -24,6 +27,9 @@ export default function Room() {
   if (!room) {
     return <div>Cargando...</div>;
   }
+
+  //Filtramos dispositivos antes de enviarl
+  const dispositivo = dispositivos.filter(d => d.habitacion.id === room.id);
 
   const baseURL = "http://localhost:8000";
   const imageUrl = `${baseURL}${room.images}`;
@@ -36,7 +42,7 @@ export default function Room() {
           <Header />
           <h2 id="titulo">Habitación-{room.numero}</h2>
           <div className="info-room-content">
-            <AireChart />
+            <AireChart dispositivos={dispositivo}/>
             <TvChart />
             <F1Chart />
             <img src={imageUrl} alt={`Habitación ${room.numero}`} id="habitacion" />

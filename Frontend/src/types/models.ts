@@ -9,7 +9,7 @@ export type User = {
 
 export type Hotel = {
     id: number;
-    user: User;  // Relación con User
+    user: User; 
     consumo_total: number;
     presupuesto: number;
     consumo_desperdicio_total: number;
@@ -28,10 +28,10 @@ export type Nivel = {
 
 export type Habitacion = {
     id: number;
-    hotel: Hotel;  // Relación con Hotel
+    hotel: Hotel;  
     numero: number;
     consumo: number;
-    nivel: Nivel;  // Relación con Nivel
+    nivel: Nivel; 
     images: string;
     presencia_humana: boolean;
     temperatura: number;
@@ -43,7 +43,7 @@ export type Habitacion = {
 
 export type Dispositivo = {
     id: number;
-    habitacion: number;  
+    habitacion: Habitacion;  
     tipo: 'AIRE' | 'VENTILADOR' | 'TELEVISOR' | 'FOCO_HABITACION' | 'FOCO_BANO';
     consumo_actual: number;
     estado_remoto: 'APAGAR' | 'ENCENDER';

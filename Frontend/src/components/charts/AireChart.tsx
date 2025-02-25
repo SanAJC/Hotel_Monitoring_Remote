@@ -9,7 +9,18 @@ import {
   PolarAngleAxis,
 } from "recharts";
 
-export const AireChart = () => {
+import { Dispositivo } from "@/types/models";
+
+type DispositivoProps = {
+  dispositivos: Dispositivo[];
+}
+
+export const AireChart = ({dispositivos}: DispositivoProps) => {
+
+  const dispositivo = dispositivos.find(
+    (d) => d.tipo === "VENTILADOR" || d.tipo === "AIRE"
+  );
+
   const maxConsumption = 1000; 
   const [currentConsumption] = useState(400); 
 
@@ -20,10 +31,15 @@ export const AireChart = () => {
       fill: "#4A919D", 
     },
   ];
+
+  const baseURL = "http://localhost:8000";
+  const image_on = `${baseURL}${dispositivo?.on_image}`;
+  const image_off = `${baseURL}${dispositivo?.off_image}`;
+
   return (
     <CardChart title="Aire">
       <div className="card-hotel-room">
-        <img src="/src/assets/AirePredido.gif" alt="Consumo Total" id="aire" />
+        <img src={image_on} alt="Consumo Total" id="aire" />
         <RadialBarChart
           data={chartData}
           startAngle={90}

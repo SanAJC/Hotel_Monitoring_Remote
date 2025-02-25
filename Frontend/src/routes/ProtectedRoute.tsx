@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import axiosInstance from "../services/axiosInstance";
-
+import axios from "axios";
 type ProtectedRouteProps = {
   children: React.ReactNode;
 };
@@ -21,7 +20,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
       }
 
       try {
-        const response = await axiosInstance.post('/auth/refresh_token/', {
+        const response = await axios.post('http://127.0.0.1:8000/authentication/auth/refresh_token/', {
           refresh_token: refreshToken,
         });
 
