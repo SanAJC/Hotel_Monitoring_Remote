@@ -33,13 +33,21 @@ export const AireChart = ({dispositivos}: DispositivoProps) => {
   ];
 
   const baseURL = "http://localhost:8000";
-  const image_on = `${baseURL}${dispositivo?.on_image}`;
-  const image_off = `${baseURL}${dispositivo?.off_image}`;
+  let image_dispositivo: string;
+
+  if (dispositivo && dispositivo.estado_remoto === "ENCENDER") {
+    image_dispositivo = `${baseURL}${dispositivo.on_image}`;
+  } else if (dispositivo && dispositivo.estado_remoto === "APAGAR") {
+    image_dispositivo = `${baseURL}${dispositivo.off_image}`;
+  } else {
+    image_dispositivo = "/src/assets/ventilador-off.gif"; 
+  }
+
 
   return (
     <CardChart title="Aire">
       <div className="card-hotel-room">
-        <img src={image_on} alt="Consumo Total" id="aire" />
+        <img src={image_dispositivo} alt="Consumo Total" id="aire" />
         <RadialBarChart
           data={chartData}
           startAngle={90}

@@ -15,7 +15,7 @@ import useRoom from "@/hooks/useRoom";
 export default function Room() {
   const { identifier } = useParams<{ identifier: string }>();
   const { rooms } = useRooms();
-  const {dispositivos} = useRoom();
+  const {dispositivos , sendCommand} = useRoom();
 
   
   // Buscamos la habitación ya sea por id o por número
@@ -43,12 +43,12 @@ export default function Room() {
           <h2 id="titulo">Habitación-{room.numero}</h2>
           <div className="info-room-content">
             <AireChart dispositivos={dispositivo}/>
-            <TvChart />
-            <F1Chart />
+            <TvChart dispositivos={dispositivo} />
+            <F1Chart dispositivos={dispositivo}/>
             <img src={imageUrl} alt={`Habitación ${room.numero}`} id="habitacion" />
             <ConsumeWeeklyChart />
-            <F2Chart  />
-            <CardRoomAction  />
+            <F2Chart dispositivos={dispositivo} />
+            <CardRoomAction dispositivos={dispositivo} sendCommand={sendCommand} />
             <ConsumeMothklyChart  />
           </div>
           <footer>

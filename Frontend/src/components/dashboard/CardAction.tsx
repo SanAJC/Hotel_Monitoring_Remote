@@ -1,54 +1,36 @@
 import "/src/styles/CardAction.css";
+import { Dispositivo } from "@/types/models";
 
-export const CardRoomAction = () => {
+type DispositivoProps = {
+  dispositivos: Dispositivo[];
+  sendCommand: (id: number, estado: "ENCENDER" | "APAGAR") => void;
+};
+export const CardRoomAction = ({dispositivos,sendCommand,}: DispositivoProps) => {
+
+  
+  const handleChangeEstade = (dispositivo:Dispositivo,estado: 'ENCENDER' | 'APAGAR') => {
+    sendCommand(dispositivo.id,estado)
+  };
+
   return (
     <div className="card-room-action">
       <h2>Acciones Rapidas</h2>
       <div className="content-action">
-        <div className="content-action-info">
-          <p>Aire Acondiconado</p>
-          <div className="content-button">
-            <button id="off">
-              <span> Apagar </span>
-            </button>
-            <button id="on">
-              <span> Encender </span>
-            </button>
+        {dispositivos.map((dispositivo) => (
+          <div className="content-action-info" key={dispositivo.id}>
+            <p>{dispositivo.tipo}</p>
+            <div className="content-button">
+              <button id="off" className={dispositivo.estado_remoto === 'APAGAR' ? 'active' : ''}
+                onClick={() => handleChangeEstade(dispositivo, 'APAGAR')}>
+                <span> Apagar </span>
+              </button>
+              <button id="on" className={dispositivo.estado_remoto === 'ENCENDER' ? 'active' : ''}
+                onClick={() => handleChangeEstade(dispositivo, 'ENCENDER')}>
+                <span> Encender </span>
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="content-action-info">
-          <p>Television</p>
-          <div className="content-button">
-            <button id="off">
-              <span> Apagar </span>
-            </button>
-            <button id="on">
-              <span> Encender </span>
-            </button>
-          </div>
-        </div>
-        <div className="content-action-info">
-          <p>Foco-Habitacion</p>
-          <div className="content-button">
-            <button id="off">
-              <span> Apagar </span>
-            </button>
-            <button id="on">
-              <span> Encender </span>
-            </button>
-          </div>
-        </div>
-        <div className="content-action-info">
-          <p>Foco-Baño</p>
-          <div className="content-button">
-            <button id="off">
-              <span> Apagar </span>
-            </button>
-            <button id="on">
-              <span> Enceder </span>
-            </button>
-          </div>
-        </div>
+        ))}
       </div>
 
       <div className="content-data">
@@ -75,7 +57,6 @@ export const CardRoomAction = () => {
               <img src="/src/assets/presencia.gif" alt="" id="icon" />
             </div>
           </div>
-          
         </div>
       </div>
     </div>

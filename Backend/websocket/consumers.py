@@ -9,6 +9,7 @@ from websocket.models import Habitacion ,Hotel ,Dispositivo, Nivel ,RegistroCons
 import json
 from .serializers import *
 from asgiref.sync import sync_to_async
+from channels.db import database_sync_to_async
 
 @sync_to_async
 def get_hoteles():
@@ -192,14 +193,23 @@ class DispositivosConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         data = json.loads(text_data)
+        dispositivo = await self.update_dispositivo(data)
+        dispositivos = [dispositivo]
 
         await self.channel_layer.group_send(
             self.group_name,
             {
                 'type': 'send_update',
-                'data': data,
+                'data': await sync_to_async(self.serialize_dispositivo)(dispositivos),
             }
         )
+    @database_sync_to_async
+    def update_dispositivo(self, data):
+        dispositivo = Dispositivo.objects.get(id=data['dispositivo_id'])
+        dispositivo.estado_remoto = data['action']
+        dispositivo.save()
+        return dispositivo
+    
     async def send_update(self, event):
         data = event['data']
         await self.send(text_data=json.dumps(data))

@@ -8,8 +8,12 @@ import {
   RadialBarChart,
   PolarAngleAxis,
 } from "recharts";
+import { Dispositivo } from "@/types/models";
+type DispositivoProps = {
+  dispositivos: Dispositivo[];
+}
 
-export const TvChart = () => {
+export const TvChart = ({dispositivos}: DispositivoProps) => {
   const maxConsumption = 1000;
   const [currentConsumption] = useState(290);
 
@@ -20,10 +24,26 @@ export const TvChart = () => {
       fill: "#8A6FC2",
     },
   ];
+
+  const dispositivo = dispositivos.find(
+    (d) => d.tipo === "TELEVISOR"
+  );
+
+  const baseURL = "http://localhost:8000";
+  let image_dispositivo: string;
+
+  if (dispositivo && dispositivo.estado_remoto === "ENCENDER") {
+    image_dispositivo = `${baseURL}${dispositivo.on_image}`;
+  } else if (dispositivo && dispositivo.estado_remoto === "APAGAR") {
+    image_dispositivo = `${baseURL}${dispositivo.off_image}`;
+  } else {
+    image_dispositivo = "/src/assets/tv-apagado.gif"; 
+  }
+
   return (
     <CardChart title="Television">
       <div className="card-hotel-room">
-        <img src="/src/assets/tv-encendido.gif" alt="Consumo Total" id="aire" />
+        <img src={image_dispositivo} alt="Consumo Total" id="aire" />
         <RadialBarChart
           data={chartData}
           startAngle={90}

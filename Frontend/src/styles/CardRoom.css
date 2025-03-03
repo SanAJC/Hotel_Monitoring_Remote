@@ -43,6 +43,11 @@
     margin-right: 10px;
 }
 
+.card-content-room  img:hover{
+    transform: scale(1.1); 
+    transition: all 0.3s ease-in-out;
+}
+
 .info-item{
     display: flex;
     flex-direction: row;

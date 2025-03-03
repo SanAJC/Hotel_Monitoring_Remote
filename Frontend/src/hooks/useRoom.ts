@@ -25,6 +25,10 @@ const useRoom = () => {
       socket.onopen = () => console.log("WebSocket dispositivos conectado");
       socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
+        if (!data || !data.forEach) {
+          console.error("El payload recibido no es un array:", data);
+          return;
+  }
         setDispositivos(prev => {
           const deviceMap = new Map(prev.map(d => [d.id, d]));
           data.forEach((d: Dispositivo) => deviceMap.set(d.id, d));
@@ -38,7 +42,6 @@ const useRoom = () => {
       
       dispositivosSocketRef.current = socket;
     };
-
     // Función para conectar a registros_consumo
     const connectRegistros = () => {
       const socket = new WebSocket(
@@ -67,8 +70,21 @@ const useRoom = () => {
       registrosSocketRef.current?.close();
     };
   }, []);
+  const sendCommand = (dispositivoId: number, estado: 'ENCENDER' | 'APAGAR') => {
+    if (dispositivosSocketRef.current?.readyState === WebSocket.OPEN) {
+      const command = {
+        type: 'send_update',
+        dispositivo_id: dispositivoId,
+        action: estado
+      };
+      dispositivosSocketRef.current.send(JSON.stringify(command));
+      console.log("Mensaje enviado con exito")
+    } else {
+      console.error("WebSocket no está conectado");
+    }
+  };
 
-  return { dispositivos, registrosConsumo };
+  return { dispositivos, registrosConsumo, sendCommand };
 };
 
 export default useRoom;

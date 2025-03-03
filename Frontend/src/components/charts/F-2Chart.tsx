@@ -9,7 +9,12 @@ import {
   PolarAngleAxis,
 } from "recharts";
 
-export const F2Chart = () => {
+import { Dispositivo } from "@/types/models";
+type DispositivoProps = {
+  dispositivos: Dispositivo[];
+}
+
+export const F2Chart = ({dispositivos}: DispositivoProps) => {
   const maxConsumption = 1000;
   const [currentConsumption] = useState(90);
 
@@ -20,10 +25,25 @@ export const F2Chart = () => {
       fill: "#C37B08",
     },
   ];
+  const dispositivo = dispositivos.find(
+    (d) => d.tipo === "FOCO_BANO"
+  );
+
+  const baseURL = "http://localhost:8000";
+  let image_dispositivo: string;
+
+  if (dispositivo && dispositivo.estado_remoto === "ENCENDER") {
+    image_dispositivo = `${baseURL}${dispositivo.on_image}`;
+  } else if (dispositivo && dispositivo.estado_remoto === "APAGAR") {
+    image_dispositivo = `${baseURL}${dispositivo.off_image}`;
+  } else {
+    image_dispositivo = "/src/assets/bombilla-off.gif"; 
+  }
+
   return (
     <CardChart title="Foco-Baño">
       <div className="card-hotel-room">
-        <img src="/src/assets/bombilla-off.gif" alt="Consumo Total" id="aire" />
+        <img src={image_dispositivo} alt="Consumo Total" id="aire" />
         <RadialBarChart
           data={chartData}
           startAngle={90}
