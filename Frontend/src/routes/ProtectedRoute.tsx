@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import axios from "axios";
+import { useRefreshToken } from "../hooks/useRefreshToken";
+
 type ProtectedRouteProps = {
   children: React.ReactNode;
 };
 
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { accessToken, refreshToken, setAccessToken } = useAuth();
+  const { accessToken, refreshToken} = useAuth();
+  const refresh = useRefreshToken();
   const [loading, setLoading] = useState(true);
   const [isValid, setIsValid] = useState(false);
   const [hasAttemptedRefresh, setHasAttemptedRefresh] = useState(false); 
@@ -20,24 +22,18 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
       }
 
       try {
-        const response = await axios.post('http://127.0.0.1:8000/authentication/auth/refresh_token/', {
-          refresh_token: refreshToken,
-        });
-
-        const newAccessToken = response.data.access_token;
-        setAccessToken(newAccessToken);
+        await refresh();
         setIsValid(true);
       } catch (error) {
-        console.error('Error verificando token:', error);
         setIsValid(false);
       } finally {
         setLoading(false);
-        setHasAttemptedRefresh(true); 
+        setHasAttemptedRefresh(true);
       }
     };
 
     verifyToken();
-  }, [refreshToken, setAccessToken, hasAttemptedRefresh]); 
+  }, [accessToken,refreshToken, hasAttemptedRefresh, refresh]);
 
   if (loading) {
     return <p>Cargando...</p>;

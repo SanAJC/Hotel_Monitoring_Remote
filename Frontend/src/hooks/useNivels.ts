@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Nivel } from "@/types/models";
 
 const useNivels = () => {
   const [nivel, setNivel] = useState<Nivel[]>([]);
-  const [socket, setSocket] = useState<WebSocket | null>(null);
+  const socketRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
     const accessToken = sessionStorage.getItem("accessToken");
@@ -18,11 +18,11 @@ const useNivels = () => {
         `ws://localhost:8000/ws/niveles/?token=${accessToken}`
       );
 
-      newSocket.onopen = () => console.log("WebSocket conectado");
+      newSocket.onopen = () => console.log("WebSocket niveles conectado");
 
       newSocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        console.log("Datos recibidos:", data);
+        console.log("Datos de niveles recibidos:", data);
 
         setNivel((prevNiveles) => {
           const nivelesMap = new Map(
@@ -31,27 +31,30 @@ const useNivels = () => {
           data.forEach((nivel: Nivel) => {
             nivelesMap.set(nivel.id, nivel);
           });
-          const updatedNiveles = Array.from(nivelesMap.values());
-          return updatedNiveles;
+          return Array.from(nivelesMap.values());
         });
       };
 
       newSocket.onclose = () => {
         console.log(
-          "WebSocket desconectado. Reintentando conexión en 3 segundos..."
+          "WebSocket niveles desconectado. Reintentando conexión en 3 segundos..."
         );
         setTimeout(connectWebSocket, 3000);
       };
 
       newSocket.onerror = (error) =>
-        console.error("Error en el WebSocket:", error);
+        console.error("Error en el WebSocket de niveles:", error);
 
-      setSocket(newSocket);
+      socketRef.current = newSocket;
     };
 
     connectWebSocket();
 
-    return () => socket?.close();
+    // Función de limpieza que cierra el socket cuando el componente se desmonta
+    return () => {
+      console.log("Desmontando componente - cerrando WebSocket de niveles");
+      socketRef.current?.close();
+    };
   }, []);
 
   return { nivel };

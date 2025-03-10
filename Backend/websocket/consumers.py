@@ -1,39 +1,37 @@
-import django
-import os
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Hotel.settings")
-django.setup()
-
 from channels.generic.websocket import AsyncWebsocketConsumer
 from websocket.models import Habitacion ,Hotel ,Dispositivo, Nivel ,RegistroConsumo,Alerta
 import json
 from .serializers import *
-from asgiref.sync import sync_to_async
 from channels.db import database_sync_to_async
 
-@sync_to_async
+@database_sync_to_async
 def get_hoteles():
-    return Hotel.objects.all()
+    return (Hotel.objects.all())
+    
 
-@sync_to_async
+@database_sync_to_async
 def get_niveles():
-    return Nivel.objects.all()
+    return (Nivel.objects.all()) 
 
-@sync_to_async
+
+@database_sync_to_async
 def get_habitaciones():
-    return Habitacion.objects.all()
+    return (Habitacion.objects.all())
+   
 
-@sync_to_async
+@database_sync_to_async
 def get_dispositivos():
-    return Dispositivo.objects.all()
+    return (Dispositivo.objects.all())
+    
 
-@sync_to_async
+@database_sync_to_async
 def get_registros_consumo():
-    return RegistroConsumo.objects.all()
+    return (RegistroConsumo.objects.all())
+    
 
-@sync_to_async
+@database_sync_to_async
 def get_alertas():
-    return Alerta.objects.all()
+    return (Alerta.objects.all())
 
 
 class HabitacionConsumer(AsyncWebsocketConsumer):
@@ -58,7 +56,7 @@ class HabitacionConsumer(AsyncWebsocketConsumer):
     
     async def send_habitaciones_data(self):
         habitaciones = await get_habitaciones()
-        habitaciones_json = await sync_to_async(self.serialize_habitaciones)(habitaciones)
+        habitaciones_json = await database_sync_to_async(self.serialize_habitaciones)(habitaciones)
         await self.send(text_data=json.dumps(habitaciones_json))
 
     def serialize_habitaciones(self, habitaciones):
@@ -101,7 +99,7 @@ class HotelConsumer(AsyncWebsocketConsumer):
     
     async def send_hotel_data(self):
         hotel = await get_hoteles()
-        hotel_json = await sync_to_async(self.serialize_hotel)(hotel)
+        hotel_json = await database_sync_to_async(self.serialize_hotel)(hotel)
         await self.send(text_data=json.dumps(hotel_json))
 
     def serialize_hotel(self, hotel):
@@ -143,7 +141,7 @@ class NivelConsumer(AsyncWebsocketConsumer):
     
     async def send_nivel_data(self):
         nivel = await get_niveles()
-        nivel_json = await sync_to_async(self.serialize_nivel)(nivel)
+        nivel_json = await database_sync_to_async(self.serialize_nivel)(nivel)
         await self.send(text_data=json.dumps(nivel_json))
 
     def serialize_nivel(self, nivel):
@@ -185,7 +183,7 @@ class DispositivosConsumer(AsyncWebsocketConsumer):
     
     async def send_dispositivo_data(self):
         dispositivo = await get_dispositivos()
-        dispositivo_json = await sync_to_async(self.serialize_dispositivo)(dispositivo)
+        dispositivo_json = await database_sync_to_async(self.serialize_dispositivo)(dispositivo)
         await self.send(text_data=json.dumps(dispositivo_json))
 
     def serialize_dispositivo(self, dispositivo):
@@ -200,7 +198,7 @@ class DispositivosConsumer(AsyncWebsocketConsumer):
             self.group_name,
             {
                 'type': 'send_update',
-                'data': await sync_to_async(self.serialize_dispositivo)(dispositivos),
+                'data': await database_sync_to_async(self.serialize_dispositivo)(dispositivos),
             }
         )
     @database_sync_to_async
@@ -236,7 +234,7 @@ class RegistrosConsumer(AsyncWebsocketConsumer):
     
     async def send_registros_data(self):
         registro = await get_registros_consumo()
-        registro_json = await sync_to_async(self.serialize_registros)(registro)
+        registro_json = await database_sync_to_async(self.serialize_registros)(registro)
         await self.send(text_data=json.dumps(registro_json))
 
     def serialize_registros(self, registro):
@@ -278,7 +276,7 @@ class AlertaConsumer(AsyncWebsocketConsumer):
     
     async def send_alerta_data(self):
         alerta = await get_alertas()
-        alerta_json = await sync_to_async(self.serialize_alerta)(alerta)
+        alerta_json = await database_sync_to_async(self.serialize_alerta)(alerta)
         await self.send(text_data=json.dumps(alerta_json))
 
     def serialize_alerta(self, alerta):

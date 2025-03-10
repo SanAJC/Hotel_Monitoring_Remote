@@ -51,6 +51,7 @@ export default function TableRooms() {
         "&::-webkit-scrollbar-track": {
           backgroundColor: "hsl(222, 34%, 21%)",
         },
+        borderRadius: "10px",
       }}
     >
       <Table sx={{

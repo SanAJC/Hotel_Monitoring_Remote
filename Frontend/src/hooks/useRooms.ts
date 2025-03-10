@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Habitacion } from "@/types/models";
-
 const useRooms = () => {
   const [rooms, setRooms] = useState<Habitacion[]>([]);
-  const [socket, setSocket] = useState<WebSocket | null>(null);
+  const socketRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
     const accessToken = sessionStorage.getItem("accessToken");
@@ -14,49 +13,47 @@ const useRooms = () => {
     }
 
     const connectWebSocket = () => {
-
       const newSocket = new WebSocket(
         `ws://localhost:8000/ws/habitaciones/?token=${accessToken}`
       );
 
-      newSocket.onopen = () => console.log("WebSocket conectado");
+      newSocket.onopen = () => console.log("WebSocket habitaciones conectado");
 
       newSocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        console.log("Datos recibidos:", data);
+        console.log("Datos de habitaciones recibidos:", data);
       
         setRooms((prevRooms) => {
-          
           const roomsMap = new Map(prevRooms.map((room) => [room.id, room]));
-      
           
-          data.forEach((habitacion:Habitacion) => {
+          data.forEach((habitacion: Habitacion) => {
             roomsMap.set(habitacion.id, habitacion);
           });
-      
           
-          const updatedRooms = Array.from(roomsMap.values());
-          return updatedRooms;
+          return Array.from(roomsMap.values());
         });
       };
 
       newSocket.onclose = () => {
-        console.log("WebSocket desconectado. Reintentando conexión en 3 segundos...");
+        console.log("WebSocket habitaciones desconectado. Reintentando conexión en 3 segundos...");
         setTimeout(connectWebSocket, 3000); 
       };
 
-      newSocket.onerror = (error) => console.error("Error en el WebSocket:", error);
+      newSocket.onerror = (error) => console.error("Error en el WebSocket de habitaciones:", error);
 
-      setSocket(newSocket);
+      socketRef.current = newSocket;
     };
 
     connectWebSocket();
 
-    return () => socket?.close();
+    // Función de limpieza que cierra el socket cuando el componente se desmonta
+    return () => {
+      console.log("Desmontando componente - cerrando WebSocket de habitaciones");
+      socketRef.current?.close();
+    };
   }, []);
 
   return { rooms };
 };
-
 
 export default useRooms;
