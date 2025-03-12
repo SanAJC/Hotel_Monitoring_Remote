@@ -10,8 +10,8 @@ import {
 } from "recharts";
 
 export default function PresupuestoConsume() {
-  const maxBudget = 1000; 
-  const [Budget] = useState(100); 
+  const maxBudget = 7000000; 
+  const [Budget] = useState(1000000); 
 
   const chartData = [
     {
@@ -67,7 +67,7 @@ export default function PresupuestoConsume() {
                       <tspan
                         x={viewBox.cx}
                         y={viewBox.cy}
-                        className="fill-foreground text-4xl font-bold"
+                        className="fill-foreground text-2xl font-bold"
                       >
                         {Budget.toLocaleString()}
                       </tspan>

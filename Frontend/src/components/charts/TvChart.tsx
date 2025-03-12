@@ -40,8 +40,15 @@ export const TvChart = ({dispositivos}: DispositivoProps) => {
     image_dispositivo = "/src/assets/tv-apagado.gif"; 
   }
 
+  let title :string;
+  if(dispositivo && dispositivo.tipo === "TELEVISOR"){
+    title = "Televisor";
+  }else{
+    title= "Dispositivo";
+  }
+
   return (
-    <CardChart title="Television">
+    <CardChart title={title}>
       <div className="card-hotel-room">
         <img src={image_dispositivo} alt="Consumo Total" id="aire" />
         <RadialBarChart

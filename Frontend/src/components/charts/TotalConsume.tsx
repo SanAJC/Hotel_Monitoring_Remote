@@ -75,7 +75,7 @@ export default function TotalConsume() {
                       <tspan
                         x={viewBox.cx}
                         y={viewBox.cy}
-                        className="fill-foreground text-4xl font-bold"
+                        className="fill-foreground text-2xl font-bold"
                       >
                         {currentConsumption.toLocaleString()}
                       </tspan>

@@ -67,7 +67,7 @@ class Dispositivo(models.Model):
         ('VENTILADOR', 'Ventilador'),
         ('TELEVISOR', 'Televisor'),
         ('FOCO_HABITACION', 'Foco Habitación'),
-        ('FOCO_BANO', 'Foco Baño'),
+        ('FOCO_BAÑO', 'Foco Baño'),
     ]
     ESTADO_APAGADO_REMOTO = [
         ('APAGAR', 'Apagar'),

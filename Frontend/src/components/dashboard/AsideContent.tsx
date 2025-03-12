@@ -35,7 +35,9 @@ export const AsideContent = () => {
       </nav>
       <div className="icons-user">
         <button>
-          <img src="/src/assets/user.png" alt="user" id="img-user" />
+          <Link to="http://localhost:8000/admin/">
+            <img src="/src/assets/user.png" alt="user" id="img-user" />
+          </Link>
         </button>
 
         <button onClick={handleClick}>

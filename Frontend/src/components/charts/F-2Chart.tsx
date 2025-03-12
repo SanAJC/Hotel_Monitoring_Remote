@@ -26,7 +26,7 @@ export const F2Chart = ({dispositivos}: DispositivoProps) => {
     },
   ];
   const dispositivo = dispositivos.find(
-    (d) => d.tipo === "FOCO_BANO"
+    (d) => d.tipo === "FOCO_BAÑO"
   );
 
   const baseURL = "http://localhost:8000";
@@ -40,8 +40,15 @@ export const F2Chart = ({dispositivos}: DispositivoProps) => {
     image_dispositivo = "/src/assets/bombilla-off.gif"; 
   }
 
+  let title :string;
+  if(dispositivo && dispositivo.tipo === "FOCO_BAÑO"){
+    title = "Foco-Baño";
+  }else{
+    title= "Dispositivo";
+  }
+
   return (
-    <CardChart title="Foco-Baño">
+    <CardChart title={title}>
       <div className="card-hotel-room">
         <img src={image_dispositivo} alt="Consumo Total" id="aire" />
         <RadialBarChart

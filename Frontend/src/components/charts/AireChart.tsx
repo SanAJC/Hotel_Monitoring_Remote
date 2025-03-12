@@ -43,9 +43,18 @@ export const AireChart = ({dispositivos}: DispositivoProps) => {
     image_dispositivo = "/src/assets/ventilador-off.gif"; 
   }
 
+  let title :string;
+  if(dispositivo && dispositivo.tipo === "VENTILADOR"){
+    title = "Ventilador";
+  }else if( dispositivo && dispositivo.tipo === "AIRE"){
+    title = "Aire";
+  }else{
+    title= "Dispositivo";
+  }
+
 
   return (
-    <CardChart title="Aire">
+    <CardChart title={title}>
       <div className="card-hotel-room">
         <img src={image_dispositivo} alt="Consumo Total" id="aire" />
         <RadialBarChart

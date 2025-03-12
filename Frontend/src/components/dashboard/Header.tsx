@@ -86,7 +86,7 @@ export default function Header() {
 
       <div className="user-info">
         <p>{user?.rol}</p>
-        <Link to="/">
+        <Link to="http://localhost:8000/admin/">
           <img src={userImage} alt="user" id="img-user" />
         </Link>
       </div>

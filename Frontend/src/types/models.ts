@@ -44,7 +44,7 @@ export type Habitacion = {
 export type Dispositivo = {
     id: number;
     habitacion: Habitacion;  
-    tipo: 'AIRE' | 'VENTILADOR' | 'TELEVISOR' | 'FOCO_HABITACION' | 'FOCO_BANO';
+    tipo: 'AIRE' | 'VENTILADOR' | 'TELEVISOR' | 'FOCO_HABITACION' | 'FOCO_BAÑO';
     consumo_actual: number;
     estado_remoto: 'APAGAR' | 'ENCENDER';
     on_image: string;

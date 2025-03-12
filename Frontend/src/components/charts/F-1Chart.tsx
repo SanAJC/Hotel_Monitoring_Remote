@@ -40,8 +40,16 @@ export const F1Chart = ({dispositivos}: DispositivoProps) => {
   } else {
     image_dispositivo = "/src/assets/bombilla-off.gif"; 
   }
+
+  
+  let title :string;
+  if(dispositivo && dispositivo.tipo === "FOCO_HABITACION"){
+    title = "Foco-Habitacion";
+  }else{
+    title= "Dispositivo";
+  }
   return (
-    <CardChart title="Foco-Habitacion">
+    <CardChart title={title}>
       <div className="card-hotel-room">
         <img src={image_dispositivo} alt="Consumo Total" id="aire" />
         <RadialBarChart
