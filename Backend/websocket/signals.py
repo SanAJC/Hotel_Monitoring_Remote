@@ -78,6 +78,7 @@ def send_dispositivo_update(sender, instance, created, **kwargs):
         'id': instance.id,
         'tipo': instance.tipo,
         'consumo_actual': instance.consumo_actual,
+        'consumo_acumulado' : instance.consumo_acumulado,
         'estado_remoto': instance.estado_remoto,
         'on_image': instance.on_image.url if instance.on_image else None,
         'off_image': instance.off_image.url if instance.off_image else None,

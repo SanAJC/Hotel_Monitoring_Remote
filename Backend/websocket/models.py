@@ -77,6 +77,7 @@ class Dispositivo(models.Model):
     habitacion = models.ForeignKey(Habitacion, on_delete=models.CASCADE, related_name="dispositivos")
     tipo = models.CharField(max_length=50, choices=TIPOS_DISPOSITIVO)
     consumo_actual = models.FloatField(default=0.0)
+    consumo_acumulado = models.FloatField(default=0.0)
     estado_remoto = models.CharField(max_length=10, choices=ESTADO_APAGADO_REMOTO, default='ENCENDER')
     on_image=models.ImageField(upload_to='photos/',default='photos/on_aire.gif')
     off_image=models.ImageField(upload_to='photos/',default='photos/off_aire.gif')

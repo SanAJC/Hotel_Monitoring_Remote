@@ -6,4 +6,6 @@ class WebsocketConfig(AppConfig):
     name = 'websocket'
 
     def ready(self):
+        from .mqtt_client import setup_mqtt_client
+        setup_mqtt_client()
         import websocket.signals 
