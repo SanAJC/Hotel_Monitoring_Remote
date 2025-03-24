@@ -11,6 +11,34 @@
     align-items: center; 
 }
 
+.tooltip {
+    position: relative; 
+    display: inline-block; 
+}
+
+.tooltip-text {
+    visibility: hidden;      
+    opacity: 0;             
+    width: max-content;     
+    background-color: #333; 
+    color: #fff;            
+    text-align: center;
+    padding: 4px 8px;       
+    border-radius: 4px;
+    position: absolute;
+    left: 110%;             
+    top: 50%;               
+    transform: translateY(-50%);
+    white-space: nowrap;    
+    transition: opacity 0.3s ease; 
+    z-index: 1;             
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
 .aside-content img{
     width: 30px;
     height: 30px;

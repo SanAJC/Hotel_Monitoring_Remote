@@ -24,11 +24,11 @@ def on_message(client, userdata, msg):
     except Exception as e:
         print(f"Error al procesar mensaje: {e}")
 
-def try_connect(client, broker, port=1883, timeout=10):
+def try_connect(client, broker, port=8883, timeout=10):
     try:
         print(f"Intentando conexión a {broker}...")
         client.connect(broker, port, timeout)
-        print(f"Conexión exitosa a {broker}")
+        print(f"Conexión exitosa a {broker} por el puerto {port}")
         return True
     except Exception as e:
         print(f"Error al conectar a {broker}: {e}")
@@ -65,6 +65,7 @@ def setup_mqtt_client():
     # Crear un nuevo cliente
     client = mqtt.Client()
     client.username_pw_set("hotel_kamila", "hotel-admin-1")
+    client.tls_set(ca_certs=settings.ROOT_CA_PATH)
     client.on_connect = on_connect
     client.on_message = on_message
     client.on_disconnect = on_disconnect

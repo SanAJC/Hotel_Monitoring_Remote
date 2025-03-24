@@ -1,46 +1,45 @@
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { useState } from 'react';
-import axios from 'axios';
+import { useState } from "react";
+import axios from "axios";
 
 export const useLogout = () => {
-    const {logout}=useAuth();
-    const [error,setError] = useState<string|null>(null);
-    const navigate = useNavigate();
+  const { logout } = useAuth();
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-    const handleLogout = async () => {
-        setError(null);
-      
-        try {
-            console.log("Attempting logout...");
-            const refreshToken = sessionStorage.getItem("refreshToken");
-            if (!refreshToken) {
-                console.error("No refresh token available");
-                return;
-            }
-    
-            const response = await axios.post(
-                "http://127.0.0.1:8000/authentication/auth/logout/",
-                { refresh_token: refreshToken },
-                {
-                    headers: {
-                        Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-                    },
-                }
-            );
+  const handleLogout = async () => {
+    setError(null);
 
-            console.log("Logout successful:", response.data);
-    
-            logout();
-            navigate("/login");
-        } catch (err) {
-            console.error("Logout error:", err);
+    try {
+      console.log("Attempting logout...");
+      const refreshToken = sessionStorage.getItem("refreshToken");
+      if (!refreshToken) {
+        console.error("No refresh token available");
+        return;
+      }
+
+      const response = await axios.post(
+        "http://127.0.0.1:8000/authentication/auth/logout/",
+        { refresh_token: refreshToken },
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+          },
         }
-      };
-      
+      );
 
-    return {
-        handleLogout,
-        error
+      console.log("Logout successful:", response.data);
+
+      logout();
+      navigate("/login");
+    } catch (err) {
+      console.error("Logout error:", err);
     }
-}
+  };
+
+  return {
+    handleLogout,
+    error,
+  };
+};

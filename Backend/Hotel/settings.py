@@ -22,6 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-td8#$69xas$#_xx(d60vqi-$u6$4u0i8f&-6%2^-*wae+m0gt)'
 
+ROOT_CA_PATH = os.path.join(BASE_DIR, 'certs', 'mqtt_root_ca.pem')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
