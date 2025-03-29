@@ -1,5 +1,6 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
+#include <WiFiClientSecure.h>
 
 // Configuración de WiFi
 const char* ssid = "TIGO007998";
@@ -7,7 +8,7 @@ const char* password = "B3VX61UM";
 
 // Configuración de MQTT
 const char* mqtt_server = "192.168.1.7";
-const int mqtt_port = 1883;
+const int mqtt_port = 8883;
 const char* mqtt_username = "hotel_kamila";
 const char* mqtt_password = "hotel-admin-1";
 const char* topic = "hotel/room/301";
@@ -15,8 +16,36 @@ const char* relay_topic = "hotel/room/301/relay";
 
 const char* device_id = "sensor_ventilador_301";
 
+static const char *root_ca PROGMEM = R"EOF(
+-----BEGIN CERTIFICATE-----
+MIIEPjCCAyagAwIBAgIUZ1O9Md9ZXGRLQwONs69EzAUcuGQwDQYJKoZIhvcNAQEL
+BQAwZDELMAkGA1UEBhMCQ08xEjAQBgNVBAgMCU1hZ2RhbGVuYTEUMBIGA1UEBwwL
+U2FudGEgTWFydGExFTATBgNVBAoMDEhvdGVsIEthbWlsYTEUMBIGA1UEAwwLMTky
+LjE2OC4xLjcwHhcNMjUwMzE3MDUwNTM0WhcNMzUwMzE1MDUwNTM0WjBkMQswCQYD
+VQQGEwJDTzESMBAGA1UECAwJTWFnZGFsZW5hMRQwEgYDVQQHDAtTYW50YSBNYXJ0
+YTEVMBMGA1UECgwMSG90ZWwgS2FtaWxhMRQwEgYDVQQDDAsxOTIuMTY4LjEuNzCC
+ASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAIJPl8wwO6HH/E7qzCc7Ufsj
+tRv3dbX1T1wYc+nTa5nBGp0bcGyS6rQiArJpUvGAwUlQbUV005GAc0evwtiLeFzX
+r4TNVq2L2/+g6DSMlEJDf7B415vbk4QTEHofh/5B8bacgQwgCQ9vbtoQWGrKBHVo
+lWUgdCvU4rcKvp5ej4mT55VUvDvWvylD8XOIuka2dSL6YXS938bLHEVBDS6vZ0WX
+Hrd2T2B9t84ooQUihIdrnb/dxrbOF/44VTacxQ4YBB/aiIgR6oELE9X9qxHr1Avk
+VJNsoelhKc2yH1ZygxCPu69APecNwV70Ws6WJAlDaFbrCzPgv3evk/N5n1jCNR8C
+AwEAAaOB5zCB5DAdBgNVHQ4EFgQUIb1fdyCWCLVilA+H9US22zKcmhgwgaEGA1Ud
+IwSBmTCBloAUIb1fdyCWCLVilA+H9US22zKcmhihaKRmMGQxCzAJBgNVBAYTAkNP
+MRIwEAYDVQQIDAlNYWdkYWxlbmExFDASBgNVBAcMC1NhbnRhIE1hcnRhMRUwEwYD
+VQQKDAxIb3RlbCBLYW1pbGExFDASBgNVBAMMCzE5Mi4xNjguMS43ghRnU70x31lc
+ZEtDA42zr0TMBRy4ZDAPBgNVHRMBAf8EBTADAQH/MA4GA1UdDwEB/wQEAwIBhjAN
+BgkqhkiG9w0BAQsFAAOCAQEAYoiJTlHI50mhctxguzxnKfPuQn1pWmuexi7IcK6v
+7vTAW2WSUZC61fplz5zGMq62sAfZTtKS75DqVJ8idaZHakNZ1cv9qm+IMmQbR4eV
+3CT7cSBSZgpf8cc9CaTwjRVr1fE0siwr3KqKxFaEzLcfhBon9CwLFtBz2Rv+msB9
+5eovDTjlkT8Z6hi/mEktEug4O4JO3MmG8lqpONzWHOiti2CN+Qckmrn0nMBDSf0A
+gycyWjwEplhDAGtELQyuNjRuHrI7IYCzspVBkRDKgT08QnQGaF5qSK+ZR/I2BRPX
+9ibL8h47QuQChUVy6weusbKvh2RuhQvWKjFw2uorERoJbg==
+-----END CERTIFICATE-----
+)EOF";
+
 // Cliente WiFi y MQTT
-WiFiClient espClient;
+WiFiClientSecure espClient; 
 PubSubClient client(espClient);
 
 // Variables de simulación
@@ -88,6 +117,7 @@ void setup() {
   Serial.begin(115200);
   randomSeed(esp_random()); 
   setup_wifi();
+  espClient.setCACert(root_ca); 
   client.setServer(mqtt_server, mqtt_port);
   client.setCallback(callback);
 }

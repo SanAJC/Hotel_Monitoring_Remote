@@ -5,32 +5,18 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import useRooms from "@/hooks/useRooms";
 
 export default function TableRooms() {
-  function createData(habitacion: number, consumo: number, presencia: boolean) {
-    return { habitacion, consumo, presencia };
-  }
 
-  const rows = [
-    createData(101, 0.0, false),
-    createData(102, 15.5, true),
-    createData(103, 9.3, true),
-    createData(104, 20.8, false),
-    createData(105, 7.2, true),
-    createData(106, 0.0, false),
-    createData(201, 0.0, false),
-    createData(202, 15.5, true),
-    createData(203, 9.3, true),
-    createData(204, 20.8, false),
-    createData(205, 7.2, true),
-    createData(206, 0.0, false),
-    createData(301, 0.0, false),
-    createData(302, 15.5, true),
-    createData(303, 9.3, true),
-    createData(304, 20.8, false),
-    createData(305, 7.2, true),
-    createData(306, 0.0, false),
-  ];
+  const { rooms } = useRooms();
+
+  const rows = rooms.map((room) => ({
+    habitacion: room.numero,
+    consumo: room.consumo,
+    presencia: room.presencia_humana,
+  }));
+
   return (
     <TableContainer
       component={Paper}

@@ -1,6 +1,6 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
-#include <ld2410.h>
+#include <WiFiClientSecure.h>
 
 // Configuración de WiFi
 const char* ssid = "TIGO007998";
@@ -8,18 +8,44 @@ const char* password = "B3VX61UM";
 
 // Configuración MQTT (ajusta según tu broker)
 const char* mqtt_server = "192.168.1.7";
-const int mqtt_port = 1883;
+const int mqtt_port = 8883;
 const char* mqtt_username = "hotel_kamila";
 const char* mqtt_password = "hotel-admin-1";
-const char* topic = "hotel/room/301"; 
+const char* topic = "hotel/room/301";
+const char* device_id = "sensor_presencia_301";
 
-// Configuración del sensor LD2410C
-#define RX_PIN 16  // Conectar TX del sensor aquí
-#define TX_PIN 17  // Conectar RX del sensor aquí
-ld2410 radar;
-HardwareSerial radarSerial(2);  // Usamos UART2 del ESP32
+static const char *root_ca PROGMEM = R"EOF(
+-----BEGIN CERTIFICATE-----
+MIIEPjCCAyagAwIBAgIUZ1O9Md9ZXGRLQwONs69EzAUcuGQwDQYJKoZIhvcNAQEL
+BQAwZDELMAkGA1UEBhMCQ08xEjAQBgNVBAgMCU1hZ2RhbGVuYTEUMBIGA1UEBwwL
+U2FudGEgTWFydGExFTATBgNVBAoMDEhvdGVsIEthbWlsYTEUMBIGA1UEAwwLMTky
+LjE2OC4xLjcwHhcNMjUwMzE3MDUwNTM0WhcNMzUwMzE1MDUwNTM0WjBkMQswCQYD
+VQQGEwJDTzESMBAGA1UECAwJTWFnZGFsZW5hMRQwEgYDVQQHDAtTYW50YSBNYXJ0
+YTEVMBMGA1UECgwMSG90ZWwgS2FtaWxhMRQwEgYDVQQDDAsxOTIuMTY4LjEuNzCC
+ASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAIJPl8wwO6HH/E7qzCc7Ufsj
+tRv3dbX1T1wYc+nTa5nBGp0bcGyS6rQiArJpUvGAwUlQbUV005GAc0evwtiLeFzX
+r4TNVq2L2/+g6DSMlEJDf7B415vbk4QTEHofh/5B8bacgQwgCQ9vbtoQWGrKBHVo
+lWUgdCvU4rcKvp5ej4mT55VUvDvWvylD8XOIuka2dSL6YXS938bLHEVBDS6vZ0WX
+Hrd2T2B9t84ooQUihIdrnb/dxrbOF/44VTacxQ4YBB/aiIgR6oELE9X9qxHr1Avk
+VJNsoelhKc2yH1ZygxCPu69APecNwV70Ws6WJAlDaFbrCzPgv3evk/N5n1jCNR8C
+AwEAAaOB5zCB5DAdBgNVHQ4EFgQUIb1fdyCWCLVilA+H9US22zKcmhgwgaEGA1Ud
+IwSBmTCBloAUIb1fdyCWCLVilA+H9US22zKcmhihaKRmMGQxCzAJBgNVBAYTAkNP
+MRIwEAYDVQQIDAlNYWdkYWxlbmExFDASBgNVBAcMC1NhbnRhIE1hcnRhMRUwEwYD
+VQQKDAxIb3RlbCBLYW1pbGExFDASBgNVBAMMCzE5Mi4xNjguMS43ghRnU70x31lc
+ZEtDA42zr0TMBRy4ZDAPBgNVHRMBAf8EBTADAQH/MA4GA1UdDwEB/wQEAwIBhjAN
+BgkqhkiG9w0BAQsFAAOCAQEAYoiJTlHI50mhctxguzxnKfPuQn1pWmuexi7IcK6v
+7vTAW2WSUZC61fplz5zGMq62sAfZTtKS75DqVJ8idaZHakNZ1cv9qm+IMmQbR4eV
+3CT7cSBSZgpf8cc9CaTwjRVr1fE0siwr3KqKxFaEzLcfhBon9CwLFtBz2Rv+msB9
+5eovDTjlkT8Z6hi/mEktEug4O4JO3MmG8lqpONzWHOiti2CN+Qckmrn0nMBDSf0A
+gycyWjwEplhDAGtELQyuNjRuHrI7IYCzspVBkRDKgT08QnQGaF5qSK+ZR/I2BRPX
+9ibL8h47QuQChUVy6weusbKvh2RuhQvWKjFw2uorERoJbg==
+-----END CERTIFICATE-----
+)EOF";
 
-WiFiClient espClient;
+// Configuración del pin OUT
+#define OUT_PIN 18  // Conectar OUT del sensor aquí
+// Cliente WiFi y MQTT
+WiFiClientSecure espClient; 
 PubSubClient client(espClient);
 
 void setup_wifi() {
@@ -64,15 +90,11 @@ void reconnect() {
 
 void setup() {
   Serial.begin(115200);
-  radarSerial.begin(256000, SERIAL_8N1, RX_PIN, TX_PIN); // Baud rate del LD2410C
-  
-  if (!radar.begin(radarSerial)) {
-    Serial.println("¡Error al iniciar el sensor LD2410C!");
-    while (1);
-  }
+  pinMode(OUT_PIN, INPUT);
   Serial.println("Sensor LD2410C iniciado");
 
   setup_wifi();
+  espClient.setCACert(root_ca);
   client.setServer(mqtt_server, mqtt_port);
 }
 
@@ -86,12 +108,9 @@ void loop() {
   if (millis() - lastMsg > 2000) {  // Envía datos cada 2 segundos
     lastMsg = millis();
     
-    radar.read();
-    String payload = String("{") +
-      "\"presencia\":" + String(radar.presenceDetected() ? "true" : "false") + "," +
-      "\"movimiento\":" + String(radar.movingTargetDetected() ? "true" : "false") + "," +
-      "\"distancia\":" + String(radar.stationaryTargetDistance()) +
-      "}";
+    bool presencia = digitalRead(OUT_PIN); // Lee el pin OUT
+    
+    String payload = String("{\"device_id\":\"") + String(device_id) + String("\", \"presencia\":") + (presencia ? "true" : "false") + String("}");
 
     Serial.print("Publicando: ");
     Serial.println(payload);
