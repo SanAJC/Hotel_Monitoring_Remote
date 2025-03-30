@@ -13,9 +13,9 @@ const char* mqtt_server = "192.168.1.7";
 const int mqtt_port = 8883;  
 const char* mqtt_username = "hotel_kamila";
 const char* mqtt_password = "hotel-admin-1";
-const char* topic = "hotel/room/301";
-
-const char* device_id = "sensor_dth22_301";
+const char* topic = "hotel/rooms";
+const char* room_id = "301";
+const char* device_id = "dht22";
 
 // Certificado raíz (root CA) necesario para la conexión segura
 static const char *root_ca PROGMEM = R"EOF(
@@ -137,7 +137,8 @@ void loop() {
     }
 
     // Crear el mensaje JSON
-    String payload = "{ \"device_id\":\"" + String(device_id) + "\",\"temperatura\": " + String(t, 1) + ", \"humedad\": " + String(h, 1) + "}";
+    String payload = "{\"room_id\":\"" + String(room_id) + "\", \"device_id\":\"" + String(device_id) + "\", \"temperatura\": " + String(t, 1) + ", \"humedad\": " + String(h, 1) + "}";
+
 
     // Publicar en MQTT
     Serial.print("Publicando: ");

@@ -11,8 +11,9 @@ const char* mqtt_server = "192.168.1.7";
 const int mqtt_port = 8883;
 const char* mqtt_username = "hotel_kamila";
 const char* mqtt_password = "hotel-admin-1";
-const char* topic = "hotel/room/301";
-const char* device_id = "sensor_presencia_301";
+const char* topic = "hotel/rooms";
+const char* room_id = "301";
+const char* device_id = "ld2410c";
 
 static const char *root_ca PROGMEM = R"EOF(
 -----BEGIN CERTIFICATE-----
@@ -110,7 +111,11 @@ void loop() {
     
     bool presencia = digitalRead(OUT_PIN); // Lee el pin OUT
     
-    String payload = String("{\"device_id\":\"") + String(device_id) + String("\", \"presencia\":") + (presencia ? "true" : "false") + String("}");
+    String payload = String("{\"room_id\":\"") + String(room_id) + 
+    String("\", \"device_id\":\"") + String(device_id) + 
+    String("\", \"presencia\":") + (presencia ? "true" : "false") + 
+    String("}");
+
 
     Serial.print("Publicando: ");
     Serial.println(payload);

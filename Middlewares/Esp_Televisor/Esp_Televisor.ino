@@ -11,11 +11,12 @@ const char* mqtt_server = "192.168.1.7";
 const int mqtt_port = 8883;
 const char* mqtt_username = "hotel_kamila";
 const char* mqtt_password = "hotel-admin-1";
-const char* topic = "hotel/room/301";
-const char* relay_topic = "hotel/room/301/relay";
+const char* topic = "hotel/rooms";
+const char* room_id = "301";
+const char* device_id = "television";
+const char* relay_topic = "hotel/room/301/relay/television";
 
-// Identificador del sensor (Televisor)
-const char* device_id = "sensor_televisor_301";
+
 static const char *root_ca PROGMEM = R"EOF(
 -----BEGIN CERTIFICATE-----
 MIIEPjCCAyagAwIBAgIUZ1O9Md9ZXGRLQwONs69EzAUcuGQwDQYJKoZIhvcNAQEL
@@ -116,7 +117,7 @@ void reconnect() {
 
 void setup() {
   Serial.begin(115200);
-  randomSeed(esp_random()); // Semilla para la variación aleatoria
+  randomSeed(esp_random()); 
   setup_wifi();
   espClient.setCACert(root_ca); 
   client.setServer(mqtt_server, mqtt_port);
@@ -138,8 +139,7 @@ void loop() {
     float potenciaActual = 0.0;
     float consumoIntervalo = 0.0;
     
-    if (relayOn) {
-      // Simula una variación aleatoria en torno a 150 W (entre 140 W y 160 W)
+    if (relayOn) { 
       potenciaActual = random(1400, 1601) / 10.0;
       // Energía consumida en el intervalo (Wh) = potencia (W) * (2 seg / 3600 seg)
       consumoIntervalo = potenciaActual * (intervaloMs / 1000.0) / 3600.0;
@@ -148,11 +148,12 @@ void loop() {
       potenciaActual = 0.0;
     }
     
-    // Construir el mensaje JSON (sin enviar consumoIntervalo)
-    String payload = "{\"device_id\":\"" + String(device_id) + "\", ";
-    payload += "\"estado_rele\":\"" + String(relayOn ? "ON" : "OFF") + "\", ";
-    payload += "\"potencia_actual\":" + String(potenciaActual, 1) + ", ";
-    payload += "\"consumo_acumulado\":" + String(acumulado, 3) + "}";
+    String payload = String("{\"room_id\":\"") + String(room_id) +
+    String("\", \"device_id\":\"") + String(device_id) +
+    String("\", \"estado_rele\":\"") + String(relayOn ? "ON" : "OFF") +
+    String("\", \"potencia_actual\":") + String(potenciaActual, 1) +
+    String(", \"consumo_acumulado\":") + String(acumulado, 3) +
+    String("}");
     
     Serial.print("Publicando: ");
     Serial.println(payload);

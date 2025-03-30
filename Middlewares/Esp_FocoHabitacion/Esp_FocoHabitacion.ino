@@ -11,11 +11,12 @@ const char* mqtt_server = "192.168.1.7";
 const int mqtt_port = 8883;
 const char* mqtt_username = "hotel_kamila";
 const char* mqtt_password = "hotel-admin-1";
-const char* topic = "hotel/room/301";
-const char* relay_topic = "hotel/room/301/relay";
+const char* topic = "hotel/rooms";
+const char* room_id = "301";
+const char* device_id = "foco_habitacion";
 
-// Identificador del sensor (Foco de Habitación)
-const char* device_id = "sensor_foco_habitacion_301";
+const char* relay_topic = "hotel/room/301/relay/foco_habitacion";
+
 
 static const char *root_ca PROGMEM = R"EOF(
 -----BEGIN CERTIFICATE-----
@@ -146,10 +147,13 @@ void loop() {
       potenciaActual = 0.0;
     }
     
-    String payload = "{\"device_id\":\"" + String(device_id) + "\", ";
-    payload += "\"estado_rele\":\"" + String(relayOn ? "ON" : "OFF") + "\", ";
-    payload += "\"potencia_actual\":" + String(potenciaActual, 1) + ", ";
-    payload += "\"consumo_acumulado\":" + String(acumulado, 3) + "}";
+    String payload = String("{\"room_id\":\"") + String(room_id) +
+    String("\", \"device_id\":\"") + String(device_id) +
+    String("\", \"estado_rele\":\"") + String(relayOn ? "ON" : "OFF") +
+    String("\", \"potencia_actual\":") + String(potenciaActual, 1) +
+    String(", \"consumo_acumulado\":") + String(acumulado, 3) +
+    String("}");
+
     
     Serial.print("Publicando: ");
     Serial.println(payload);

@@ -3,14 +3,19 @@ import json
 from django.conf import settings
 import time
 import threading
+from .models import Habitacion, Dispositivo, RegistroConsumo, Alerta
+from datetime import datetime, timedelta
 
 mqtt_client = None
 reconnect_thread = None
 reconnect_interval = 10  
 
+ultima_alerta = {}  
+INTERVALO_ALERTA = timedelta(minutes=5) 
+
 def on_connect(client, userdata, flags, rc):
     print(f"Conectado con resultado: {rc}")
-    client.subscribe("hotel/room/+")
+    client.subscribe("hotel/rooms")
 
 def on_disconnect(client, userdata, rc):
     print(f"Desconectado con código: {rc}")
@@ -21,8 +26,88 @@ def on_message(client, userdata, msg):
     try:
         payload = json.loads(msg.payload.decode())
         print(f"Mensaje recibido en {msg.topic}: {msg.payload.decode()}")
+
+        room_id = payload.get("room_id")
+        device_id = payload.get("device_id")
+        if not room_id and not device_id:
+            print("El mensaje no contiene un 'room_id' ni un 'device_id'.")
+            return
+        # Obtener la habitación
+        try:
+            habitacion = Habitacion.objects.get(numero=room_id)
+        except Habitacion.DoesNotExist:
+            print(f"No existe habitación con número {room_id}")
+            return
+        
+        if device_id == "ld2410c":
+            presencia = payload.get("presencia")
+            habitacion.presencia_humana = presencia
+            habitacion.save()
+        
+            print(f"Actualizada presencia humana en habitación {room_id}: {presencia}")
+
+            if not presencia and habitacion.dispositivos.filter(estado_remoto="ENCENDER").exists():
+                ahora = datetime.now()
+                ultima_vez = ultima_alerta.get(room_id)
+                if ultima_vez is None or (ahora - ultima_vez) >= INTERVALO_ALERTA:
+                    Alerta.objects.create(
+                        habitacion=habitacion,
+                        tipo="APAGADO_MANUAL",
+                    )
+                    ultima_alerta[room_id] = ahora
+                    print(f"Alerta creada para habitación {room_id}")
+
+        elif device_id == "dht22":
+            habitacion.temperatura = payload.get("temperatura")
+            habitacion.humedad = payload.get("humedad")
+            habitacion.save()
+
+            print(f"Actualizada temperatura y humedad en habitación {room_id}: {payload.get('temperatura')}, {payload.get('humedad')}")
+
+        
+        else:
+            # Dispositivos eléctricos
+            tipo_dispositivo = {
+                "foco_baño": "FOCO_BAÑO",
+                "foco_habitacion": "FOCO_HABITACION",
+                "television": "TELEVISOR",
+                "ventilador": "VENTILADOR",
+                "aire": "AIRE"
+            }.get(device_id)
+
+            if not tipo_dispositivo:
+                print(f"Tipo de dispositivo desconocido: {device_id}")
+                return
+            try:
+                dispositivo = Dispositivo.objects.get(
+                    habitacion=habitacion,
+                    tipo=tipo_dispositivo
+                )
+            except Dispositivo.DoesNotExist:
+                print(f"No existe {tipo_dispositivo} en habitación {room_id}")
+                return
+            
+            # Actualizar valores del dispositivo
+            dispositivo.consumo_actual = payload.get("potencia_actual")
+            consumo_wh = payload.get("consumo_acumulado")
+            consumo_kwh = consumo_wh / 1000 if consumo_wh is not None else 0
+            if dispositivo.consumo_acumulado is None:
+                dispositivo.consumo_acumulado = 0
+            dispositivo.consumo_acumulado += consumo_kwh
+            dispositivo.estado_remoto = "ENCENDER" if payload.get("estado_rele") == "ON" else "APAGAR"
+            dispositivo.save()
+
+            # Registrar el consumo
+            RegistroConsumo.objects.create(
+                dispositivo=dispositivo,
+                consumo=dispositivo.consumo_acumulado,
+                fecha=datetime.now()
+            )
+               
     except Exception as e:
         print(f"Error al procesar mensaje: {e}")
+
+
 
 def try_connect(client, broker, port=8883, timeout=10):
     try:
@@ -70,7 +155,6 @@ def setup_mqtt_client():
     client.on_message = on_message
     client.on_disconnect = on_disconnect
     
-    # Iniciar el loop antes de intentar conectar
     client.loop_start()
     
     # Intenta primero la conexión local
@@ -83,7 +167,6 @@ def setup_mqtt_client():
         mqtt_client = client
         return client
     
-    # Si ambas fallan, inicia un proceso de reconexión en segundo plano
     print("No se pudo conectar a ningún broker. Iniciando proceso de reconexión...")
     mqtt_client = client
     
