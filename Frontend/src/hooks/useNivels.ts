@@ -22,17 +22,21 @@ const useNivels = () => {
 
       newSocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        if (!data || !data.forEach) {
-          console.error("El payload recibido no es un array:", data);
-          return;
-        }
+
         setNivel((prevNiveles) => {
           const nivelesMap = new Map(
             prevNiveles.map((nivel) => [nivel.id, nivel])
           );
-          data.forEach((nivel: Nivel) => {
-            nivelesMap.set(nivel.id, nivel);
-          });
+          if (Array.isArray(data)) {
+            data.forEach((nivel: Nivel) => {
+              nivelesMap.set(nivel.id, nivel);
+            });
+          }else if (data && typeof data === 'object' && 'id' in data) {
+            nivelesMap.set(data.id, data as Nivel);
+          } else {
+            console.error("El dato recibido no es un array:", data); 
+          }
+          
           return Array.from(nivelesMap.values());
         });
       };

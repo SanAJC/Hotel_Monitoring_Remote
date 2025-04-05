@@ -25,13 +25,16 @@ const useRoom = () => {
       socket.onopen = () => console.log("WebSocket dispositivos conectado");
       socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        if (!data || !data.forEach) {
-          console.error("El payload recibido no es un array:", data);
-          return;
-  }
+        
         setDispositivos(prev => {
           const deviceMap = new Map(prev.map(d => [d.id, d]));
-          data.forEach((d: Dispositivo) => deviceMap.set(d.id, d));
+          if (Array.isArray(data)) {
+            data.forEach((d: Dispositivo) => deviceMap.set(d.id, d));
+          }else if (data && typeof data === 'object' && 'id' in data) {
+            deviceMap.set(data.id, data as Dispositivo);
+          } else {
+            console.error("El dato recibido no es un array:", data); 
+          }
           return Array.from(deviceMap.values());
         });
       };

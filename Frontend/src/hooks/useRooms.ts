@@ -30,6 +30,8 @@ const useRooms = () => {
             data.forEach((habitacion: Habitacion) => {
               roomsMap.set(habitacion.id, habitacion);
             });
+          } else if (data && typeof data === 'object' && 'id' in data) {
+            roomsMap.set(data.id, data as Habitacion);
           } else {
             console.error("El dato recibido no es un array:", data);
             
