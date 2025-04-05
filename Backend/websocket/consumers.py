@@ -3,6 +3,8 @@ from websocket.models import Habitacion ,Hotel ,Dispositivo, Nivel ,RegistroCons
 import json
 from .serializers import *
 from channels.db import database_sync_to_async
+from datetime import timedelta
+from django.utils import timezone
 
 @database_sync_to_async
 def get_hoteles():
@@ -31,7 +33,7 @@ def get_registros_consumo():
 
 @database_sync_to_async
 def get_alertas():
-    return (Alerta.objects.all())
+    return (Alerta.objects.filter(fecha_creacion__gte=timezone.now() - timedelta(days=1)))
 
 
 class HabitacionConsumer(AsyncWebsocketConsumer):

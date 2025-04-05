@@ -64,6 +64,7 @@
 #menu:checked ~ .container-menu{
     opacity: 1;
     visibility: visible;
+    z-index: 1000;
 }
 .cont-menu{
     width: 100%;

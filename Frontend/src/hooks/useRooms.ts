@@ -26,11 +26,17 @@ const useRooms = () => {
         setRooms((prevRooms) => {
           const roomsMap = new Map(prevRooms.map((room) => [room.id, room]));
           
-          data.forEach((habitacion: Habitacion) => {
-            roomsMap.set(habitacion.id, habitacion);
-          });
+          if (Array.isArray(data)) {
+            data.forEach((habitacion: Habitacion) => {
+              roomsMap.set(habitacion.id, habitacion);
+            });
+          } else {
+            console.error("El dato recibido no es un array:", data);
+            
+          }
           
-          return Array.from(roomsMap.values());
+          return Array.from(roomsMap.values())
+            .sort((a, b) => a.numero - b.numero);
         });
       };
 

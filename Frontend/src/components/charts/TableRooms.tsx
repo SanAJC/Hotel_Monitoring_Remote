@@ -115,14 +115,24 @@ export default function TableRooms() {
               <TableCell
                 align="center"
                 sx={{
-                  color: row.presencia ? "red" : "white",
+                  color: row.presencia ? "red" : "#4BBE8C",
                   fontWeight: "bold",
                   borderColor:"black",
-                  
+                  fontSize: "12px",
                   
                 }}
               >
-                {row.presencia ? "Ocupada" : "Desocupada"}
+                <div
+                  style={{
+                    borderRadius: '20px',
+                    border: `2px solid ${row.presencia ? 'red' : 'green'}`,
+                    backgroundColor: row.presencia ? 'rgba(255, 0, 0, 0.1)' : 'rgba(0, 128, 0, 0.1)',
+                    padding: '4px',
+                    display: 'inline-block'
+                  }}
+                >
+                  {row.presencia ? "Ocupada" : "Desocupada"}
+                </div>
               </TableCell>
             </TableRow>
           ))}

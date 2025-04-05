@@ -22,8 +22,10 @@ const useNivels = () => {
 
       newSocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        console.log("Datos de niveles recibidos:", data);
-
+        if (!data || !data.forEach) {
+          console.error("El payload recibido no es un array:", data);
+          return;
+        }
         setNivel((prevNiveles) => {
           const nivelesMap = new Map(
             prevNiveles.map((nivel) => [nivel.id, nivel])

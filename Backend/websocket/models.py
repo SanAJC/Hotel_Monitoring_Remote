@@ -12,15 +12,14 @@ class Hotel(models.Model):
     presupuesto = models.FloatField(default=0.0)
     consumo_desperdicio_total = models.FloatField(default=0.0) 
     eficiencia_energetica = models.FloatField(default=0.0)
+    kilo_vatio_hora_costo = models.FloatField(default=1.122) 
     fecha_actualizacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"Hotel de {self.user} - Consumo Total {self.consumo_total}"
 
-    def actualizar_cosumo_total(self):
-
-        habitaciones = self.habitaciones.all()
-        self.consumo_total = sum(habitacion.consumo for habitacion in habitaciones)
+    def actualizar_consumo_total(self):
+        self.consumo_total = sum(habitacion.consumo for habitacion in self.habitaciones.all())
         self.save()
 
     def actualizar_desperdicio_total(self):
@@ -36,6 +35,10 @@ class Hotel(models.Model):
             ) * 100
         self.save()
 
+    def actualizar_presupuesto(self):
+        self.presupuesto = self.consumo_total * self.kilo_vatio_hora_costo
+        self.save()
+
 class Nivel(models.Model):
     nivel = models.IntegerField(default=1)
     consumo = models.FloatField(default=0.0)
@@ -43,6 +46,11 @@ class Nivel(models.Model):
 
     def __str__(self):
         return f"Nivel {self.nivel}"
+    
+    def actualizar_consumo(self):
+        habitaciones = Habitacion.objects.filter(nivel=self)
+        self.consumo = sum(habitacion.consumo for habitacion in habitaciones)
+        self.save()
     
 
 class Habitacion(models.Model):
@@ -59,7 +67,18 @@ class Habitacion(models.Model):
 
     def __str__(self):
         return f"Habitación {self.numero} - Nivel {self.nivel}"
+    
+    def actualizar_consumo_total(self):
+        dispositivos = self.dispositivos.all()
+        self.consumo = sum(dispositivo.consumo_acumulado for dispositivo in dispositivos)
+        self.save()
 
+        self.nivel.actualizar_consumo()
+        self.hotel.actualizar_consumo_total()
+        self.hotel.actualizar_desperdicio_total()
+        self.hotel.actualizar_eficiencia()
+        self.hotel.actualizar_presupuesto()
+        
 
 class Dispositivo(models.Model):
     TIPOS_DISPOSITIVO = [
