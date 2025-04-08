@@ -5,6 +5,7 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 import json
 from .serializers import *
+from .mqtt_client import publish_message
 
 @receiver(post_save, sender=Habitacion)
 def send_habitacion_update(sender, instance, created, **kwargs):
@@ -93,6 +94,23 @@ def send_dispositivo_update(sender, instance, created, **kwargs):
             'data': data,
         }
     )
+
+    device_id_map = {
+        'FOCO_BAÑO': 'foco_baño',
+        'FOCO_HABITACION': 'foco_habitacion',
+        'TELEVISOR': 'television',
+        'VENTILADOR': 'ventilador',
+        'AIRE': 'aire'
+    }
+    device_id = device_id_map.get(instance.tipo)
+
+    if device_id:
+
+        topic = f"hotel/room/{instance.habitacion.numero}/{device_id}/relay"
+        relay_state = "ON" if instance.estado_remoto == "ENCENDER" else "OFF"
+        
+        # Publicar el mensaje
+        publish_message(topic, relay_state)
 
 @receiver(post_save, sender=RegistroConsumo)
 def send_registro_consumo_update(sender, instance, created, **kwargs):

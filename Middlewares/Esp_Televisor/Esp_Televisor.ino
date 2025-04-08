@@ -14,7 +14,7 @@ const char* mqtt_password = "hotel-admin-1";
 const char* topic = "hotel/rooms";
 const char* room_id = "301";
 const char* device_id = "television";
-const char* relay_topic = "hotel/room/301/relay/television";
+const char* relay_topic = "hotel/room/301/television/relay";
 
 
 static const char *root_ca PROGMEM = R"EOF(

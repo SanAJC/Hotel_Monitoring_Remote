@@ -15,7 +15,7 @@ const char* topic = "hotel/rooms";
 const char* room_id = "301";
 const char* device_id = "ventilador";
 
-const char* relay_topic = "hotel/room/301/relay/ventilador";
+const char* relay_topic = "hotel/room/301/ventilador/relay";
 
 
 static const char *root_ca PROGMEM = R"EOF(
