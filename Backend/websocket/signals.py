@@ -83,7 +83,7 @@ def send_dispositivo_update(sender, instance, created, **kwargs):
         'estado_remoto': instance.estado_remoto,
         'on_image': instance.on_image.url if instance.on_image else None,
         'off_image': instance.off_image.url if instance.off_image else None,
-        'habitacion_id': habitacion_data,
+        'habitacion': habitacion_data,
         'fecha_actualizacion': instance.fecha_actualizacion.isoformat(),
     }
     

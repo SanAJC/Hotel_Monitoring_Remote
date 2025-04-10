@@ -178,7 +178,7 @@ def setup_mqtt_client():
     return client
 
 def publish_message(topic, message):
-    global mqtt_client
+    global mqtt_client, reconnect_thread
     
     if mqtt_client is None:
         mqtt_client = setup_mqtt_client()
