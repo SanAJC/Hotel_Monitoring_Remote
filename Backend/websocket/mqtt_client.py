@@ -45,6 +45,19 @@ def on_message(client, userdata, msg):
             habitacion.save()
         
             print(f"Actualizada presencia humana en habitación {room_id}: {presencia}")
+            
+            # Registrar historial de presencia en todos los dispositivos de la habitación
+            for dispositivo in habitacion.dispositivos.all():
+                RegistroConsumo.objects.create(
+                    dispositivo=dispositivo,
+                    habitacion=habitacion,
+                    consumo=dispositivo.consumo_acumulado,
+                    presencia_humana=presencia,
+                    temperatura=habitacion.temperatura,
+                    humedad=habitacion.humedad,
+                    estado_remoto=dispositivo.estado_remoto,
+                    fecha=datetime.now()
+                )
 
             if not presencia and habitacion.dispositivos.filter(estado_remoto="ENCENDER").exists():
                 ahora = datetime.now()
@@ -57,14 +70,28 @@ def on_message(client, userdata, msg):
                     ultima_alerta[room_id] = ahora
                     print(f"Alerta creada para habitación {room_id}")
 
+                
+
         elif device_id == "dht22":
             habitacion.temperatura = payload.get("temperatura")
             habitacion.humedad = payload.get("humedad")
             habitacion.save()
 
-            print(f"Actualizada temperatura y humedad en habitación {room_id}: {payload.get('temperatura')}, {payload.get('humedad')}")
+            print(f"Actualizada temperatura y humedad en habitación {room_id}: {habitacion.temperatura}, {habitacion.humedad}")
+            
+            # Registrar historial de temperatura y humedad en todos los dispositivos de la habitación
+            for dispositivo in habitacion.dispositivos.all():
+                RegistroConsumo.objects.create(
+                    dispositivo=dispositivo,
+                    habitacion=habitacion,
+                    consumo=dispositivo.consumo_acumulado,
+                    presencia_humana=habitacion.presencia_humana,
+                    temperatura=habitacion.temperatura,
+                    humedad=habitacion.humedad,
+                    estado_remoto=dispositivo.estado_remoto,
+                    fecha=datetime.now()
+                )
 
-        
         else:
             # Dispositivos eléctricos
             tipo_dispositivo = {
@@ -97,10 +124,23 @@ def on_message(client, userdata, msg):
             dispositivo.estado_remoto = "ENCENDER" if payload.get("estado_rele") == "ON" else "APAGAR"
             dispositivo.save()
 
+            #Actualiza el consumo de la habitación desperdiciado
+            if not habitacion.presencia_humana:
+                habitacion.consumo_desperdicio += consumo_kwh
+                habitacion.save()
+                
+            #Actualiza el consumo total de la habitación
+            habitacion.actualizar_consumo_total()
+
             # Registrar el consumo
             RegistroConsumo.objects.create(
                 dispositivo=dispositivo,
+                habitacion=habitacion,
                 consumo=dispositivo.consumo_acumulado,
+                estado_remoto=dispositivo.estado_remoto,
+                presencia_humana=habitacion.presencia_humana,
+                temperatura=habitacion.temperatura,
+                humedad=habitacion.humedad,
                 fecha=datetime.now()
             )
                

@@ -9,12 +9,12 @@ class ReporteViewSet(ViewSet):
     @action(detail=False, methods=['get'] , url_path='file', permission_classes=[IsAuthenticated]) 
     def generar_reporte_excel(self ,request): 
         wb = Workbook()
-        ws_hotel = wb.create_sheet(title="Hotel")
-        ws_hotel.append(['Usuario', 'consumo Total', 'presupuesto','consumo_desperdicio_total','eficiencia_energetica','fecha Actualización'])
+        ws_hotel = wb.create_sheet(title="Hotel - Registros")
+        ws_hotel.append(['Usuario', 'consumo Total', 'presupuesto','consumo_desperdicio_total','eficiencia_energetica','kilo_vatio_hora_costo','fecha Actualización'])
         hotel_data = Hotel.objects.all()
     
         ws_nivel = wb.create_sheet(title="Consumo - Pisos")
-        ws_nivel.append(['nivel', 'çonsumo','fecha_actualizacion'])
+        ws_nivel.append(['nivel', 'consumo','fecha_actualizacion'])
         nivel_data = Nivel.objects.all()
 
         ws_habitacion = wb.create_sheet(title="Consumo - Habitaciones")
@@ -22,14 +22,14 @@ class ReporteViewSet(ViewSet):
         habitacion_data = Habitacion.objects.all()
 
         ws_dispositivos = wb.create_sheet(title="Consumo - Dispositivos")
-        ws_dispositivos.append(['habitacion', 'tipo','consumo_actual','estado_remoto','fecha_actualizacion '])
+        ws_dispositivos.append(['habitacion', 'tipo','consumo_actual','consumo_acumulado', 'on_image','off_image','estado_remoto','fecha_actualizacion '])
         dispositivos_data = Dispositivo.objects.all()
 
-        ws_consumo = wb.create_sheet(title="RegistroConsumo")
-        ws_consumo.append(['dispositivo', 'consumo','fecha'])
+        ws_consumo = wb.create_sheet(title="RegistroConsumo - General")
+        ws_consumo.append(['dispositivo', 'habitacion', 'consumo', 'estado_remoto', 'presencia_humana', 'temperatura', 'humedad', 'fecha'])
         consumo_data = RegistroConsumo.objects.all()
 
-        ws_alerta = wb.create_sheet(title="Alertas")
+        ws_alerta = wb.create_sheet(title="Alertas - General")
         ws_alerta.append(['habitacion', 'tipo','fecha_creacion'])
         alerta_data = Alerta.objects.all()
 
