@@ -37,7 +37,7 @@ class ReporteViewSet(ViewSet):
         # Escribir datos de Hoteles
         for item in hotel_data:
             fecha_actualizacion = item.fecha_actualizacion.replace(tzinfo=None) if item.fecha_actualizacion else None
-            ws_hotel.append([item.user.username, item.consumo_total, item.presupuesto, fecha_actualizacion])
+            ws_hotel.append([item.user.username, item.consumo_total, item.presupuesto,item.consumo_desperdicio_total,item.eficiencia_energetica ,item.kilo_vatio_hora_costo, fecha_actualizacion])
 
         # Escribir datos de Niveles
         for item in nivel_data:
@@ -57,7 +57,7 @@ class ReporteViewSet(ViewSet):
         # Escribir datos de RegistroConsumo
         for item in consumo_data:
             fecha = item.fecha.replace(tzinfo=None) if item.fecha else None
-            ws_consumo.append([item.dispositivo.get_tipo_display(), item.consumo, fecha])
+            ws_consumo.append([item.dispositivo.get_tipo_display(),item.habitacion.numero,item.consumo, item.estado_remoto ,item.presencia_humana , item.temperatura , item.humedad, fecha])
 
         # Escribir datos de Alertas
         for item in alerta_data:

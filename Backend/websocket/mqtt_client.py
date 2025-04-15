@@ -46,18 +46,6 @@ def on_message(client, userdata, msg):
         
             print(f"Actualizada presencia humana en habitación {room_id}: {presencia}")
             
-            # Registrar historial de presencia en todos los dispositivos de la habitación
-            for dispositivo in habitacion.dispositivos.all():
-                RegistroConsumo.objects.create(
-                    dispositivo=dispositivo,
-                    habitacion=habitacion,
-                    consumo=dispositivo.consumo_acumulado,
-                    presencia_humana=presencia,
-                    temperatura=habitacion.temperatura,
-                    humedad=habitacion.humedad,
-                    estado_remoto=dispositivo.estado_remoto,
-                    fecha=datetime.now()
-                )
 
             if not presencia and habitacion.dispositivos.filter(estado_remoto="ENCENDER").exists():
                 ahora = datetime.now()
@@ -69,29 +57,12 @@ def on_message(client, userdata, msg):
                     )
                     ultima_alerta[room_id] = ahora
                     print(f"Alerta creada para habitación {room_id}")
-
-                
-
         elif device_id == "dht22":
             habitacion.temperatura = payload.get("temperatura")
             habitacion.humedad = payload.get("humedad")
             habitacion.save()
 
             print(f"Actualizada temperatura y humedad en habitación {room_id}: {habitacion.temperatura}, {habitacion.humedad}")
-            
-            # Registrar historial de temperatura y humedad en todos los dispositivos de la habitación
-            for dispositivo in habitacion.dispositivos.all():
-                RegistroConsumo.objects.create(
-                    dispositivo=dispositivo,
-                    habitacion=habitacion,
-                    consumo=dispositivo.consumo_acumulado,
-                    presencia_humana=habitacion.presencia_humana,
-                    temperatura=habitacion.temperatura,
-                    humedad=habitacion.humedad,
-                    estado_remoto=dispositivo.estado_remoto,
-                    fecha=datetime.now()
-                )
-
         else:
             # Dispositivos eléctricos
             tipo_dispositivo = {
@@ -234,6 +205,7 @@ def publish_message(topic, message):
     
     try:
         result = mqtt_client.publish(topic, json.dumps(message))
+        print(f"Mensaje publicado en {topic}: {message}")
         return result.rc == mqtt.MQTT_ERR_SUCCESS
     except Exception as e:
         print(f"Error al publicar mensaje: {e}")
