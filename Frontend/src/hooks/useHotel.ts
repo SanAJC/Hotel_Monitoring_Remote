@@ -1,16 +1,12 @@
 import { useWebSockets } from "@/context/RealTimeContex";
 
-const useRoom = () => {
+const useHotel = () => {
   // Use the global WebSocket context instead of creating new connections
   const { 
-    dispositivos, 
-    sendCommand
+    hotel, 
   } = useWebSockets();
+  
+  return { hotel };
+}
 
-  return { 
-    dispositivos,  
-    sendCommand
-  };
-};
-
-export default useRoom;
+export default useHotel

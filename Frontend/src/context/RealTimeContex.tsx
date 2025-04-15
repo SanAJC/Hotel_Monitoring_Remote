@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
-import { Habitacion, Dispositivo, RegistroConsumo, Nivel } from '@/types/models';
+import { Habitacion, Dispositivo, Nivel , Hotel} from '@/types/models';
 
 const WS_BASE_URL = 'ws://localhost:8000/ws';
 
@@ -7,13 +7,13 @@ interface WebSocketContextType {
   // WebSocket references
   roomsSocket: WebSocket | null;
   dispositivosSocket: WebSocket | null;
-  registrosSocket: WebSocket | null;
+  hotelSocket: WebSocket | null;
   nivelesSocket: WebSocket | null;
   
   // Data states
   rooms: Habitacion[];
   dispositivos: Dispositivo[];
-  registrosConsumo: RegistroConsumo[];
+  hotel: Hotel[];
   niveles: Nivel[];
   
   // Actions
@@ -24,11 +24,11 @@ interface WebSocketContextType {
 const WebSocketContext = createContext<WebSocketContextType>({
   roomsSocket: null,
   dispositivosSocket: null,
-  registrosSocket: null,
+  hotelSocket: null,
   nivelesSocket: null,
   rooms: [],
   dispositivos: [],
-  registrosConsumo: [],
+  hotel: [],
   niveles: [],
   sendCommand: () => {},
 });
@@ -40,13 +40,13 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   // WebSocket refs
   const roomsSocketRef = useRef<WebSocket | null>(null);
   const dispositivosSocketRef = useRef<WebSocket | null>(null);
-  const registrosSocketRef = useRef<WebSocket | null>(null);
+  const hotelSocketRef = useRef<WebSocket | null>(null);
   const nivelesSocketRef = useRef<WebSocket | null>(null);
   
   // Data states
   const [rooms, setRooms] = useState<Habitacion[]>([]);
   const [dispositivos, setDispositivos] = useState<Dispositivo[]>([]);
-  const [registrosConsumo, setRegistrosConsumo] = useState<RegistroConsumo[]>([]);
+  const [hotel, setHotel] = useState<Hotel[]>([]);
   const [niveles, setNiveles] = useState<Nivel[]>([]);
   
 
@@ -77,7 +77,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       // Inicializamos las conexiones WebSocket
       connectRoomsWebSocket();
       connectDispositivosWebSocket();
-      connectRegistrosWebSocket();
+      connectHotelWebSocket();
       connectNivelesWebSocket();
     }, 500); // Verificamos cada 500ms
 
@@ -207,20 +207,20 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
   };
 
-  const connectRegistrosWebSocket = () => {
+  const connectHotelWebSocket = () => {
     // Si ya hay una conexión activa, no creamos otra
-    if (registrosSocketRef.current && registrosSocketRef.current.readyState === WebSocket.OPEN) {
-      console.log("WebSocket registros ya está conectado");
+    if (hotelSocketRef.current && hotelSocketRef.current.readyState === WebSocket.OPEN) {
+      console.log("WebSocket hotel ya está conectado");
       return;
     }
     
     // Cerramos cualquier conexión existente antes de crear una nueva
-    if (registrosSocketRef.current) {
-      registrosSocketRef.current.close();
+    if (hotelSocketRef.current) {
+      hotelSocketRef.current.close();
     }
 
     try {
-      console.log("Creando nueva conexión WebSocket para registros");
+      console.log("Creando nueva conexión WebSocket para hotel");
       const accessToken = sessionStorage.getItem("accessToken");
       const newSocket = new WebSocket(
         `${WS_BASE_URL}/registros_consumo/?token=${accessToken}`
@@ -233,7 +233,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
     newSocket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      setRegistrosConsumo(data);
+      setHotel(data);
     };
 
     newSocket.onclose = (event) => {
@@ -243,13 +243,13 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       // Solo reconectamos si el cierre no fue intencional
       if (!event.wasClean) {
         console.log("Reintentando conexión en 3 segundos...");
-        setTimeout(connectRegistrosWebSocket, 3000);
+        setTimeout(connectHotelWebSocket, 3000);
       }
     };
     
-    registrosSocketRef.current = newSocket;
+    hotelSocketRef.current = newSocket;
     } catch (error) {
-      console.error("Error al crear WebSocket de registros:", error);
+      console.error("Error al crear WebSocket de hotel:", error);
       
     }
   };
@@ -327,7 +327,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       // Cerramos las conexiones de forma limpia (wasClean = true)
       if (roomsSocketRef.current) roomsSocketRef.current.close(1000, "Cierre normal");
       if (dispositivosSocketRef.current) dispositivosSocketRef.current.close(1000, "Cierre normal");
-      if (registrosSocketRef.current) registrosSocketRef.current.close(1000, "Cierre normal");
+      if (hotelSocketRef.current) hotelSocketRef.current.close(1000, "Cierre normal");
       if (nivelesSocketRef.current) nivelesSocketRef.current.close(1000, "Cierre normal");
       
       // Reseteamos la bandera de conexión para permitir reconexiones si el componente se vuelve a montar
@@ -354,11 +354,11 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const contextValue: WebSocketContextType = {
     roomsSocket: roomsSocketRef.current,
     dispositivosSocket: dispositivosSocketRef.current,
-    registrosSocket: registrosSocketRef.current,
+    hotelSocket: hotelSocketRef.current,
     nivelesSocket: nivelesSocketRef.current,
     rooms,
     dispositivos,
-    registrosConsumo,
+    hotel,
     niveles,
     sendCommand,
   };
