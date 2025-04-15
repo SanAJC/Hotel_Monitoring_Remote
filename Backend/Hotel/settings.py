@@ -91,7 +91,6 @@ JAZZMIN_SETTINGS["icons"] = {
     "websocketl.Habitacion": "fas fa-bed",
     "websocket.Dispositivo": "fas fa-plug",
     "websocket.RegistroConsumo": "fas fa-chart-line",
-    "websocket.RegistroPresencia": "fas fa-chart-line",
     "websocket.Alerta": "fas fa-exclamation-triangle",
 }
 

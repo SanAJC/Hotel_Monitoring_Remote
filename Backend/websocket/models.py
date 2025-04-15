@@ -110,22 +110,14 @@ class RegistroConsumo(models.Model):
     habitacion = models.ForeignKey(Habitacion, on_delete=models.CASCADE, related_name="registros_consumo", null=True)
     consumo = models.FloatField()
     estado_remoto = models.CharField(max_length=10, null=True, blank=True)
-    
-    fecha = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.dispositivo.get_tipo_display()} - Hab: {self.habitacion.numero if self.habitacion else 'N/A'} - {self.consumo} kWh - {self.fecha}"
-
-class RegistroPresencia(models.Model):
-    habitacion = models.ForeignKey(Habitacion, on_delete=models.CASCADE, related_name="registros_presencia")
-    presencia_humana = models.BooleanField(default=False)
+    presencia_humana = models.BooleanField(null=True, blank=True)
     temperatura = models.FloatField(null=True, blank=True)
     humedad = models.FloatField(null=True, blank=True)
     fecha = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Registro de presencia - Habitación {self.habitacion.numero} - {self.presencia_humana} - {self.fecha}"  
-    
+        return f"{self.dispositivo.get_tipo_display()} - Hab: {self.habitacion.numero if self.habitacion else 'N/A'} - {self.consumo} kWh - {self.fecha}"
+
 class Alerta(models.Model):
     TIPOS_ALERTA = [
         ('CONSUMO_ALTO', 'Consumo Alto'),
