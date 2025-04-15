@@ -25,10 +25,14 @@ class ReporteViewSet(ViewSet):
         ws_dispositivos.append(['habitacion', 'tipo','consumo_actual','consumo_acumulado', 'on_image','off_image','estado_remoto','fecha_actualizacion '])
         dispositivos_data = Dispositivo.objects.all()
 
-        ws_consumo = wb.create_sheet(title="RegistroConsumo - General")
-        ws_consumo.append(['dispositivo', 'habitacion', 'consumo', 'estado_remoto', 'presencia_humana', 'temperatura', 'humedad', 'fecha'])
+        ws_consumo = wb.create_sheet(title="RegistroConsumo - Dispositivos")
+        ws_consumo.append(['dispositivo', 'habitacion', 'consumo', 'estado_remoto','fecha'])
         consumo_data = RegistroConsumo.objects.all()
 
+        ws_presencia = wb.create_sheet(title="RegistroPresencia - Habitaciones")
+        ws_presencia.append(['habitacion', 'presencia_humana', 'temperatura', 'humedad','fecha'])
+        presencia_data = RegistroPresencia.objects.all()
+       
         ws_alerta = wb.create_sheet(title="Alertas - General")
         ws_alerta.append(['habitacion', 'tipo','fecha_creacion'])
         alerta_data = Alerta.objects.all()
@@ -57,7 +61,11 @@ class ReporteViewSet(ViewSet):
         # Escribir datos de RegistroConsumo
         for item in consumo_data:
             fecha = item.fecha.replace(tzinfo=None) if item.fecha else None
-            ws_consumo.append([item.dispositivo.get_tipo_display(), item.consumo, fecha])
+            ws_consumo.append([item.dispositivo.get_tipo_display(),item.habitacion.numero,item.consumo,item.estado_remoto, fecha])
+
+        for item in presencia_data:
+            fecha = item.fecha.replace(tzinfo=None) if item.fecha else None
+            ws_presencia.append([item.habitacion.numero, item.presencia_humana, item.temperatura, item.humedad, fecha])
 
         # Escribir datos de Alertas
         for item in alerta_data:

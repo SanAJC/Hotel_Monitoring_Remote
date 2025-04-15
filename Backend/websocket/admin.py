@@ -30,6 +30,12 @@ class RegistroConsumoAdmin(admin.ModelAdmin):
     list_filter=('dispositivo',)
     search_fields=('dispositivo',)
 
+@admin.register(RegistroPresencia)
+class RegistroConsumoAdmin(admin.ModelAdmin):
+    list_display = ('habitacion','presencia_humana','temperatura','humedad','fecha')
+    list_filter=('habitacion',)
+    search_fields=('habitacion',)
+
 @admin.register(Alerta)
 class AlertaAdmin(admin.ModelAdmin):
     list_display = ('habitacion','tipo','fecha_creacion')

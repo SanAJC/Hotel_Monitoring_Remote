@@ -3,7 +3,7 @@ import json
 from django.conf import settings
 import time
 import threading
-from .models import Habitacion, Dispositivo, RegistroConsumo, Alerta
+from .models import Habitacion, Dispositivo, RegistroConsumo, Alerta ,RegistroPresencia
 from datetime import datetime, timedelta
 
 mqtt_client = None
@@ -46,18 +46,13 @@ def on_message(client, userdata, msg):
         
             print(f"Actualizada presencia humana en habitación {room_id}: {presencia}")
             
-            # Registrar historial de presencia en todos los dispositivos de la habitación
-            for dispositivo in habitacion.dispositivos.all():
-                RegistroConsumo.objects.create(
-                    dispositivo=dispositivo,
-                    habitacion=habitacion,
-                    consumo=dispositivo.consumo_acumulado,
-                    presencia_humana=presencia,
-                    temperatura=habitacion.temperatura,
-                    humedad=habitacion.humedad,
-                    estado_remoto=dispositivo.estado_remoto,
-                    fecha=datetime.now()
-                )
+            # Crear registro de presencia
+            RegistroPresencia.objects.create(
+                habitacion=habitacion,
+                presencia_humana=presencia,
+                temperatura=habitacion.temperatura,
+                humedad=habitacion.humedad
+            )
 
             if not presencia and habitacion.dispositivos.filter(estado_remoto="ENCENDER").exists():
                 ahora = datetime.now()
@@ -79,18 +74,13 @@ def on_message(client, userdata, msg):
 
             print(f"Actualizada temperatura y humedad en habitación {room_id}: {habitacion.temperatura}, {habitacion.humedad}")
             
-            # Registrar historial de temperatura y humedad en todos los dispositivos de la habitación
-            for dispositivo in habitacion.dispositivos.all():
-                RegistroConsumo.objects.create(
-                    dispositivo=dispositivo,
-                    habitacion=habitacion,
-                    consumo=dispositivo.consumo_acumulado,
-                    presencia_humana=habitacion.presencia_humana,
-                    temperatura=habitacion.temperatura,
-                    humedad=habitacion.humedad,
-                    estado_remoto=dispositivo.estado_remoto,
-                    fecha=datetime.now()
-                )
+            # Crear registro de presencia con datos ambientales actualizados
+            RegistroPresencia.objects.create(
+                habitacion=habitacion,
+                presencia_humana=habitacion.presencia_humana,
+                temperatura=habitacion.temperatura,
+                humedad=habitacion.humedad
+            )
 
         else:
             # Dispositivos eléctricos
@@ -132,16 +122,12 @@ def on_message(client, userdata, msg):
             #Actualiza el consumo total de la habitación
             habitacion.actualizar_consumo_total()
 
-            # Registrar el consumo
+            # Registrar el consumo solo para este dispositivo específico
             RegistroConsumo.objects.create(
                 dispositivo=dispositivo,
                 habitacion=habitacion,
-                consumo=dispositivo.consumo_acumulado,
-                estado_remoto=dispositivo.estado_remoto,
-                presencia_humana=habitacion.presencia_humana,
-                temperatura=habitacion.temperatura,
-                humedad=habitacion.humedad,
-                fecha=datetime.now()
+                consumo=consumo_kwh,  # Registrar solo el incremento, no el acumulado
+                estado_remoto=dispositivo.estado_remoto
             )
                
     except Exception as e:
