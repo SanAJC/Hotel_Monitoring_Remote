@@ -223,21 +223,32 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       console.log("Creando nueva conexión WebSocket para hotel");
       const accessToken = sessionStorage.getItem("accessToken");
       const newSocket = new WebSocket(
-        `${WS_BASE_URL}/registros_consumo/?token=${accessToken}`
+        `${WS_BASE_URL}/hoteles/?token=${accessToken}`
       );
 
     newSocket.onopen = () => {
-      console.log("WebSocket registros conectado");
+      console.log("WebSocket hotel conectado");
       
     };
 
     newSocket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      setHotel(data);
+      console.log("Datos de hotel recibidos:", data);
+      setHotel(prev => {
+        const deviceMap = new Map(prev.map(d => [d.id, d]));
+        if (Array.isArray(data)) {
+          data.forEach((d: Hotel) => deviceMap.set(d.id, d));
+        } else if (data && typeof data === 'object' && 'id' in data) {
+          deviceMap.set(data.id, data as Hotel);
+        } else {
+          console.error("El dato recibido no es un array:", data); 
+        }
+        return Array.from(deviceMap.values());
+      });
     };
 
     newSocket.onclose = (event) => {
-      console.log(`WebSocket registros desconectado (código: ${event.code}). ${event.wasClean ? 'Cierre limpio' : 'Cierre inesperado'}`);
+      console.log(`WebSocket hotel desconectado (código: ${event.code}). ${event.wasClean ? 'Cierre limpio' : 'Cierre inesperado'}`);
       
       
       // Solo reconectamos si el cierre no fue intencional

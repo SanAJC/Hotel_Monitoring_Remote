@@ -46,6 +46,7 @@ export type Dispositivo = {
     habitacion: Habitacion;  
     tipo: 'AIRE' | 'VENTILADOR' | 'TELEVISOR' | 'FOCO_HABITACION' | 'FOCO_BAÑO';
     consumo_actual: number;
+    consumo_acumulado: number;
     estado_remoto: 'APAGAR' | 'ENCENDER';
     on_image: string;
     off_image: string;

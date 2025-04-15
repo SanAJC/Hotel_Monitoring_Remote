@@ -1,5 +1,5 @@
 import { CardChart } from "../dashboard/CardChart";
-import { useState } from "react";
+import useHotel from "@/hooks/useHotel";
 import {
   Label,
   PolarGrid,
@@ -10,8 +10,9 @@ import {
 } from "recharts";
 
 export default function PresupuestoConsume() {
-  const maxBudget = 7000000; 
-  const [Budget] = useState(1000000); 
+  const { hotel } = useHotel();
+  const maxBudget = 10000000; 
+  const Budget = hotel && hotel.length > 0 ? hotel[0].presupuesto : 1000000; 
 
   const chartData = [
     {

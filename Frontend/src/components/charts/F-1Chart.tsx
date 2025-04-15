@@ -1,5 +1,4 @@
 import { CardChart } from "../dashboard/CardChart";
-import { useState } from "react";
 import {
   Label,
   PolarGrid,
@@ -15,8 +14,13 @@ type DispositivoProps = {
 }
 
 export const F1Chart = ({dispositivos}: DispositivoProps) => {
+
+  const dispositivo = dispositivos.find(
+    (d) => d.tipo === "FOCO_HABITACION"
+  );
+
   const maxConsumption = 1000;
-  const [currentConsumption] = useState(140);
+  const currentConsumption = dispositivo ? dispositivo.consumo_actual : 100;  
 
   const chartData = [
     {
@@ -26,10 +30,7 @@ export const F1Chart = ({dispositivos}: DispositivoProps) => {
     },
   ];
 
-  const dispositivo = dispositivos.find(
-    (d) => d.tipo === "FOCO_HABITACION"
-  );
-
+  
   const baseURL = "http://localhost:8000";
   let image_dispositivo: string;
 

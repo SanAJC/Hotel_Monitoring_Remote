@@ -107,7 +107,7 @@ def on_message(client, userdata, msg):
             RegistroConsumo.objects.create(
                 dispositivo=dispositivo,
                 habitacion=habitacion,
-                consumo=dispositivo.consumo_acumulado,
+                consumo=consumo_kwh,
                 estado_remoto=dispositivo.estado_remoto,
                 presencia_humana=habitacion.presencia_humana,
                 temperatura=habitacion.temperatura,

@@ -1,5 +1,4 @@
 import { CardChart } from "../dashboard/CardChart";
-import { useState } from "react";
 import {
   Label,
   PolarGrid,
@@ -22,7 +21,7 @@ export const AireChart = ({dispositivos}: DispositivoProps) => {
   );
 
   const maxConsumption = 1000; 
-  const [currentConsumption] = useState(400); 
+  const currentConsumption = dispositivo ? dispositivo.consumo_actual : 100;  
 
   const chartData = [
     {

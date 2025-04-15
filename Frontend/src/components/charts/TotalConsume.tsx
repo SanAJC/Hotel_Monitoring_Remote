@@ -1,5 +1,5 @@
 import { CardChart } from "../dashboard/CardChart";
-import { useState } from "react";
+import useHotel from "@/hooks/useHotel";
 import {
   Label,
   PolarGrid,
@@ -11,8 +11,9 @@ import {
 
 
 export default function TotalConsume() {
-  const maxConsumption = 1000; 
-  const [currentConsumption] = useState(600); 
+  const { hotel } = useHotel();
+  const maxConsumption = 10000; 
+  const currentConsumption = hotel && hotel.length > 0 ? hotel[0].consumo_total : 1000; 
 
   const chartData = [
     {

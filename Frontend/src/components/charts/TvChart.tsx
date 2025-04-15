@@ -1,5 +1,4 @@
 import { CardChart } from "../dashboard/CardChart";
-import { useState } from "react";
 import {
   Label,
   PolarGrid,
@@ -14,8 +13,12 @@ type DispositivoProps = {
 }
 
 export const TvChart = ({dispositivos}: DispositivoProps) => {
+
+  const dispositivo = dispositivos.find(
+    (d) => d.tipo === "TELEVISOR"
+  );
   const maxConsumption = 1000;
-  const [currentConsumption] = useState(290);
+  const currentConsumption = dispositivo ? dispositivo.consumo_actual : 100;  
 
   const chartData = [
     {
@@ -24,10 +27,6 @@ export const TvChart = ({dispositivos}: DispositivoProps) => {
       fill: "#8A6FC2",
     },
   ];
-
-  const dispositivo = dispositivos.find(
-    (d) => d.tipo === "TELEVISOR"
-  );
 
   const baseURL = "http://localhost:8000";
   let image_dispositivo: string;
