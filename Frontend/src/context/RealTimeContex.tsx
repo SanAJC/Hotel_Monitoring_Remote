@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
-import { Habitacion, Dispositivo, Nivel , Hotel} from '@/types/models';
+import { Habitacion, Dispositivo, Nivel , Hotel , Alerta} from '@/types/models';
 
 const WS_BASE_URL = 'ws://localhost:8000/ws';
 
@@ -9,12 +9,14 @@ interface WebSocketContextType {
   dispositivosSocket: WebSocket | null;
   hotelSocket: WebSocket | null;
   nivelesSocket: WebSocket | null;
+  alertasSocket: WebSocket | null;
   
   // Data states
   rooms: Habitacion[];
   dispositivos: Dispositivo[];
   hotel: Hotel[];
   niveles: Nivel[];
+  alertas: Alerta[];
   
   // Actions
   sendCommand: (dispositivoId: number, estado: 'ENCENDER' | 'APAGAR') => void;
@@ -26,10 +28,12 @@ const WebSocketContext = createContext<WebSocketContextType>({
   dispositivosSocket: null,
   hotelSocket: null,
   nivelesSocket: null,
+  alertasSocket: null,
   rooms: [],
   dispositivos: [],
   hotel: [],
   niveles: [],
+  alertas: [],
   sendCommand: () => {},
 });
 
@@ -42,14 +46,15 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const dispositivosSocketRef = useRef<WebSocket | null>(null);
   const hotelSocketRef = useRef<WebSocket | null>(null);
   const nivelesSocketRef = useRef<WebSocket | null>(null);
+  const alertasSocketRef = useRef<WebSocket | null>(null);
   
   // Data states
   const [rooms, setRooms] = useState<Habitacion[]>([]);
   const [dispositivos, setDispositivos] = useState<Dispositivo[]>([]);
   const [hotel, setHotel] = useState<Hotel[]>([]);
   const [niveles, setNiveles] = useState<Nivel[]>([]);
+  const [alertas, setAlertas] = useState<Alerta[]>([]);
   
-
   // Usamos una referencia para controlar si ya intentamos conectar
   const hasConnectedRef = useRef(false);
 
@@ -79,6 +84,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       connectDispositivosWebSocket();
       connectHotelWebSocket();
       connectNivelesWebSocket();
+      connectAlertasWebSocket();
     }, 500); // Verificamos cada 500ms
 
     return () => clearInterval(interval);
@@ -330,6 +336,72 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       
     }
   };
+  const connectAlertasWebSocket = () => {
+    // Si ya hay una conexión activa, no creamos otra
+    if (alertasSocketRef.current && alertasSocketRef.current.readyState === WebSocket.OPEN) {
+      console.log("WebSocket alertas ya está conectado");
+      return;
+    }
+    
+    // Cerramos cualquier conexión existente antes de crear una nueva
+    if (alertasSocketRef.current) {
+      alertasSocketRef.current.close();
+    }
+
+    try {
+      console.log("Creando nueva conexión WebSocket para alertas");
+      const accessToken = sessionStorage.getItem("accessToken");
+      const newSocket = new WebSocket(
+        `${WS_BASE_URL}/alertas/?token=${accessToken}`
+      );
+
+    newSocket.onopen = () => {
+      console.log("WebSocket alertas conectado");
+      
+    };
+
+    newSocket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log("Datos de alertas recibidos:", data);
+
+      setAlertas((prevAlertas) => {
+        const alertasMap = new Map(
+          prevAlertas.map((alerta) => [alerta.id, alerta])
+        );
+        if (Array.isArray(data)) {
+          data.forEach((alerta: Alerta) => {
+            alertasMap.set(alerta.id, alerta);
+          });
+        } else if (data && typeof data === 'object' && 'id' in data) {
+          alertasMap.set(data.id, data as Alerta);
+        } else {
+          console.error("El dato recibido no es un array:", data); 
+        }
+        
+        return Array.from(alertasMap.values());
+      });
+    };
+
+    newSocket.onclose = (event) => {
+      console.log(`WebSocket alertas desconectado (código: ${event.code}). ${event.wasClean ? 'Cierre limpio' : 'Cierre inesperado'}`);
+      
+      
+      // Solo reconectamos si el cierre no fue intencional
+      if (!event.wasClean) {
+        console.log("Reintentando conexión en 3 segundos...");
+        setTimeout(connectAlertasWebSocket, 3000);
+      }
+    };
+
+    newSocket.onerror = (error) =>
+      console.error("Error en el WebSocket de alertas:", error);
+
+    alertasSocketRef.current = newSocket;
+    } catch (error) {
+      console.error("Error al crear WebSocket de alertas:", error);
+      
+    }
+  };
 
   // Cleanup function to close all WebSockets when the provider unmounts
   useEffect(() => {
@@ -340,7 +412,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       if (dispositivosSocketRef.current) dispositivosSocketRef.current.close(1000, "Cierre normal");
       if (hotelSocketRef.current) hotelSocketRef.current.close(1000, "Cierre normal");
       if (nivelesSocketRef.current) nivelesSocketRef.current.close(1000, "Cierre normal");
-      
+      if (alertasSocketRef.current) alertasSocketRef.current.close(1000, "Cierre normal");
       // Reseteamos la bandera de conexión para permitir reconexiones si el componente se vuelve a montar
       hasConnectedRef.current = false;
     };
@@ -367,10 +439,12 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     dispositivosSocket: dispositivosSocketRef.current,
     hotelSocket: hotelSocketRef.current,
     nivelesSocket: nivelesSocketRef.current,
+    alertasSocket: alertasSocketRef.current,
     rooms,
     dispositivos,
     hotel,
     niveles,
+    alertas,
     sendCommand,
   };
 

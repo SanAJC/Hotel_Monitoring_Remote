@@ -7,13 +7,15 @@ import React, { useState } from "react";
 import Alert from "@mui/material/Alert";
 import useRooms from "@/hooks/useRooms";
 import userImage from "/src/assets/user.png";
+import useAlerts from "@/hooks/useAlerts";
 
 export default function Header() {
   const { user } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-  const { rooms } = useRooms(); // Obtener las habitaciones
+  const { rooms } = useRooms();
+  const { alertas } = useAlerts();
   const [searchError, setSearchError] = useState(false); // Para manejar errores
 
   const toggleMenu = () => {
@@ -57,7 +59,7 @@ export default function Header() {
           <div className="error-message">Habitación no encontrada</div>
         )}
 
-        <Badge badgeContent={4} color="primary">
+        <Badge badgeContent={alertas.length > 0 ? alertas.length : 1} color="primary">
           <NotificationsIcon
             style={{ fontSize: "30px", color: "#B51A28" }}
             onClick={toggleMenu}
@@ -66,19 +68,22 @@ export default function Header() {
 
         {menuOpen && (
           <div className="notifications-menu">
+            <h3>Alertas</h3>
             <ul>
-              <Alert variant="filled" severity="success">
-                This is a filled success Alert.
-              </Alert>
-              <Alert variant="filled" severity="info">
-                This is a filled info Alert.
-              </Alert>
-              <Alert variant="filled" severity="warning">
-                This is a filled warning Alert.
-              </Alert>
-              <Alert variant="filled" severity="error">
-                This is a filled error Alert.
-              </Alert>
+              {alertas?.length === 0 && (
+                <li>
+                  <Alert variant="filled" severity="info">
+                    No hay alertas
+                  </Alert>
+                </li>
+              )}
+              {alertas.map((alerta) => (
+                <li key={alerta.id}>
+                  <Alert variant="filled" severity="warning">
+                    {alerta.tipo}
+                  </Alert>
+                </li>
+              ))}
             </ul>
           </div>
         )}
