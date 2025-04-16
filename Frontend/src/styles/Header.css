@@ -86,8 +86,16 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    width: 200px;
+    width: 300px;
+    height: 200px;
+    overflow-y: auto;
     z-index: 1000;
+    animation: slideDown 0.3s ease-in-out;
+}
+
+@keyframes slideDown {
+    0% { transform: translateY(-10px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
 }
 
 .notifications-menu ul {
@@ -98,6 +106,25 @@
 
 .notifications-menu .MuiAlert-root {
     margin-bottom: 10px; 
+}
+
+/* Personalización del scrollbar para navegadores basados en WebKit */
+.notifications-menu::-webkit-scrollbar {
+    width: 8px;
+}
+
+.notifications-menu::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+}
+
+.notifications-menu::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+.notifications-menu::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 @media (max-width: 767px){

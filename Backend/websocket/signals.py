@@ -132,9 +132,11 @@ def send_registro_consumo_update(sender, instance, created, **kwargs):
 @receiver(post_save, sender=Alerta)
 def send_alerta_update(sender, instance, created, **kwargs):
     channel_layer = get_channel_layer()
+    habitacion_data = HabitacionSerializer(instance.habitacion).data
     data = {
         'id': instance.id,
         'tipo': instance.tipo,
+        'habitacion': habitacion_data,
         'fecha_creacion': instance.fecha_creacion.isoformat(),
     }
     

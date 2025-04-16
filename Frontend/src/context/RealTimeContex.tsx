@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { Habitacion, Dispositivo, Nivel , Hotel , Alerta} from '@/types/models';
+import { toast } from 'react-toastify';
 
 const WS_BASE_URL = 'ws://localhost:8000/ws';
 
@@ -377,9 +378,22 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         } else {
           console.error("El dato recibido no es un array:", data); 
         }
-        
+
         return Array.from(alertasMap.values());
       });
+
+      try {
+        const audio = new Audio('/alerta.mp3');
+          audio.play().catch(error => {
+            if (error.name !== "NotAllowedError") {
+              console.error("Error al reproducir el sonido:", error, "Es posible que se requiera interacción del usuario.");
+            }
+          });
+      } catch (error) {
+        console.error("Error al crear el objeto Audio:", error);
+      }
+      
+      toast.warning(`Alerta: ${data.tipo ? data.tipo : "No hay alertas"}`)
     };
 
     newSocket.onclose = (event) => {
