@@ -120,4 +120,15 @@
     }
 
 }
+@media (max-width: 430px) {
+    .card-content-room img{
+        width: 110px;
+        height: 110px
+    }
+
+    .info-item span , .info-item p{
+        font-size: 10px;
+    }
+}
+
 

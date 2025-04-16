@@ -112,7 +112,13 @@
     .Content-cards > :nth-child(4){
         max-width: 70%; 
     }
-
 }
+
+@media (max-width: 430px){
+    .Content-cards > :nth-child(4){
+        max-width: 60%; 
+    }
+}
+
 
 

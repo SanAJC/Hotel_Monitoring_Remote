@@ -48,7 +48,7 @@ export default function Room() {
             <img src={imageUrl} alt={`Habitación ${room.numero}`} id="habitacion" />
             <ConsumeWeeklyChart />
             <F2Chart dispositivos={dispositivo} />
-            <CardRoomAction dispositivos={dispositivo} sendCommand={sendCommand} />
+            <CardRoomAction dispositivos={dispositivo} sendCommand={sendCommand} habitacion={room} />
             <ConsumeMothklyChart  />
           </div>
           <footer>

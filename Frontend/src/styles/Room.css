@@ -180,3 +180,18 @@ footer span {
     
   }
 }
+@media (max-width: 400px) {
+  .info-room-content {
+    display: grid;
+    grid-template-columns: 1fr; 
+    gap: 20px; 
+  }
+
+  .info-room-content > * {
+    grid-column: auto !important;
+    grid-row: auto !important;
+    max-width: 80% !important;
+    margin: 0  !important;
+  }
+
+}

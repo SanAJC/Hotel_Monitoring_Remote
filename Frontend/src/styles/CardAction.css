@@ -53,6 +53,29 @@
     
 }
 
+.content-action-info-error{
+    display: flex;
+    height: 230px;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    gap: 10px;
+    
+    margin-top: 20px;
+}
+
+.content-action-info-error p{
+    display: block;
+    font-size: 13px;
+    color: #aca9bb;
+    font-weight: bold;
+    text-align: center;
+    margin-left: 10px;
+}
+
 .content-button{
     display: flex;
     gap: 10px;
