@@ -337,6 +337,49 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       
     }
   };
+
+  // Función para solicitar permisos de notificaciones
+  const requestNotificationPermission = async () => {
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        console.log('Permisos de notificación concedidos');
+        return true;
+      }
+      console.log('Permisos de notificación denegados');
+      return false;
+    } catch (error) {
+      console.error('Error al solicitar permisos de notificación:', error);
+      return false;
+    }
+  };
+
+  // Función para mostrar notificación
+  const showNotification = (title: string, body: string) => {
+    try {
+      if (Notification.permission === 'granted') {
+        const notification = new Notification(title, {
+          body: body,
+          icon: '/hotel.png',
+          requireInteraction: true
+        });
+
+        // Manejar clic en la notificación
+        notification.onclick = () => {
+          window.focus();
+          notification.close();
+        };
+      }
+    } catch (error) {
+      console.error('Error al mostrar notificación:', error);
+    }
+  };
+
+  // Solicitar permisos al montar el componente
+  useEffect(() => {
+    requestNotificationPermission();
+  }, []);
+
   const connectAlertasWebSocket = () => {
     // Si ya hay una conexión activa, no creamos otra
     if (alertasSocketRef.current && alertasSocketRef.current.readyState === WebSocket.OPEN) {
@@ -375,6 +418,13 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
           });
         } else if (data && typeof data === 'object' && 'id' in data) {
           alertasMap.set(data.id, data as Alerta);
+          // Mostrar notificación para nuevas alertas si la pestaña no está activa
+          if (document.hidden) {
+            showNotification(
+              'Nueva Alerta',
+              `${data.tipo} en habitación ${data.habitacion.numero}`
+            );
+          }
         } else {
           console.error("El dato recibido no es un array:", data); 
         }
@@ -382,18 +432,8 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         return Array.from(alertasMap.values());
       });
 
-      try {
-        const audio = new Audio('/alerta.mp3');
-          audio.play().catch(error => {
-            if (error.name !== "NotAllowedError") {
-              console.error("Error al reproducir el sonido:", error, "Es posible que se requiera interacción del usuario.");
-            }
-          });
-      } catch (error) {
-        console.error("Error al crear el objeto Audio:", error);
-      }
-      
-      toast.warning(`Alerta: ${data.tipo ? data.tipo : "No hay alertas"}`)
+      // Mostrar toast para todas las alertas
+      toast.warning(`Alerta: ${data.tipo ? data.tipo : "No hay alertas"}`);
     };
 
     newSocket.onclose = (event) => {

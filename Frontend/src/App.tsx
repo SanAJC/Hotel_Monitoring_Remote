@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <AppRoutes/>
-      <ToastContainer/>
+      <ToastContainer theme="colored"/>
     </>
   )
 }
