@@ -1,10 +1,11 @@
-from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer, AsyncJsonWebsocketConsumer
 from websocket.models import Habitacion ,Hotel ,Dispositivo, Nivel ,RegistroConsumo,Alerta
 import json
 from .serializers import *
 from channels.db import database_sync_to_async
 from datetime import timedelta
 from django.utils import timezone
+from .views import send_weekly_consumption_update, send_monthly_consumption_update, send_monthly_consumption_nivel_update
 
 @database_sync_to_async
 def get_hoteles():
@@ -162,6 +163,13 @@ class NivelConsumer(AsyncWebsocketConsumer):
     async def send_update(self, event):
         data = event['data']
         await self.send(text_data=json.dumps(data))
+    
+    async def send_monthly_update_nivel(self, event):
+        data = event['data']
+        await self.send(text_data=json.dumps({
+            'type': 'monthly_update_nivel',
+            'data': data
+        }))
 
 class DispositivosConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -214,47 +222,59 @@ class DispositivosConsumer(AsyncWebsocketConsumer):
         data = event['data']
         await self.send(text_data=json.dumps(data))
 
-class RegistrosConsumer(AsyncWebsocketConsumer):
+class RegistrosConsumer(AsyncJsonWebsocketConsumer):
     async def connect(self):
-        self.room_name = "registros"  
-        self.group_name = f'room_{self.room_name}'
-       
-        await self.channel_layer.group_add(
-            self.group_name,
-            self.channel_name
-        )
-
+        await self.channel_layer.group_add("registros", self.channel_name)
         await self.accept()
-        await self.send_registros_data()
         
-        
+        # Enviar datos iniciales
+        await self.send_initial_data()
+
     async def disconnect(self, close_code):
-        await self.channel_layer.group_discard(
-            self.group_name,
-            self.channel_name
-        )
-    
-    async def send_registros_data(self):
-        registro = await get_registros_consumo()
-        registro_json = await database_sync_to_async(self.serialize_registros)(registro)
-        await self.send(text_data=json.dumps(registro_json))
+        await self.channel_layer.group_discard("registros", self.channel_name)
 
-    def serialize_registros(self, registro):
-        return ResgistroConsumoSerializer(registro, many=True).data
+    async def receive_json(self, content):
+        pass
 
-    async def receive(self, text_data):
-        data = json.loads(text_data)
+    async def send_initial_data(self):
+        # Enviar datos semanales
+        weekly_data = await database_sync_to_async(send_weekly_consumption_update)()
+        await self.send_json({
+            "type": "weekly_update",
+            "data": weekly_data
+        })
+        
+        # Enviar datos mensuales
+        monthly_data = await database_sync_to_async(send_monthly_consumption_update)()
+        await self.send_json({
+            "type": "monthly_update",
+            "data": monthly_data
+        })
+        
+        # Enviar datos mensuales por nivel
+        nivel_monthly_data = await database_sync_to_async(send_monthly_consumption_nivel_update)()
+        await self.send_json({
+            "type": "monthly_nivel_update",
+            "data": nivel_monthly_data
+        })
 
-        await self.channel_layer.group_send(
-            self.group_name,
-            {
-                'type': 'send_update',
-                'data': data,
-            }
-        )
-    async def send_update(self, event):
-        data = event['data']
-        await self.send(text_data=json.dumps(data))
+    async def weekly_update(self, event):
+        await self.send_json({
+            "type": "weekly_update",
+            "data": event["data"]
+        })
+
+    async def monthly_update(self, event):
+        await self.send_json({
+            "type": "monthly_update",
+            "data": event["data"]
+        })
+
+    async def monthly_nivel_update(self, event):
+        await self.send_json({
+            "type": "monthly_nivel_update",
+            "data": event["data"]
+        })
 
 class AlertaConsumer(AsyncWebsocketConsumer):
     async def connect(self):

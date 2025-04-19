@@ -6,6 +6,10 @@ from channels.layers import get_channel_layer
 import json
 from .serializers import *
 from .mqtt_client import publish_message
+from django.db.models import Sum, Max, Avg, Count
+from django.db.models.functions import TruncDay, TruncMonth
+import datetime
+from .views import send_weekly_consumption_update, send_monthly_consumption_update, send_monthly_consumption_nivel_update
 
 @receiver(post_save, sender=Habitacion)
 def send_habitacion_update(sender, instance, created, **kwargs):
@@ -113,19 +117,36 @@ def send_dispositivo_update(sender, instance, created, **kwargs):
         publish_message(topic, relay_state)
 
 @receiver(post_save, sender=RegistroConsumo)
-def send_registro_consumo_update(sender, instance, created, **kwargs):
+def send_consumption_updates(sender, instance, **kwargs):
     channel_layer = get_channel_layer()
-    data = {
-        'id': instance.id,
-        'consumo': instance.consumo,
-        'fecha': instance.fecha.isoformat(),
-    }
     
+    # Enviar actualización semanal
+    weekly_data = send_weekly_consumption_update()
     async_to_sync(channel_layer.group_send)(
-        'room_registros',
+        "registros",
         {
-            'type': 'send_update',
-            'data': data,
+            "type": "weekly_update",
+            "data": weekly_data
+        }
+    )
+    
+    # Enviar actualización mensual
+    monthly_data = send_monthly_consumption_update()
+    async_to_sync(channel_layer.group_send)(
+        "registros",
+        {
+            "type": "monthly_update",
+            "data": monthly_data
+        }
+    )
+    
+    # Enviar actualización mensual por nivel
+    nivel_monthly_data = send_monthly_consumption_nivel_update()
+    async_to_sync(channel_layer.group_send)(
+        "registros",
+        {
+            "type": "monthly_nivel_update",
+            "data": nivel_monthly_data
         }
     )
 

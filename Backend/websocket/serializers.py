@@ -52,7 +52,7 @@ class DispositivoSerializer(serializers.ModelSerializer):
     def get_off_image(self, obj):
         return obj.off_image.url if obj.off_image else None
 
-class ResgistroConsumoSerializer(serializers.ModelSerializer):
+class RegistroConsumoSerializer(serializers.ModelSerializer):
 
     dispositivo = DispositivoSerializer()
     fecha= serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")

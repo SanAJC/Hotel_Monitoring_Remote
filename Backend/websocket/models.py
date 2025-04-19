@@ -48,8 +48,7 @@ class Nivel(models.Model):
         return f"Nivel {self.nivel}"
     
     def actualizar_consumo(self):
-        habitaciones = Habitacion.objects.filter(nivel=self)
-        self.consumo = sum(habitacion.consumo for habitacion in habitaciones)
+        self.consumo = sum(habitacion.consumo for habitacion in self.niveles.all())
         self.save()
     
 
