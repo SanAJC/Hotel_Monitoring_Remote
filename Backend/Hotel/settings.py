@@ -34,7 +34,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
     'daphne',
-    'jazzmin',
+    'unfold',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -62,82 +62,76 @@ CHANNEL_LAYERS = {
     },
 }
 
-#Configuracion Django Jazzmin
+#Configuracion Django unflod
 
-JAZZMIN_SETTINGS = {
-    "site_title": "Hotel Kamila",
-    "site_header": "Panel de Gestión del Hotel",
-    "site_brand": "Hotel Admin",
-    "welcome_sign": "Bienvenido al panel de administración del hotel",
-    "copyright": "Hotel Kamila",
-    "site_logo": "images/hotel.png",
-    "topmenu_links": [
-        {"name": "Inicio", "url": "admin:index", "permissions": ["auth.view_user"]},
-        {"name": "Documentación", "url": "https://docs.djangoproject.com/en/stable/", "new_window": True},
-    ],
-    
-}
-
-JAZZMIN_SETTINGS["show_ui_builder"] = True
-
-JAZZMIN_SETTINGS["icons"] = {
-    
-    "auth": "fas fa-users-cog",
-    "auth.user": "fas fa-user",
-    "auth.Group": "fas fa-users",
-    "authentication.User": "fas fa-user-tie",  
-    "websocket.Hotel": "fas fa-hotel",
-    "websocket.Nivel": "fas fa-layer-group",
-    "websocketl.Habitacion": "fas fa-bed",
-    "websocket.Dispositivo": "fas fa-plug",
-    "websocket.RegistroConsumo": "fas fa-chart-line",
-    "websocket.Alerta": "fas fa-exclamation-triangle",
-}
-
-JAZZMIN_SETTINGS["filter_options"] = {
-    "Habitacion": {
-        "name": "Filtro de Habitaciones",
-        "fields": ["numero", "nivel", "presencia_humana"],
+UNFOLD = {
+    "SITE_TITLE": "Administración del Hotel",
+    "SITE_HEADER": "Hotel",
+    "COLORS": {
+         "primary": {
+            "50":  "254 242 242",  
+            "100": "254 226 226",  
+            "200": "254 202 202",  
+            "300": "252 165 165",  
+            "400": "248 113 113",  
+            "500": "239  68  68",  
+            "600": "220  38  38",  
+            "700": "185  28  28",  
+            "800": "153  27  27",  
+            "900": "127  29  29",  
+            "950": " 69  10  10",  
+        },
     },
-    "Dispositivo": {
-        "name": "Filtro de Dispositivos",
-        "fields": ["tipo", "habitacion"],
-    },
-    "Alerta": {
-        "name": "Filtro de Alertas",
-        "fields": ["tipo", "habitacion"],
-    },
-}
-
-JAZZMIN_UI_TWEAKS = {
-    "navbar_small_text": False,
-    "footer_small_text": False,
-    "body_small_text": True,
-    "brand_small_text": False,
-    "brand_colour": False,
-    "accent": "accent-primary",
-    "navbar": "navbar-dark",
-    "no_navbar_border": False,
-    "navbar_fixed": False,
-    "layout_boxed": False,
-    "footer_fixed": False,
-    "sidebar_fixed": False,
-    "sidebar": "sidebar-dark-primary",
-    "sidebar_nav_small_text": False,
-    "sidebar_disable_expand": False,
-    "sidebar_nav_child_indent": False,
-    "sidebar_nav_compact_style": False,
-    "sidebar_nav_legacy_style": False,
-    "sidebar_nav_flat_style": False,
-    "theme": "cyborg",
-    "dark_mode_theme": None,
-    "button_classes": {
-        "primary": "btn-primary",
-        "secondary": "btn-secondary",
-        "info": "btn-info",
-        "warning": "btn-warning",
-        "danger": "btn-danger",
-        "success": "btn-success"
+    "SIDEBAR": {
+        "show_search": True,
+        "show_all_applications": True,
+        "navigation": [
+            {
+                "title": "Autenticación",
+                "items": [
+                    {
+                        "title": "Usuarios",
+                        "icon": "person",
+                        "link": "/admin/authentication/user/",
+                    }
+                ]
+            },
+            {
+                "title": "WebSocket",
+                "items": [
+                    {
+                        "title": "Hoteles",
+                        "icon": "hotel",
+                        "link": "/admin/websocket/hotel/",
+                    },
+                    {
+                        "title": "Niveles",
+                        "icon": "layers",
+                        "link": "/admin/websocket/nivel/",
+                    },
+                    {
+                        "title": "Habitaciones",
+                        "icon": "bed",
+                        "link": "/admin/websocket/habitacion/",
+                    },
+                    {
+                        "title": "Dispositivos",
+                        "icon": "devices",
+                        "link": "/admin/websocket/dispositivo/",
+                    },
+                    {
+                        "title": "Registros de Consumo",
+                        "icon": "electric_bolt",
+                        "link": "/admin/websocket/registroconsumo/",
+                    },
+                    {
+                        "title": "Alertas",
+                        "icon": "warning",
+                        "link": "/admin/websocket/alerta/",
+                    }
+                ]
+            }
+        ]
     }
 }
 

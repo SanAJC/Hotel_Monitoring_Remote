@@ -1,8 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import User
+from unfold.admin import ModelAdmin
 
-class UserAdmin(BaseUserAdmin):
+class UserAdmin(BaseUserAdmin, ModelAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
