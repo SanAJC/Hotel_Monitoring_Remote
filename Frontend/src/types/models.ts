@@ -65,5 +65,6 @@ export type Alerta = {
     id: number;
     habitacion: Habitacion;  // Relación con Habitacion
     tipo: 'CONSUMO_ALTO' | 'FALLA_SENSOR' | 'APAGADO_MANUAL';
+    mensaje: string;
     fecha_creacion: string;
 };

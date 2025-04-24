@@ -127,6 +127,7 @@ class Alerta(models.Model):
 
     habitacion = models.ForeignKey(Habitacion, on_delete=models.CASCADE, related_name="alertas")
     tipo = models.CharField(max_length=50, choices=TIPOS_ALERTA)
+    mensaje = models.TextField(default='No hay mensaje')
     fecha_creacion = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -80,7 +80,7 @@ export default function Header() {
               {alertas.map((alerta) => (
                 <li key={alerta.id}>
                   <Alert variant="filled" severity="warning">
-                    {alerta.tipo} | {alerta.habitacion.numero}
+                    {alerta.tipo} | {alerta.habitacion.numero} | {alerta.mensaje}
                   </Alert>
                 </li>
               ))}

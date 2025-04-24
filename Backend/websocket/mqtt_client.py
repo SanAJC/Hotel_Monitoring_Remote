@@ -54,6 +54,7 @@ def on_message(client, userdata, msg):
                     Alerta.objects.create(
                         habitacion=habitacion,
                         tipo="APAGADO_MANUAL",
+                        mensaje="Existe un dispositivo encendido en la habitación"
                     )
                     ultima_alerta[room_id] = ahora
                     print(f"Alerta creada para habitación {room_id}")

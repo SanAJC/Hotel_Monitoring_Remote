@@ -158,6 +158,7 @@ def send_alerta_update(sender, instance, created, **kwargs):
         'id': instance.id,
         'tipo': instance.tipo,
         'habitacion': habitacion_data,
+        'mensaje': instance.mensaje,
         'fecha_creacion': instance.fecha_creacion.isoformat(),
     }
     
