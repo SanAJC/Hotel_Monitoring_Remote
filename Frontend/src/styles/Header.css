@@ -35,8 +35,8 @@
     color: #606B7A;
     font-weight: bold;
     padding: 10px 15px;
-    border: 1px solid #FFF;
-    border-radius: 20px;
+    border: none;
+    border-radius: 12px;
     margin: 0 0px; 
 }
 
