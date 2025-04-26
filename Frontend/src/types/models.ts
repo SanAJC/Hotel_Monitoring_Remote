@@ -56,7 +56,8 @@ export type Dispositivo = {
 
 export type RegistroConsumo = {
     id: number;
-    dispositivo: Dispositivo;  // Relación con Dispositivo
+    dispositivo: Dispositivo;
+    habitacion: Habitacion;
     consumo: number;
     fecha: string;
 };

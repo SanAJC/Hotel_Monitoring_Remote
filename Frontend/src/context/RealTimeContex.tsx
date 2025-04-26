@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
-import { Habitacion, Dispositivo, Nivel , Hotel , Alerta} from '@/types/models';
+import { Habitacion, Dispositivo, Nivel , Hotel , Alerta, RegistroConsumo} from '@/types/models';
 import { toast } from 'react-toastify';
 
 const WS_BASE_URL = 'ws://localhost:8000/ws';
@@ -11,6 +11,7 @@ interface WebSocketContextType {
   hotelSocket: WebSocket | null;
   nivelesSocket: WebSocket | null;
   alertasSocket: WebSocket | null;
+  registrosConsumoSocket: WebSocket | null;
   
   // Data states
   rooms: Habitacion[];
@@ -18,6 +19,9 @@ interface WebSocketContextType {
   hotel: Hotel[];
   niveles: Nivel[];
   alertas: Alerta[];
+  registrosConsumoWeekly: RegistroConsumo[];
+  registrosConsumoMonthly: RegistroConsumo[];
+  registrosConsumoNivel: RegistroConsumo[];
   
   // Actions
   sendCommand: (dispositivoId: number, estado: 'ENCENDER' | 'APAGAR') => void;
@@ -30,11 +34,15 @@ const WebSocketContext = createContext<WebSocketContextType>({
   hotelSocket: null,
   nivelesSocket: null,
   alertasSocket: null,
+  registrosConsumoSocket: null,
   rooms: [],
   dispositivos: [],
   hotel: [],
   niveles: [],
   alertas: [],
+  registrosConsumoWeekly: [],
+  registrosConsumoMonthly: [],
+  registrosConsumoNivel: [],
   sendCommand: () => {},
 });
 
@@ -48,6 +56,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const hotelSocketRef = useRef<WebSocket | null>(null);
   const nivelesSocketRef = useRef<WebSocket | null>(null);
   const alertasSocketRef = useRef<WebSocket | null>(null);
+  const registrosConsumoSocketRef = useRef<WebSocket | null>(null);
   
   // Data states
   const [rooms, setRooms] = useState<Habitacion[]>([]);
@@ -55,7 +64,10 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [hotel, setHotel] = useState<Hotel[]>([]);
   const [niveles, setNiveles] = useState<Nivel[]>([]);
   const [alertas, setAlertas] = useState<Alerta[]>([]);
-  
+  const [registrosConsumoWeekly, setRegistrosConsumoWeekly] = useState<RegistroConsumo[]>([]);
+  const [registrosConsumoMonthly, setRegistrosConsumoMonthly] = useState<RegistroConsumo[]>([]);
+  const [registrosConsumoNivel, setRegistrosConsumoNivel] = useState<RegistroConsumo[]>([]);
+
   // Usamos una referencia para controlar si ya intentamos conectar
   const hasConnectedRef = useRef(false);
 
@@ -86,6 +98,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       connectHotelWebSocket();
       connectNivelesWebSocket();
       connectAlertasWebSocket();
+      connectRegistrosConsumoWebSocket();
     }, 500); // Verificamos cada 500ms
 
     return () => clearInterval(interval);
@@ -139,7 +152,6 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     newSocket.onclose = (event) => {
       console.log(`WebSocket habitaciones desconectado (código: ${event.code}). ${event.wasClean ? 'Cierre limpio' : 'Cierre inesperado'}`);
           
-      // Solo reconectamos si el cierre no fue intencional
       if (!event.wasClean) {
         console.log("Reintentando conexión en 3 segundos...");
         setTimeout(connectRoomsWebSocket, 3000);
@@ -159,13 +171,12 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   const connectDispositivosWebSocket = () => {
-    // Si ya hay una conexión activa, no creamos otra
+
     if (dispositivosSocketRef.current && dispositivosSocketRef.current.readyState === WebSocket.OPEN) {
       console.log("WebSocket dispositivos ya está conectado");
       return;
     }
     
-    // Cerramos cualquier conexión existente antes de crear una nueva
     if (dispositivosSocketRef.current) {
       dispositivosSocketRef.current.close();
     }
@@ -200,7 +211,6 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     newSocket.onclose = (event) => {
       console.log(`WebSocket dispositivos desconectado (código: ${event.code}). ${event.wasClean ? 'Cierre limpio' : 'Cierre inesperado'}`);
       
-      // Solo reconectamos si el cierre no fue intencional
       if (!event.wasClean) {
         console.log("Reintentando conexión en 3 segundos...");
         setTimeout(connectDispositivosWebSocket, 3000);
@@ -215,13 +225,12 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   const connectHotelWebSocket = () => {
-    // Si ya hay una conexión activa, no creamos otra
+
     if (hotelSocketRef.current && hotelSocketRef.current.readyState === WebSocket.OPEN) {
       console.log("WebSocket hotel ya está conectado");
       return;
     }
     
-    // Cerramos cualquier conexión existente antes de crear una nueva
     if (hotelSocketRef.current) {
       hotelSocketRef.current.close();
     }
@@ -257,8 +266,6 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     newSocket.onclose = (event) => {
       console.log(`WebSocket hotel desconectado (código: ${event.code}). ${event.wasClean ? 'Cierre limpio' : 'Cierre inesperado'}`);
       
-      
-      // Solo reconectamos si el cierre no fue intencional
       if (!event.wasClean) {
         console.log("Reintentando conexión en 3 segundos...");
         setTimeout(connectHotelWebSocket, 3000);
@@ -273,13 +280,12 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   const connectNivelesWebSocket = () => {
-    // Si ya hay una conexión activa, no creamos otra
+    
     if (nivelesSocketRef.current && nivelesSocketRef.current.readyState === WebSocket.OPEN) {
       console.log("WebSocket niveles ya está conectado");
       return;
     }
     
-    // Cerramos cualquier conexión existente antes de crear una nueva
     if (nivelesSocketRef.current) {
       nivelesSocketRef.current.close();
     }
@@ -320,8 +326,6 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     newSocket.onclose = (event) => {
       console.log(`WebSocket niveles desconectado (código: ${event.code}). ${event.wasClean ? 'Cierre limpio' : 'Cierre inesperado'}`);
       
-      
-      // Solo reconectamos si el cierre no fue intencional
       if (!event.wasClean) {
         console.log("Reintentando conexión en 3 segundos...");
         setTimeout(connectNivelesWebSocket, 3000);
@@ -457,6 +461,71 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
   };
 
+  const connectRegistrosConsumoWebSocket = () => {
+
+    if (registrosConsumoSocketRef.current && registrosConsumoSocketRef.current.readyState === WebSocket.OPEN) {
+      console.log("WebSocket registros de consumo ya está conectado");
+      return;
+    }
+    
+    if (registrosConsumoSocketRef.current) {
+      registrosConsumoSocketRef.current.close();
+    }
+
+    try {
+      console.log("Creando nueva conexión WebSocket para registros de consumo");
+      const accessToken = sessionStorage.getItem("accessToken");
+      const newSocket = new WebSocket(
+        `${WS_BASE_URL}/registros_consumo/?token=${accessToken}`
+      );
+
+    newSocket.onopen = () => {
+      console.log("WebSocket registros de consumo conectado");
+      
+    };
+
+    newSocket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      
+      switch (data.type) {
+        case 'weekly_update':
+          setRegistrosConsumoWeekly(data.data);
+          console.log("Registros de consumo semanales actualizados:", data.data);
+          break;
+        case 'monthly_update':
+          setRegistrosConsumoMonthly(data.data);
+          console.log("Registros de consumo mensuales actualizados:", data.data);
+          break;
+        case 'monthly_nivel_update':
+          setRegistrosConsumoNivel(data.data);
+          console.log("Registros de consumo nivel actualizados:", data.data);
+          break;
+        default:
+          console.error("Tipo de dato desconocido:", data.type);
+      }
+
+    };
+
+    newSocket.onclose = (event) => {
+      console.log(`WebSocket niveles desconectado (código: ${event.code}). ${event.wasClean ? 'Cierre limpio' : 'Cierre inesperado'}`);
+      
+      if (!event.wasClean) {
+        console.log("Reintentando conexión en 3 segundos...");
+        setTimeout(connectRegistrosConsumoWebSocket, 3000);
+      }
+    };
+
+    newSocket.onerror = (error) =>
+      console.error("Error en el WebSocket de registros de consumo:", error);
+
+    nivelesSocketRef.current = newSocket;
+    } catch (error) {
+      console.error("Error al crear WebSocket de registros de consumo:", error);
+      
+    }
+  };
+  
+
   // Cleanup function to close all WebSockets when the provider unmounts
   useEffect(() => {
     return () => {
@@ -467,6 +536,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       if (hotelSocketRef.current) hotelSocketRef.current.close(1000, "Cierre normal");
       if (nivelesSocketRef.current) nivelesSocketRef.current.close(1000, "Cierre normal");
       if (alertasSocketRef.current) alertasSocketRef.current.close(1000, "Cierre normal");
+      if (registrosConsumoSocketRef.current) registrosConsumoSocketRef.current.close(1000, "Cierre normal");
       // Reseteamos la bandera de conexión para permitir reconexiones si el componente se vuelve a montar
       hasConnectedRef.current = false;
     };
@@ -494,11 +564,15 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     hotelSocket: hotelSocketRef.current,
     nivelesSocket: nivelesSocketRef.current,
     alertasSocket: alertasSocketRef.current,
+    registrosConsumoSocket: registrosConsumoSocketRef.current,
     rooms,
     dispositivos,
     hotel,
     niveles,
     alertas,
+    registrosConsumoWeekly,
+    registrosConsumoMonthly,
+    registrosConsumoNivel,
     sendCommand,
   };
 
