@@ -35,7 +35,7 @@
     color: #606B7A;
     font-weight: bold;
     padding: 10px 15px;
-    border: none;
+    border: 1px solid #FFF;
     border-radius: 20px;
     margin: 0 0px; 
 }
