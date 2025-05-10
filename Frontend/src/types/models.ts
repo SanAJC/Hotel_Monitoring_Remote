@@ -69,3 +69,27 @@ export type Alerta = {
     mensaje: string;
     fecha_creacion: string;
 };
+
+export type RegistrosWeekly = {
+    day: string;
+    dispositivos: {
+      AIRE: { max: number; avg: number; total: number; count: number };
+      VENTILADOR: { max: number; avg: number; total: number; count: number };
+      TELEVISOR: { max: number; avg: number; total: number; count: number };
+      FOCO_HABITACION: { max: number; avg: number; total: number; count: number };
+      FOCO_BAÑO: { max: number; avg: number; total: number; count: number };
+    };
+    consumo_total_dia: number;  
+}
+
+export type RegistrosMonthy = {
+    month: string;
+    dispositivos: {
+      AIRE: { max: number; avg: number; total: number; count: number };
+      VENTILADOR: { max: number; avg: number; total: number; count: number };
+      TELEVISOR: { max: number; avg: number; total: number; count: number };
+      FOCO_HABITACION: { max: number; avg: number; total: number; count: number };
+      FOCO_BAÑO: { max: number; avg: number; total: number; count: number };
+    };
+    consumo_total_dia: number;  
+}

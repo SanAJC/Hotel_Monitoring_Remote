@@ -61,7 +61,7 @@ export default function Rooms() {
                             : "white",
                       }}
                     >
-                      Nivel {nivel.nivel} - Consumo: {nivel.consumo}
+                      Nivel {nivel.nivel} - Consumo: {Number(nivel.consumo).toFixed(2)} kWh
                     </a>
                   ))}
                 </nav>

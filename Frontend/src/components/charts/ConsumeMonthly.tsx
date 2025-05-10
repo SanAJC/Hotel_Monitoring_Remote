@@ -6,43 +6,52 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import useRegistros from "@/hooks/useRegistros";
+import { Dispositivo } from "@/types/models";
 
-export const ConsumeMothklyChart = () => {
-  const chartData = [
-    { month: "January", aire: 50, television: 20, foco1: 20, foco2: 10 },
-    { month: "February", aire: 80, television: 30, foco1: 12, foco2: 4 },
-    { month: "March", aire: 70, television: 45, foco1: 16, foco2: 12 },
-    { month: "April", aire: 20, television: 34, foco1: 12, foco2: 8 },
-    { month: "May", aire: 21, television: 30, foco1: 22, foco2: 7 },
-    { month: "June", aire: 90, television: 40, foco1: 17, foco2: 12 },
-    { month: "July", aire: 22, television: 20, foco1: 15, foco2: 5 },
-    { month: "August", aire: 30, television: 35, foco1: 20, foco2: 6 },
-    { month: "September", aire: 90, television: 40, foco1: 17, foco2: 11 },
-    { month: "October", aire: 50, television: 30, foco1: 15, foco2: 5 },
-    { month: "November", aire: 40, television: 30, foco1: 22, foco2: 4 },
-    { month: "December", aire: 40, television: 35, foco1: 22, foco2: 2 },
-  ];
+type DispositivoProps = {
+  dispositivos: Dispositivo[];
+}
+export const ConsumeMothklyChart = ({dispositivos}: DispositivoProps) => {
+  const {registrosConsumoMonthly} = useRegistros()
+  const dispositivoClima = dispositivos.find(
+    (d) => d.tipo === "VENTILADOR" || d.tipo === "AIRE"
+  );
+
+  const chartData = registrosConsumoMonthly.map((registro) => {
+    const consumoClima = dispositivoClima?.tipo === "VENTILADOR" 
+      ? registro.dispositivos.VENTILADOR.total 
+      : registro.dispositivos.AIRE.total;
+
+    return {
+      month: registro.month,
+      clima: consumoClima,
+      television: registro.dispositivos.TELEVISOR.total,
+      "foco-1": registro.dispositivos.FOCO_HABITACION.total,
+      "foco-2": registro.dispositivos.FOCO_BAÑO.total,
+    };
+  });
 
   const chartConfig = {
-    aire: {
-      label: "Aire",
-      color: "#6CC9D4",
+    clima: {
+      label: dispositivoClima?.tipo === "VENTILADOR" ? "Ventilador" : "Aire Acondicionado",
+      color: "#4A919D",
     },
     television: {
       label: "Televisión",
       color: "#BC99F3",
     },
     foco1: {
-      label: "Foco 1",
+      label: "Foco Habitacion",
       color: "#FCCB50",
     },
     foco2: {
-      label: "Foco 2",
+      label: "Foco Baño",
       color: "#f59e0b",
     },
   } satisfies ChartConfig;
   return (
-    <CardChart title="Consumo Mensual de la Habitacion">
+    <CardChart title="Consumo Mensual de la Habitacion (kWh)">
       <ChartContainer config={chartConfig} className="w-full h-64" style={{ height: "200px" }}>
         <AreaChart
           accessibilityLayer
@@ -83,7 +92,7 @@ export const ConsumeMothklyChart = () => {
             </linearGradient>
           </defs>
           <Area
-            dataKey="aire"
+            dataKey="clima"
             type="natural"
             fill="url(#fillAire)"
             stroke="#6CC9D4"

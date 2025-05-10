@@ -46,10 +46,10 @@ export default function Room() {
             <TvChart dispositivos={dispositivo} />
             <F1Chart dispositivos={dispositivo}/>
             <img src={imageUrl} alt={`Habitación ${room.numero}`} id="habitacion" />
-            <ConsumeWeeklyChart />
+            <ConsumeWeeklyChart dispositivos={dispositivo} />
             <F2Chart dispositivos={dispositivo} />
             <CardRoomAction dispositivos={dispositivo} sendCommand={sendCommand} habitacion={room} />
-            <ConsumeMothklyChart  />
+            <ConsumeMothklyChart dispositivos={dispositivo}  />
           </div>
           <footer>
             <span>Todos los derechos de autor reservados</span>

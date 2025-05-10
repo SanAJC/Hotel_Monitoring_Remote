@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
-import { Habitacion, Dispositivo, Nivel , Hotel , Alerta, RegistroConsumo} from '@/types/models';
+import { Habitacion, Dispositivo, Nivel , Hotel , Alerta, RegistroConsumo , RegistrosWeekly,RegistrosMonthy} from '@/types/models';
 import { toast } from 'react-toastify';
 
 const WS_BASE_URL = 'ws://localhost:8000/ws';
@@ -19,8 +19,8 @@ interface WebSocketContextType {
   hotel: Hotel[];
   niveles: Nivel[];
   alertas: Alerta[];
-  registrosConsumoWeekly: RegistroConsumo[];
-  registrosConsumoMonthly: RegistroConsumo[];
+  registrosConsumoWeekly: RegistrosWeekly[];
+  registrosConsumoMonthly: RegistrosMonthy[];
   registrosConsumoNivel: RegistroConsumo[];
   
   // Actions
@@ -64,8 +64,8 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [hotel, setHotel] = useState<Hotel[]>([]);
   const [niveles, setNiveles] = useState<Nivel[]>([]);
   const [alertas, setAlertas] = useState<Alerta[]>([]);
-  const [registrosConsumoWeekly, setRegistrosConsumoWeekly] = useState<RegistroConsumo[]>([]);
-  const [registrosConsumoMonthly, setRegistrosConsumoMonthly] = useState<RegistroConsumo[]>([]);
+  const [registrosConsumoWeekly, setRegistrosConsumoWeekly] = useState<RegistrosWeekly[]>([]);
+  const [registrosConsumoMonthly, setRegistrosConsumoMonthly] = useState<RegistrosMonthy[]>([]);
   const [registrosConsumoNivel, setRegistrosConsumoNivel] = useState<RegistroConsumo[]>([]);
 
   // Usamos una referencia para controlar si ya intentamos conectar

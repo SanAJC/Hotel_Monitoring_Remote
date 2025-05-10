@@ -4,21 +4,36 @@ import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { ChartLegend, ChartLegendContent } from "@/components/ui/chart";
 import { Wind, Tv, Lightbulb } from "lucide-react";
+import useRegistros from "@/hooks/useRegistros";
+import { Dispositivo } from "@/types/models";
 
-export const ConsumeWeeklyChart = () => {
-  const chartData = [
-    { day: "Lunes", aire: 69, television: 40, "foco-1": 30, "foco-2": 15 },
-    { day: "Martes", aire: 45, television: 25, "foco-1": 18, "foco-2": 10 },
-    { day: "Miércoles", aire: 60, television: 35, "foco-1": 22, "foco-2": 12 },
-    { day: "Jueves", aire: 55, television: 28, "foco-1": 19, "foco-2": 14 },
-    { day: "Viernes", aire: 65, television: 40, "foco-1": 25, "foco-2": 18 },
-    { day: "Sábado", aire: 70, television: 45, "foco-1": 30, "foco-2": 20 },
-    { day: "Domingo", aire: 60, television: 50, "foco-1": 35, "foco-2": 25 },
-  ];
+type DispositivoProps = {
+  dispositivos: Dispositivo[];
+}
+
+export const ConsumeWeeklyChart = ({dispositivos}: DispositivoProps) => {
+  const {registrosConsumoWeekly} = useRegistros()
+  const dispositivoClima = dispositivos.find(
+    (d) => d.tipo === "VENTILADOR" || d.tipo === "AIRE"
+  );
+
+  const chartData = registrosConsumoWeekly.map((registro) => {
+    const consumoClima = dispositivoClima?.tipo === "VENTILADOR" 
+      ? registro.dispositivos.VENTILADOR.total 
+      : registro.dispositivos.AIRE.total;
+
+    return {
+      day: registro.day,
+      clima: consumoClima,
+      television: registro.dispositivos.TELEVISOR.total,
+      "foco-1": registro.dispositivos.FOCO_HABITACION.total,
+      "foco-2": registro.dispositivos.FOCO_BAÑO.total,
+    };
+  });
 
   const chartConfig = {
-    aire: {
-      label: "Aire Acondicionado",
+    clima: {
+      label: dispositivoClima?.tipo === "VENTILADOR" ? "Ventilador" : "Aire Acondicionado",
       icon: Wind,
       color: "#4A919D",
     },
@@ -28,18 +43,19 @@ export const ConsumeWeeklyChart = () => {
       color: "#8A6FC2",
     },
     "foco-1": {
-      label: "Foco 1",
+      label: "Foco habitacion",
       icon: Lightbulb,
       color: "#D1A03D",
     },
     "foco-2": {
-      label: "Foco 2",
+      label: "Foco baño",
       icon: Lightbulb,
       color: "#C37B08",
     },
   } satisfies ChartConfig;
+
   return (
-    <CardChart title="Consumo Semanal de la Habitacion">
+    <CardChart title="Consumo Semanal de la Habitacion (kWh)">
       <ChartContainer config={chartConfig} className="min-h-[200px] w-full" style={{ height: "190px" }}>
         <BarChart accessibilityLayer data={chartData}>
           <CartesianGrid vertical={false} />
@@ -52,7 +68,7 @@ export const ConsumeWeeklyChart = () => {
           />
           <ChartTooltip content={<ChartTooltipContent />} />
           <ChartLegend content={<ChartLegendContent />} />
-          <Bar dataKey="aire" fill={chartConfig.aire.color} radius={4} barSize={20} />
+          <Bar dataKey="clima" fill={chartConfig.clima.color} radius={4} barSize={20} />
           <Bar dataKey="television" fill={chartConfig.television.color} radius={4} barSize={20} />
           <Bar dataKey="foco-1" fill={chartConfig["foco-1"].color} radius={4} barSize={20} />
           <Bar dataKey="foco-2" fill={chartConfig["foco-2"].color} radius={4} barSize={20} />
