@@ -18,8 +18,8 @@ export const F2Chart = ({dispositivos}: DispositivoProps) => {
   const dispositivo = dispositivos.find(
     (d) => d.tipo === "FOCO_BAÑO"
   );
-  const maxConsumption = 1000;
-  const currentConsumption = dispositivo ? dispositivo.consumo_actual : 100;
+  const maxConsumption = 50;
+  const currentConsumption = dispositivo ? dispositivo.consumo_actual : 10;
 
   const chartData = [
     {

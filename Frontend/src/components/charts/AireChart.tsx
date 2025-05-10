@@ -20,8 +20,8 @@ export const AireChart = ({dispositivos}: DispositivoProps) => {
     (d) => d.tipo === "VENTILADOR" || d.tipo === "AIRE"
   );
 
-  const maxConsumption = 1000; 
-  const currentConsumption = dispositivo ? dispositivo.consumo_actual : 100;  
+  const maxConsumption = 100; 
+  const currentConsumption = dispositivo ? dispositivo.consumo_actual : 10;  
 
   const chartData = [
     {

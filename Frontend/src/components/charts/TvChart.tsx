@@ -17,8 +17,8 @@ export const TvChart = ({dispositivos}: DispositivoProps) => {
   const dispositivo = dispositivos.find(
     (d) => d.tipo === "TELEVISOR"
   );
-  const maxConsumption = 1000;
-  const currentConsumption = dispositivo ? dispositivo.consumo_actual : 100;  
+  const maxConsumption = 200;
+  const currentConsumption = dispositivo ? dispositivo.consumo_actual : 10;  
 
   const chartData = [
     {

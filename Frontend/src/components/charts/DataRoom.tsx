@@ -16,11 +16,11 @@ export default function DataRoom({habitacion}:DataRoomProps) {
         <div className="info-room">
             <div className="info-item">
                 <span>Consumo</span>
-                <p id="p-consumo">{habitacion.consumo} kWh</p> 
+                <p id="p-consumo">{Number(habitacion.consumo).toFixed(2)} kWh</p> 
             </div>
             <div className="info-item">
                 <span>C. Desperdiciado</span>
-                <p id="p-consumo">{habitacion.consumo_desperdicio} kWh</p> 
+                <p id="p-consumo">{Number(habitacion.consumo_desperdicio).toFixed(2)} kWh</p> 
             </div>
             <div className="info-item">
                 <span>Presencia</span>

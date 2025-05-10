@@ -19,8 +19,8 @@ export const F1Chart = ({dispositivos}: DispositivoProps) => {
     (d) => d.tipo === "FOCO_HABITACION"
   );
 
-  const maxConsumption = 1000;
-  const currentConsumption = dispositivo ? dispositivo.consumo_actual : 100;  
+  const maxConsumption = 50;
+  const currentConsumption = dispositivo ? dispositivo.consumo_actual : 10;  
 
   const chartData = [
     {

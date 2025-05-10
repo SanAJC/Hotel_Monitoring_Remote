@@ -66,13 +66,26 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.println(message);
   
   if (String(topic) == relay_topic) {
-    if (message.equalsIgnoreCase("ON")) {
+    Serial.print("Estado actual del relé antes del cambio: ");
+    Serial.println(relayOn ? "ON" : "OFF");
+    
+    // Limpiar el mensaje de comillas
+    message.trim();
+    message.replace("\"", "");
+    
+    Serial.print("Mensaje limpio: ");
+    Serial.println(message);
+    
+    if (message == "ON") {
       relayOn = true;
       Serial.println("Relé activado");
-    } else if (message.equalsIgnoreCase("OFF")) {
+    } else if (message == "OFF") {
       relayOn = false;
       Serial.println("Relé desactivado");
     }
+    
+    Serial.print("Estado actual del relé después del cambio: ");
+    Serial.println(relayOn ? "ON" : "OFF");
   }
 }
 

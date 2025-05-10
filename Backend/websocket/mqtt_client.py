@@ -206,7 +206,7 @@ def publish_message(topic, message):
     
     try:
         result = mqtt_client.publish(topic, json.dumps(message))
-        print(f"Mensaje publicado en {topic}: {message}")
+        print(f"Mensaje publicado en {topic}:{message}")
         return result.rc == mqtt.MQTT_ERR_SUCCESS
     except Exception as e:
         print(f"Error al publicar mensaje: {e}")
