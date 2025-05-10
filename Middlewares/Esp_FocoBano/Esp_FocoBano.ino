@@ -119,6 +119,7 @@ void setup() {
   randomSeed(esp_random());
   setup_wifi();
   espClient.setCACert(root_ca);
+  espClient.setInsecure();
   client.setServer(mqtt_server, mqtt_port);
   client.setCallback(callback);
 }

@@ -108,7 +108,8 @@ void setup() {
   setup_wifi();
   
   // Configurar certificado
-  espClient.setCACert(root_ca); 
+  espClient.setCACert(root_ca);
+  espClient.setInsecure();
   
   // Configurar servidor MQTT
   client.setServer(mqtt_server, mqtt_port);

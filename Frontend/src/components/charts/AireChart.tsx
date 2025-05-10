@@ -109,7 +109,7 @@ export const AireChart = ({dispositivos}: DispositivoProps) => {
                         y={(viewBox.cy || 0) + 24}
                         className="fill-muted-foreground"
                       >
-                        kWh
+                        Wh
                       </tspan>
                     </text>
                   );

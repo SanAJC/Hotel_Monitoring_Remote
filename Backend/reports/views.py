@@ -18,11 +18,11 @@ class ReporteViewSet(ViewSet):
         nivel_data = Nivel.objects.all()
 
         ws_habitacion = wb.create_sheet(title="Consumo - Habitaciones")
-        ws_habitacion .append(['numero ', 'consumo', 'nivel ','images','presencia_humana','temperatura','humedad','consumo_desperdicio','fecha_actualizacion']) 
+        ws_habitacion .append(['numero ', 'consumo', 'nivel ','presencia_humana','temperatura','humedad','consumo_desperdicio','fecha_actualizacion']) 
         habitacion_data = Habitacion.objects.all()
 
         ws_dispositivos = wb.create_sheet(title="Consumo - Dispositivos")
-        ws_dispositivos.append(['habitacion', 'tipo','consumo_actual','consumo_acumulado', 'on_image','off_image','estado_remoto','fecha_actualizacion '])
+        ws_dispositivos.append(['habitacion', 'tipo','consumo_actual','consumo_acumulado','estado_remoto','fecha_actualizacion '])
         dispositivos_data = Dispositivo.objects.all()
 
         ws_consumo = wb.create_sheet(title="RegistroConsumo - General")
@@ -30,7 +30,7 @@ class ReporteViewSet(ViewSet):
         consumo_data = RegistroConsumo.objects.all()
 
         ws_alerta = wb.create_sheet(title="Alertas - General")
-        ws_alerta.append(['habitacion', 'tipo','fecha_creacion'])
+        ws_alerta.append(['habitacion', 'tipo','mensaje','fecha_creacion'])
         alerta_data = Alerta.objects.all()
 
 
@@ -47,12 +47,12 @@ class ReporteViewSet(ViewSet):
         # Escribir datos de Habitaciones
         for item in habitacion_data:
             fecha_actualizacion = item.fecha_actualizacion.replace(tzinfo=None) if item.fecha_actualizacion else None
-            ws_habitacion.append([item.numero, item.consumo, item.nivel.nivel, item.presencia_humana, item.temperatura, item.humedad, fecha_actualizacion])
+            ws_habitacion.append([item.numero, item.consumo, item.nivel.nivel, item.presencia_humana, item.temperatura, item.humedad,item.consumo_desperdicio, fecha_actualizacion])
 
         # Escribir datos de Dispositivos
         for item in dispositivos_data:
             fecha_actualizacion = item.fecha_actualizacion.replace(tzinfo=None) if item.fecha_actualizacion else None
-            ws_dispositivos.append([item.habitacion.numero, item.get_tipo_display(), item.consumo_actual, item.estado_remoto, fecha_actualizacion])
+            ws_dispositivos.append([item.habitacion.numero, item.get_tipo_display(), item.consumo_actual,item.consumo_acumulado, item.estado_remoto, fecha_actualizacion])
 
         # Escribir datos de RegistroConsumo
         for item in consumo_data:
@@ -62,7 +62,7 @@ class ReporteViewSet(ViewSet):
         # Escribir datos de Alertas
         for item in alerta_data:
             fecha_creacion = item.fecha_creacion.replace(tzinfo=None) if item.fecha_creacion else None
-            ws_alerta.append([item.habitacion.numero, item.get_tipo_display(), fecha_creacion])
+            ws_alerta.append([item.habitacion.numero, item.get_tipo_display(),item.mensaje, fecha_creacion])
 
         # Eliminar la hoja por defecto (si no se usa)
         if 'Sheet' in wb.sheetnames:

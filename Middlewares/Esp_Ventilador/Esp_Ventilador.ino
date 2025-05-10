@@ -119,7 +119,8 @@ void setup() {
   Serial.begin(115200);
   randomSeed(esp_random()); 
   setup_wifi();
-  espClient.setCACert(root_ca); 
+  espClient.setCACert(root_ca);
+  espClient.setInsecure();
   client.setServer(mqtt_server, mqtt_port);
   client.setCallback(callback);
 }

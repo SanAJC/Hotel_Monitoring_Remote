@@ -66,7 +66,7 @@ CHANNEL_LAYERS = {
 
 UNFOLD = {
     "SITE_TITLE": "Administración del Hotel",
-    "SITE_HEADER": "Hotel",
+    "SITE_HEADER": "Hotel Kamila",
     "COLORS": {
          "primary": {
             "50":  "254 242 242",  
