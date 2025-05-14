@@ -91,7 +91,7 @@ export default function Header() {
 
       <div className="user-info">
         <p>{user?.rol}</p>
-        <Link to="http://localhost:8000/admin/">
+        <Link to={`${import.meta.env.VITE_API_URL}/admin/`}>
           <img src={userImage} alt="user" id="img-user" />
         </Link>
       </div>

@@ -10,7 +10,7 @@ export const useRefreshToken = () => {
     }
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/authentication/auth/refresh_token/', {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/authentication/auth/refresh_token/`, {
         refresh_token: refreshToken,
       });
       const newAccessToken = response.data.access_token;

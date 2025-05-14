@@ -40,7 +40,7 @@ export const AsideContent = () => {
       </nav>
       <div className="icons-user">
         <button className="tooltip">
-          <Link to="http://localhost:8000/admin/">
+          <Link to={`${import.meta.env.VITE_API_URL}/admin/`}>
             <img src="/src/assets/user.png" alt="user" id="img-user" />
             <span className="tooltip-text">Admin</span>
           </Link>

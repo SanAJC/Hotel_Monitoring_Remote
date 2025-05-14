@@ -20,7 +20,7 @@ export const useLogout = () => {
       }
 
       const response = await axios.post(
-        "http://127.0.0.1:8000/authentication/auth/logout/",
+        `${import.meta.env.VITE_API_URL}/authentication/auth/logout/`,
         { refresh_token: refreshToken },
         {
           headers: {
