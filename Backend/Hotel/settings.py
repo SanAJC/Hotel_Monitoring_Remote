@@ -154,7 +154,7 @@ MIDDLEWARE = [
 ]
 
 # CORS Configuration
-CORS_ALLOWED_ORIGINS = ['http://localhost:5173',os.getenv('FRONTEND_URL')]
+CORS_ALLOWED_ORIGINS = os.getenv('FRONTEND_URL')
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = False
