@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+import dj_database_url
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,9 +27,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-td8#$69xas$#_xx(d60vqi-$u6$4u0i8f&-6%2^-*wae+m0gt)'
 
 ROOT_CA_PATH = os.path.join(BASE_DIR, 'certs', 'mqtt_root_ca.pem')
+USER_NAME_CLIENT = os.getenv('USER_NAME_CLIENT')
+PASSWORD_CLIENT = os.getenv('PASSWORD_CLIENT')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
@@ -57,7 +63,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [("127.0.0.1", 6379)],
+            "hosts": [os.getenv('CHANNEL_LAYERS')],
         },
     },
 }
@@ -147,8 +153,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = os.getenv('CORS_ALLOW_CREDENTIALS')
+CORS_ALLOW_ALL_ORIGINS = os.getenv('CORS_ALLOW_ALL_ORIGINS')
 
 ROOT_URLCONF = 'Hotel.urls'
 
@@ -175,22 +181,14 @@ WSGI_APPLICATION = 'Hotel.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'hotel_db',
-        'USER': 'postgres',
-        'PASSWORD': 'san_ats',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    },
-    'backup': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'hotel_db_back',
-        'USER': 'postgres',
-        'PASSWORD': 'san_ats',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600
+    ),
+    'backup': dj_database_url.config(
+        default=os.getenv('DATABASE_URL_BACKUP'),
+        conn_max_age=600
+    ),
 }
 
 DATABASE_ROUTERS = ['Hotel.routers.EnrutadorDeRespaldo']
@@ -271,7 +269,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 #Media photos
 
 MEDIA_URL='/media/'
-MEDIA_ROOT=BASE_DIR / 'media'
+MEDIA_ROOT=os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

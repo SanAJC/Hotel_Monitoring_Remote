@@ -161,7 +161,7 @@ def setup_mqtt_client():
     
     # Crear un nuevo cliente
     client = mqtt.Client()
-    client.username_pw_set("hotel_kamila", "hotel-admin-1")
+    client.username_pw_set(settings.USER_NAME_CLIENT, settings.PASSWORD_CLIENT)
     client.tls_set(ca_certs=settings.ROOT_CA_PATH)
     client.on_connect = on_connect
     client.on_message = on_message
