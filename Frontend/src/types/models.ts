@@ -72,24 +72,43 @@ export type Alerta = {
 
 export type RegistrosWeekly = {
     day: string;
-    dispositivos: {
-      AIRE: { max: number; avg: number; total: number; count: number };
-      VENTILADOR: { max: number; avg: number; total: number; count: number };
-      TELEVISOR: { max: number; avg: number; total: number; count: number };
-      FOCO_HABITACION: { max: number; avg: number; total: number; count: number };
-      FOCO_BAÑO: { max: number; avg: number; total: number; count: number };
-    };
-    consumo_total_dia: number;  
-}
+    habitaciones: Array<{
+        numero: number;
+        dispositivos: {
+            AIRE: { max: number; avg: number; total: number; count: number };
+            VENTILADOR: { max: number; avg: number; total: number; count: number };
+            TELEVISOR: { max: number; avg: number; total: number; count: number };
+            FOCO_HABITACION: { max: number; avg: number; total: number; count: number };
+            FOCO_BAÑO: { max: number; avg: number; total: number; count: number };
+        };
+        consumo_total_habitacion: number;
+    }>;
+};
 
 export type RegistrosMonthy = {
     month: string;
-    dispositivos: {
-      AIRE: { max: number; avg: number; total: number; count: number };
-      VENTILADOR: { max: number; avg: number; total: number; count: number };
-      TELEVISOR: { max: number; avg: number; total: number; count: number };
-      FOCO_HABITACION: { max: number; avg: number; total: number; count: number };
-      FOCO_BAÑO: { max: number; avg: number; total: number; count: number };
+    habitaciones: Array<{
+        numero: number;
+        dispositivos: {
+            AIRE: { max: number; avg: number; total: number; count: number };
+            VENTILADOR: { max: number; avg: number; total: number; count: number };
+            TELEVISOR: { max: number; avg: number; total: number; count: number };
+            FOCO_HABITACION: { max: number; avg: number; total: number; count: number };
+            FOCO_BAÑO: { max: number; avg: number; total: number; count: number };
+        };
+        consumo_total_mes: number;  
+    }>;
+};
+
+export type RegistrosLevel = {
+    month: string;
+    niveles: {
+        [key: string]: {
+            max: number;
+            avg: number;
+            total: number;
+            count: number;
+        };
     };
-    consumo_total_dia: number;  
+    consumo_total_mes: number;
 }

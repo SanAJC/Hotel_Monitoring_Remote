@@ -17,18 +17,30 @@ export const ConsumeMothklyChart = ({dispositivos}: DispositivoProps) => {
   const dispositivoClima = dispositivos.find(
     (d) => d.tipo === "VENTILADOR" || d.tipo === "AIRE"
   );
+  const numeroHabitacion = dispositivos[0]?.habitacion?.numero;
 
   const chartData = registrosConsumoMonthly.map((registro) => {
+    const habitacion = registro.habitaciones.find(h => h.numero === numeroHabitacion);
+    
+    if (!habitacion) {
+      return {
+        month: registro.month,
+        clima: 0,
+        television: 0,
+        "foco-1": 0,
+        "foco-2": 0,
+      };
+    }
     const consumoClima = dispositivoClima?.tipo === "VENTILADOR" 
-      ? registro.dispositivos.VENTILADOR.total 
-      : registro.dispositivos.AIRE.total;
+      ? habitacion.dispositivos.VENTILADOR.total 
+      : habitacion.dispositivos.AIRE.total;
 
     return {
       month: registro.month,
       clima: consumoClima,
-      television: registro.dispositivos.TELEVISOR.total,
-      "foco-1": registro.dispositivos.FOCO_HABITACION.total,
-      "foco-2": registro.dispositivos.FOCO_BAÑO.total,
+      television: habitacion.dispositivos.TELEVISOR.total,
+      "foco-1": habitacion.dispositivos.FOCO_HABITACION.total,
+      "foco-2": habitacion.dispositivos.FOCO_BAÑO.total,
     };
   });
 

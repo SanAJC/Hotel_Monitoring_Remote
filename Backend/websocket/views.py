@@ -20,28 +20,35 @@ def send_weekly_consumption_update():
         fecha__range=(fecha_inicio, datetime.datetime.now())
     ).select_related('dispositivo', 'habitacion')
     
-    # Agrupar por día y tipo de dispositivo, obteniendo estadísticas adicionales
+    # Agrupar por día, habitación y tipo de dispositivo
     result = queryset.annotate(
         dia=TruncDay('fecha')
     ).values(
         'dia', 
+        'habitacion__numero',
         'dispositivo__tipo'
     ).annotate(
         consumo_maximo=Max('consumo'),
         consumo_promedio=Avg('consumo'),
         consumo_total=Sum('consumo'),
         registros_count=Count('id')
-    ).order_by('dia', 'dispositivo__tipo')
+    ).order_by('dia', 'habitacion__numero', 'dispositivo__tipo')
 
     # Transformar los datos para el frontend
     dias = {}
     for item in result:
         dia_str = item['dia'].strftime('%Y-%m-%d')
+        habitacion_numero = item['habitacion__numero']
         tipo_dispositivo = item['dispositivo__tipo']
         
         if dia_str not in dias:
             dias[dia_str] = {
                 'day': dia_str,
+                'habitaciones': {}
+            }
+            
+        if habitacion_numero not in dias[dia_str]['habitaciones']:
+            dias[dia_str]['habitaciones'][habitacion_numero] = {
                 'dispositivos': {
                     'AIRE': {'max': 0, 'avg': 0, 'total': 0, 'count': 0},
                     'VENTILADOR': {'max': 0, 'avg': 0, 'total': 0, 'count': 0},
@@ -49,19 +56,32 @@ def send_weekly_consumption_update():
                     'FOCO_HABITACION': {'max': 0, 'avg': 0, 'total': 0, 'count': 0},
                     'FOCO_BAÑO': {'max': 0, 'avg': 0, 'total': 0, 'count': 0}
                 },
-                'consumo_total_dia': 0
+                'consumo_total_habitacion': 0
             }
         
-        dias[dia_str]['dispositivos'][tipo_dispositivo] = {
+        dias[dia_str]['habitaciones'][habitacion_numero]['dispositivos'][tipo_dispositivo] = {
             'max': round(item['consumo_maximo'], 2),
             'avg': round(item['consumo_promedio'], 2),
             'total': round(item['consumo_total'], 2),
             'count': item['registros_count']
         }
-        dias[dia_str]['consumo_total_dia'] += item['consumo_total']
+        dias[dia_str]['habitaciones'][habitacion_numero]['consumo_total_habitacion'] += item['consumo_total']
     
     # Convertir el diccionario a una lista ordenada por día
-    data = [dias[dia] for dia in sorted(dias.keys())]
+    data = []
+    for dia in sorted(dias.keys()):
+        dia_data = {
+            'day': dias[dia]['day'],
+            'habitaciones': []
+        }
+        for habitacion_numero in sorted(dias[dia]['habitaciones'].keys()):
+            habitacion_data = {
+                'numero': habitacion_numero,
+                'dispositivos': dias[dia]['habitaciones'][habitacion_numero]['dispositivos'],
+                'consumo_total_habitacion': round(dias[dia]['habitaciones'][habitacion_numero]['consumo_total_habitacion'], 2)
+            }
+            dia_data['habitaciones'].append(habitacion_data)
+        data.append(dia_data)
     
     # Mapear los nombres de los días de la semana
     dias_semana = {
@@ -78,7 +98,6 @@ def send_weekly_consumption_update():
     for item in data:
         fecha = datetime.datetime.strptime(item['day'], '%Y-%m-%d')
         item['day'] = dias_semana[fecha.weekday()]
-        item['consumo_total_dia'] = round(item['consumo_total_dia'], 2)
     
     return data
 
@@ -95,23 +114,30 @@ def send_monthly_consumption_update():
         mes=TruncMonth('fecha')
     ).values(
         'mes', 
-        'dispositivo__tipo'
+        'dispositivo__tipo',
+        'habitacion__numero'
     ).annotate(
         consumo_maximo=Max('consumo'),
         consumo_promedio=Avg('consumo'),
         consumo_total=Sum('consumo'),
         registros_count=Count('id')
-    ).order_by('mes', 'dispositivo__tipo')
+    ).order_by('mes', 'dispositivo__tipo', 'habitacion__numero')
 
     # Transformar los datos para el frontend
     meses = {}
     for item in result:
         mes_str = item['mes'].strftime('%Y-%m')
         tipo_dispositivo = item['dispositivo__tipo']
-        
+        habitacion_numero = item['habitacion__numero']
+
         if mes_str not in meses:
             meses[mes_str] = {
                 'month': mes_str,
+                'habitaciones': {}    
+        }
+        
+        if habitacion_numero not in meses[mes_str]['habitaciones']:
+            meses[mes_str]['habitaciones'][habitacion_numero] = {
                 'dispositivos': {
                     'AIRE': {'max': 0, 'avg': 0, 'total': 0, 'count': 0},
                     'VENTILADOR': {'max': 0, 'avg': 0, 'total': 0, 'count': 0},
@@ -122,17 +148,29 @@ def send_monthly_consumption_update():
                 'consumo_total_mes': 0
             }
         
-        meses[mes_str]['dispositivos'][tipo_dispositivo] = {
+        meses[mes_str]['habitaciones'][habitacion_numero]['dispositivos'][tipo_dispositivo] = {
             'max': round(item['consumo_maximo'], 2),
             'avg': round(item['consumo_promedio'], 2),
             'total': round(item['consumo_total'], 2),
             'count': item['registros_count']
         }
-        meses[mes_str]['consumo_total_mes'] += item['consumo_total']
+        meses[mes_str]['habitaciones'][habitacion_numero]['consumo_total_mes'] += item['consumo_total']
     
-    # Convertir el diccionario a una lista ordenada por mes
-    data = [meses[mes] for mes in sorted(meses.keys())]
-    
+    # Convertir el diccionario a una lista ordenada por mes 
+    data = []
+    for mes in sorted(meses.keys()):
+        mes_data = {
+            'month': meses[mes]['month'],
+            'habitaciones': []
+        }
+        for habitacion_numero in sorted(meses[mes]['habitaciones'].keys()):
+            habitacion_data = {
+                'numero': habitacion_numero,
+                'dispositivos': meses[mes]['habitaciones'][habitacion_numero]['dispositivos'],
+                'consumo_total_habitacion': round(meses[mes]['habitaciones'][habitacion_numero]['consumo_total_mes'], 2)
+            }
+            mes_data['habitaciones'].append(habitacion_data)
+        data.append(mes_data)
     # Mapear los nombres de los meses
     meses_nombres = {
         1: 'Enero',
@@ -153,18 +191,19 @@ def send_monthly_consumption_update():
     for item in data:
         fecha = datetime.datetime.strptime(item['month'], '%Y-%m')
         item['month'] = meses_nombres[fecha.month]
-        item['consumo_total_mes'] = round(item['consumo_total_mes'], 2)
     
     return data
 
 def send_monthly_consumption_nivel_update():
     fecha_inicio = datetime.datetime.now() - datetime.timedelta(days=30)
     
-    # Obtener consumo por nivel y mes
+    # Primero obtenemos todos los niveles disponibles
+    niveles = Nivel.objects.values_list('nivel', flat=True)
+    
+    # Obtener consumo por nivel y mes, incluyendo todos los niveles
     result = RegistroConsumo.objects.filter(
         fecha__range=(fecha_inicio, datetime.datetime.now())
     ).values(
-        'habitacion__nivel',
         'habitacion__nivel__nivel'
     ).annotate(
         mes=TruncMonth('fecha')
@@ -190,6 +229,15 @@ def send_monthly_consumption_nivel_update():
                 'niveles': {},
                 'consumo_total_mes': 0
             }
+            
+            # Inicializar todos los niveles con valores en cero
+            for nivel_disponible in niveles:
+                meses[mes_str]['niveles'][f'Nivel {nivel_disponible}'] = {
+                    'max': 0,
+                    'avg': 0,
+                    'total': 0,
+                    'count': 0
+                }
         
         meses[mes_str]['niveles'][f'Nivel {nivel}'] = {
             'max': round(item['consumo_maximo'], 2),

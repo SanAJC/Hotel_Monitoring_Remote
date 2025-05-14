@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
-import { Habitacion, Dispositivo, Nivel , Hotel , Alerta, RegistroConsumo , RegistrosWeekly,RegistrosMonthy} from '@/types/models';
+import { Habitacion, Dispositivo, Nivel , Hotel , Alerta, RegistrosWeekly,RegistrosMonthy , RegistrosLevel} from '@/types/models';
 import { toast } from 'react-toastify';
 
 const WS_BASE_URL = 'ws://localhost:8000/ws';
@@ -21,7 +21,7 @@ interface WebSocketContextType {
   alertas: Alerta[];
   registrosConsumoWeekly: RegistrosWeekly[];
   registrosConsumoMonthly: RegistrosMonthy[];
-  registrosConsumoNivel: RegistroConsumo[];
+  registrosConsumoNivel: RegistrosLevel[];
   
   // Actions
   sendCommand: (dispositivoId: number, estado: 'ENCENDER' | 'APAGAR') => void;
@@ -66,7 +66,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [alertas, setAlertas] = useState<Alerta[]>([]);
   const [registrosConsumoWeekly, setRegistrosConsumoWeekly] = useState<RegistrosWeekly[]>([]);
   const [registrosConsumoMonthly, setRegistrosConsumoMonthly] = useState<RegistrosMonthy[]>([]);
-  const [registrosConsumoNivel, setRegistrosConsumoNivel] = useState<RegistroConsumo[]>([]);
+  const [registrosConsumoNivel, setRegistrosConsumoNivel] = useState<RegistrosLevel[]>([]);
 
   // Usamos una referencia para controlar si ya intentamos conectar
   const hasConnectedRef = useRef(false);

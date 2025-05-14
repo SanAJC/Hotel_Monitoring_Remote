@@ -6,22 +6,33 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import useRegistros from "@/hooks/useRegistros";
 
 export default function TotalConsumeHistory() {
-  const chartData = [
-    { month: "January", level1: 50, level2: 40, level3: 20, level4: 10 },
-    { month: "February", level1: 45, level2: 30, level3: 25, level4: 15 },
-    { month: "March", level1: 40, level2: 35, level3: 30, level4: 20 },
-    { month: "April", level1: 20, level2: 30, level3: 15, level4: 10 },
-    { month: "May", level1: 50, level2: 20, level3: 10, level4: 20 },
-    { month: "June", level1: 35, level2: 55, level3: 35, level4: 25 },
-    { month: "July", level1: 55, level2: 45, level3: 25, level4: 30 },
-    { month: "August", level1: 20, level2: 50, level3: 20, level4: 35 },
-    { month: "September", level1: 40, level2: 40, level3: 30, level4: 20 },
-    { month: "October", level1: 35, level2: 35, level3: 25, level4: 15 },
-    { month: "November", level1: 30, level2: 20, level3: 20, level4: 10 },
-    { month: "December", level1: 25, level2: 35, level3: 15, level4: 5 },
-  ];
+  const {registrosConsumoNivel} = useRegistros()
+
+  // const chartData = [
+  //   { month: "January", level1: 50, level2: 40, level3: 20, level4: 10 },
+  //   { month: "February", level1: 45, level2: 30, level3: 25, level4: 15 },
+  //   { month: "March", level1: 40, level2: 35, level3: 30, level4: 20 },
+  //   { month: "April", level1: 20, level2: 30, level3: 15, level4: 10 },
+  //   { month: "May", level1: 50, level2: 20, level3: 10, level4: 20 },
+  //   { month: "June", level1: 35, level2: 55, level3: 35, level4: 25 },
+  //   { month: "July", level1: 55, level2: 45, level3: 25, level4: 30 },
+  //   { month: "August", level1: 20, level2: 50, level3: 20, level4: 35 },
+  //   { month: "September", level1: 40, level2: 40, level3: 30, level4: 20 },
+  //   { month: "October", level1: 35, level2: 35, level3: 25, level4: 15 },
+  //   { month: "November", level1: 30, level2: 20, level3: 20, level4: 10 },
+  //   { month: "December", level1: 25, level2: 35, level3: 15, level4: 5 },
+  // ];
+
+  const chartData = registrosConsumoNivel.map((registro) => ({
+    month: registro.month,
+    level1: registro.niveles['Nivel 1']?.total || 0,
+    level2: registro.niveles['Nivel 2']?.total || 0,
+    level3: registro.niveles['Nivel 3']?.total || 0,
+    level4: registro.niveles['Nivel 4']?.total || 0
+  }));
 
   const chartConfig = {
     level1: {
@@ -62,7 +73,6 @@ export default function TotalConsumeHistory() {
             axisLine={false}
             tickMargin={8}
             tickFormatter={(value) => value.slice(0, 3)}
-            
           />
           <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
           <defs>
