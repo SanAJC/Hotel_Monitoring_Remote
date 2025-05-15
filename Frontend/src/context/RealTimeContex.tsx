@@ -2,7 +2,9 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 import { Habitacion, Dispositivo, Nivel , Hotel , Alerta, RegistrosWeekly,RegistrosMonthy , RegistrosLevel} from '@/types/models';
 import { toast } from 'react-toastify';
 
-const WS_BASE_URL = `wss://${import.meta.env.VITE_API_URL}/ws`;
+// Remover el protocolo de la URL base y construir la URL del WebSocket
+const API_URL = import.meta.env.VITE_API_URL.replace(/^https?:\/\//, '');
+const WS_BASE_URL = `wss://${API_URL}/ws`;
 
 interface WebSocketContextType {
   // WebSocket references
