@@ -8,7 +8,7 @@ import {
   PolarAngleAxis,
 } from "recharts";
 import { Dispositivo } from "@/types/models";
-import tvOff from "../../assets/tv-off.gif";
+import tvOff from "../../assets/tv-apagado.gif";
 type DispositivoProps = {
   dispositivos: Dispositivo[];
 }
