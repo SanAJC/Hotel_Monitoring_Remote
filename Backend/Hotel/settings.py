@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-td8#$69xas$#_xx(d60vqi-$u6$4u0i8f&-6%2^-*wae+m0gt)'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 ROOT_CA_PATH = os.path.join(BASE_DIR, 'certs', 'mqtt_root_ca.pem')
 USER_NAME_CLIENT = os.getenv('USER_NAME_CLIENT')
