@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "serve -s dist --port $PORT"
+    "start": "serve -s dist --p $PORT"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -23,7 +23,7 @@
     "lucide-react": "^0.473.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^7.1.1",
+    "react-router-dom": "^6.22.3",
     "react-toastify": "^11.0.5",
     "recharts": "^2.15.0",
     "serve": "^14.2.4",
