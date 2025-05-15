@@ -3,7 +3,7 @@ import { Habitacion, Dispositivo, Nivel , Hotel , Alerta, RegistrosWeekly,Regist
 import { toast } from 'react-toastify';
 
 
-const WS_BASE_URL = `wss://backend-production-e033.up.railway.app/ws`;
+const WS_BASE_URL = `wss://${import.meta.env.VITE_WS_BASE_URL}/ws`;
 
 interface WebSocketContextType {
   // WebSocket references
