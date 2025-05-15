@@ -33,8 +33,8 @@ PASSWORD_CLIENT = os.getenv('PASSWORD_CLIENT')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-#ALLOWED_HOSTS = ['localhost', 'backend-production-e033.up.railway.app','127.0.0.1']
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost', 'backend-production-e033.up.railway.app','127.0.0.1','frontend-production-7fa3.up.railway.app']
+#ALLOWED_HOSTS = ['*']
 
 # Application definition
 
