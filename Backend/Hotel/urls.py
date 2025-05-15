@@ -26,5 +26,5 @@ urlpatterns = [
     path('reports/', include('reports.urls'))
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Siempre servir archivos media, independientemente de DEBUG
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
