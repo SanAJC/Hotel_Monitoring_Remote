@@ -31,7 +31,7 @@ USER_NAME_CLIENT = os.getenv('USER_NAME_CLIENT')
 PASSWORD_CLIENT = os.getenv('PASSWORD_CLIENT')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', 'backend-production-e033.up.railway.app','127.0.0.1','frontend-production-7fa3.up.railway.app']
 #ALLOWED_HOSTS = ['*']
@@ -275,7 +275,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 #Media photos
 
 MEDIA_URL='/media/'
-MEDIA_ROOT=BASE_DIR / 'media'
+MEDIA_ROOT=os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
