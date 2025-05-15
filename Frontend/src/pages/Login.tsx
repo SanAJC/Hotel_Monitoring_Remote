@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useLogin } from "../hooks/useLogin";
 import "/src/styles/Login.css";
+import loginImage from "../assets/Login.png";
 export const Login = () => {
   const { handleLogin, loading, error } = useLogin();
 
@@ -16,7 +17,7 @@ export const Login = () => {
     <>
       <div className="Content-login">
         <div className="Content-login-img">
-          <img src="src/assets/Login.png" alt="login" />
+          <img src={loginImage} alt="login" />
         </div>
 
         <div className="Content-login-info">
