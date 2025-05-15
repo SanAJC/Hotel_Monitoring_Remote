@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "serve dist --single --port $PORT"
+    "start": "serve dist"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
