@@ -282,4 +282,8 @@ MEDIA_ROOT=os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CSRF_TRUSTED_ORIGINS = ['http://*','https://backend-production-e033.up.railway.app']
+# Configuración de CSRF
+CSRF_TRUSTED_ORIGINS = [
+    'https://frontend-production-7fa3.up.railway.app',
+    'https://backend-production-e033.up.railway.app'
+]
