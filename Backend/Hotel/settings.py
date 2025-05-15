@@ -155,7 +155,7 @@ MIDDLEWARE = [
 
 # CORS Configuration
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
+    'https://frontend-production-7fa3.up.railway.app/',
     'https://backend-production-e033.up.railway.app'
 ]
 
