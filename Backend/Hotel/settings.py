@@ -33,8 +33,8 @@ PASSWORD_CLIENT = os.getenv('PASSWORD_CLIENT')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', 'backend-production-e033.up.railway.app','127.0.0.1']
-
+#ALLOWED_HOSTS = ['localhost', 'backend-production-e033.up.railway.app','127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -156,8 +156,7 @@ MIDDLEWARE = [
 # CORS Configuration
 CORS_ALLOWED_ORIGINS = [
     'https://frontend-production-7fa3.up.railway.app',
-    'https://backend-production-e033.up.railway.app',
-    'wss://backend-production-e033.up.railway.app'
+    'https://backend-production-e033.up.railway.app'
 ]
 
 CORS_ALLOW_CREDENTIALS = True
