@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 import { Habitacion, Dispositivo, Nivel , Hotel , Alerta, RegistrosWeekly,RegistrosMonthy , RegistrosLevel} from '@/types/models';
 import { toast } from 'react-toastify';
 
-const WS_BASE_URL = `ws://${import.meta.env.VITE_API_URL}/ws`;
+const WS_BASE_URL = `wss://${import.meta.env.VITE_API_URL}/ws`;
 
 interface WebSocketContextType {
   // WebSocket references
