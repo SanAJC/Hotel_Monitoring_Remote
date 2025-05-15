@@ -156,11 +156,12 @@ MIDDLEWARE = [
 # CORS Configuration
 CORS_ALLOWED_ORIGINS = [
     'https://frontend-production-7fa3.up.railway.app',
-    'https://backend-production-e033.up.railway.app'
+    'https://backend-production-e033.up.railway.app',
+    'wss://backend-production-e033.up.railway.app'
 ]
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
 
 ROOT_URLCONF = 'Hotel.urls'
 
