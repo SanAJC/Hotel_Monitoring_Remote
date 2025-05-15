@@ -8,7 +8,7 @@ import {
   RadialBarChart,
   PolarAngleAxis,
 } from "recharts";
-
+import autoConsumo from "../../assets/Autoconsumo.gif";
 
 export default function TotalConsume() {
   const { hotel } = useHotel();
@@ -29,7 +29,7 @@ export default function TotalConsume() {
     <CardChart title="Consumo Total">
       <div className="card-hotel">
         <img
-          src="/src/assets/Autoconsumo.gif"
+          src={autoConsumo}
           alt="Consumo Total"
           id="consumoGif"
         />

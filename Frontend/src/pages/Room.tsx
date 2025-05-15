@@ -31,7 +31,7 @@ export default function Room() {
   //Filtramos dispositivos antes de enviarl
   const dispositivo = dispositivos.filter(d => d.habitacion.id === room.id);
 
-  const baseURL = "http://localhost:8000";
+  const baseURL = import.meta.env.VITE_API_URL;
   const imageUrl = `${baseURL}${room.images}`;
 
   return (

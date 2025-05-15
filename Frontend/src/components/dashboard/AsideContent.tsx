@@ -1,6 +1,12 @@
 import { useLogout } from "../../hooks/useLogout";
 import "/src/styles/Aside.css";
 import { Link } from "react-router-dom";
+import logoHotel from "../../assets/Hotel.png";
+import homeIcon from "../../assets/home.png";
+import chartIcon from "../../assets/chart.png";
+import documentIcon from "../../assets/document.png";
+import userIcon from "../../assets/user.png";
+import logoutIcon from "../../assets/Logout.png";
 
 export const AsideContent = () => {
   const { handleLogout } = useLogout();
@@ -13,26 +19,26 @@ export const AsideContent = () => {
 
   return (
     <aside className="aside-content">
-      <img src="/src/assets/Hotel.png" alt="hotel" id="img-hotel" />
+      <img src={logoHotel} alt="hotel" id="img-hotel" />
       <nav>
         <ul>
           <li className="tooltip">
             <Link to="/home">
-              <img src="/src/assets/home.png" alt="home" />
+              <img src={homeIcon} alt="home" />
               <span className="tooltip-text">Inicio</span>
             </Link>
           </li>
 
           <li className="tooltip">
             <Link to="/rooms">
-              <img src="/src/assets/chart.png" alt="rooms" />
+              <img src={chartIcon} alt="rooms" />
               <span className="tooltip-text">Habitaciones</span>
             </Link>
           </li>
 
           <li className="tooltip">
             <Link to="/export">
-              <img src="/src/assets/document.png" alt="export" />
+              <img src={documentIcon} alt="export" />
               <span className="tooltip-text">Reportes</span>
             </Link>
           </li>
@@ -41,13 +47,13 @@ export const AsideContent = () => {
       <div className="icons-user">
         <button className="tooltip">
           <Link to={`${import.meta.env.VITE_API_URL}/admin/`}>
-            <img src="/src/assets/user.png" alt="user" id="img-user" />
+            <img src={userIcon} alt="user" id="img-user" />
             <span className="tooltip-text">Admin</span>
           </Link>
         </button>
 
         <button onClick={handleClick} className="tooltip">
-          <img src="/src/assets/Logout.png" alt="Logout" id="img-logut" />
+          <img src={logoutIcon} alt="Logout" id="img-logut" />
           <span className="tooltip-text">Cerrar Session</span>
         </button>
       </div>

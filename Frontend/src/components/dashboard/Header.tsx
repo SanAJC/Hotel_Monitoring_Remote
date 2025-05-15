@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import Alert from "@mui/material/Alert";
 import useRooms from "@/hooks/useRooms";
-import userImage from "/src/assets/user.png";
+import userImage from "../../assets/user.png";
 import useAlerts from "@/hooks/useAlerts";
 
 export default function Header() {

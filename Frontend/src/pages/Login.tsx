@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useLogin } from "../hooks/useLogin";
 import "/src/styles/Login.css";
 import loginImage from "../assets/Login.png";
+import usernameIcon from "../assets/username.png";
+import passwordIcon from "../assets/password.png";
+
 export const Login = () => {
   const { handleLogin, loading, error } = useLogin();
 
@@ -25,7 +28,7 @@ export const Login = () => {
           <span>Ingresa tus credenciales para acceder</span>
           <form onSubmit={handleSubmit}>
             <div className="Content-inputs">
-              <img src="src/assets/username.png" alt="username" />
+              <img src={usernameIcon} alt="username" />
               <input
                 type="text"
                 id="username"
@@ -36,7 +39,7 @@ export const Login = () => {
               />
             </div>
             <div className="Content-inputs">
-              <img src="src/assets/password.png" alt="username" />
+              <img src={passwordIcon} alt="username" />
               <input
                 type="password"
                 id="password"

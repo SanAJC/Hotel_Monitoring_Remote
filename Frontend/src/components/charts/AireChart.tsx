@@ -9,6 +9,7 @@ import {
 } from "recharts";
 
 import { Dispositivo } from "@/types/models";
+import ventiladorOff from "../../assets/ventilador-off.gif";
 
 type DispositivoProps = {
   dispositivos: Dispositivo[];
@@ -31,7 +32,7 @@ export const AireChart = ({dispositivos}: DispositivoProps) => {
     },
   ];
 
-  const baseURL = "http://localhost:8000";
+  const baseURL = import.meta.env.VITE_API_URL;
   let image_dispositivo: string;
 
   if (dispositivo && dispositivo.estado_remoto === "ENCENDER") {
@@ -39,7 +40,7 @@ export const AireChart = ({dispositivos}: DispositivoProps) => {
   } else if (dispositivo && dispositivo.estado_remoto === "APAGAR") {
     image_dispositivo = `${baseURL}${dispositivo.off_image}`;
   } else {
-    image_dispositivo = "/src/assets/ventilador-off.gif"; 
+    image_dispositivo = ventiladorOff; 
   }
 
   let title :string;

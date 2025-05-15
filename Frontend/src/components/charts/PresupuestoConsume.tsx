@@ -8,7 +8,7 @@ import {
   RadialBarChart,
   PolarAngleAxis,
 } from "recharts";
-
+import money from "../../assets/money.png";
 export default function PresupuestoConsume() {
   const { hotel } = useHotel();
   const maxBudget = 10000000; 
@@ -25,7 +25,7 @@ export default function PresupuestoConsume() {
   return (
     <CardChart title="Presupuesto del Consumo">
       <div className="card-hotel">
-        <img src="/src/assets/money.png" alt="" id="presupuesto" />
+        <img src={money} alt="" id="presupuesto" />
         <RadialBarChart
           data={chartData}
           startAngle={90}

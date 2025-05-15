@@ -10,6 +10,7 @@ import {
 } from "recharts";
 
 import { Dispositivo } from "@/types/models";
+import bombillaOff from "../../assets/bombilla-off.gif";
 type DispositivoProps = {
   dispositivos: Dispositivo[];
 }
@@ -29,7 +30,7 @@ export const F2Chart = ({dispositivos}: DispositivoProps) => {
     },
   ];
   
-  const baseURL = "http://localhost:8000";
+  const baseURL = import.meta.env.VITE_API_URL;
   let image_dispositivo: string;
 
   if (dispositivo && dispositivo.estado_remoto === "ENCENDER") {
@@ -37,7 +38,7 @@ export const F2Chart = ({dispositivos}: DispositivoProps) => {
   } else if (dispositivo && dispositivo.estado_remoto === "APAGAR") {
     image_dispositivo = `${baseURL}${dispositivo.off_image}`;
   } else {
-    image_dispositivo = "/src/assets/bombilla-off.gif"; 
+    image_dispositivo = bombillaOff; 
   }
 
   let title :string;

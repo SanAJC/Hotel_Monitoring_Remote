@@ -8,6 +8,7 @@ import {
   PolarAngleAxis,
 } from "recharts";
 import { Dispositivo } from "@/types/models";
+import tvOff from "../../assets/tv-off.gif";
 type DispositivoProps = {
   dispositivos: Dispositivo[];
 }
@@ -28,7 +29,7 @@ export const TvChart = ({dispositivos}: DispositivoProps) => {
     },
   ];
 
-  const baseURL = "http://localhost:8000";
+  const baseURL = import.meta.env.VITE_API_URL;
   let image_dispositivo: string;
 
   if (dispositivo && dispositivo.estado_remoto === "ENCENDER") {
@@ -36,7 +37,7 @@ export const TvChart = ({dispositivos}: DispositivoProps) => {
   } else if (dispositivo && dispositivo.estado_remoto === "APAGAR") {
     image_dispositivo = `${baseURL}${dispositivo.off_image}`;
   } else {
-    image_dispositivo = "/src/assets/tv-apagado.gif"; 
+    image_dispositivo = tvOff; 
   }
 
   let title :string;

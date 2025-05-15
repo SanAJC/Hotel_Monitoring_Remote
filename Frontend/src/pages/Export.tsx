@@ -2,13 +2,14 @@ import { AsideContent } from "../components/dashboard/AsideContent";
 import "/src/styles/Export.css";
 import Header from "../components/dashboard/Header";
 import { useAuth } from "../context/AuthContext";
+import exportImage from "../assets/export.png";
 
 export default function Export() {
   const { accessToken } = useAuth();
  
   const handleDownload = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/reports/reporte/file/", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/reports/reporte/file/`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${accessToken}`, 
@@ -81,7 +82,7 @@ export default function Export() {
               </div>
 
               <div className="img">
-                <img src="src/assets/export.png" alt="export" id="img-export" />
+                <img src={exportImage} alt="export" id="img-export" />
               </div>
             </div>
           </div>

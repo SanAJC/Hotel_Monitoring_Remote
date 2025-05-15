@@ -8,7 +8,7 @@ type DataRoomProps = {
 };
 
 export default function DataRoom({habitacion}:DataRoomProps) {
-  const baseURL = "http://localhost:8000";
+  const baseURL = import.meta.env.VITE_API_URL;
   const imageUrl = `${baseURL}${habitacion.images}`;
   
   return (

@@ -1,6 +1,8 @@
 import "/src/styles/CardAction.css";
 import { Dispositivo , Habitacion } from "@/types/models";
-
+import temperaturaOff from "../../assets/temperatura-off.gif";
+import humedadOff from "../../assets/humedad-off.gif";
+import presencia from "../../assets/presencia.gif";
 type DispositivoProps = {
   dispositivos: Dispositivo[];
   sendCommand: (id: number, estado: "ENCENDER" | "APAGAR") => void;
@@ -40,21 +42,21 @@ export const CardRoomAction = ({dispositivos,sendCommand,habitacion}: Dispositiv
             <span>Temperatura</span>
             <div className=" content-data-img">
               <p id="temp">{habitacion.temperatura} °C</p>
-              <img src="/src/assets/temperatura-off.gif" alt="" id="icon" />
+              <img src={temperaturaOff} alt="" id="icon" />
             </div>
           </div>
           <div className="data-item">
             <span>Humedad</span>
             <div className=" content-data-img">
               <p id="hum">{habitacion.humedad} %</p>
-              <img src="/src/assets/humedad-off.gif" alt="" id="icon" />
+              <img src={humedadOff} alt="" id="icon" />
             </div>
           </div>
           <div className="data-item">
             <span>Presencia</span>
             <div className=" content-data-img">
               <p id="pre">{habitacion.presencia_humana ? "Activo" : "Inactivo"}</p>
-              <img src="/src/assets/presencia.gif" alt="" id="icon" />
+              <img src={presencia} alt="" id="icon" />
             </div>
           </div>
         </div>
