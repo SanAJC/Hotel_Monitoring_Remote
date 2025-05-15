@@ -15,8 +15,6 @@ class LoginSerializer(serializers.Serializer):
     def validate(self, data):
         username = data.get("username")
         password = data.get("password")
-        print(f"Intentando autenticar con username: {username} y password: {password}")
-        
         # Autenticar usando el username y password
         user = auth.authenticate(username=username, password=password)
         
